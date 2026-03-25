@@ -1,0 +1,258 @@
+/* ============================================================
+   U-like-it — Händler Subpage Styles
+   Erweiterung des bestehenden Design-Systems
+   Baut auf styles.css + user-styles.css auf
+   ============================================================ */
+
+
+/* ---------- 1. HERO — Händler Accent ---------- */
+.haendler-hero-accent {
+  color: var(--color-accent-light);
+}
+
+.haendler-hero-cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  align-items: center;
+}
+
+
+/* ---------- 5. USE CASES (innerhalb user-location-layout) ---------- */
+.haendler-cases-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 4px;
+}
+
+.haendler-case-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.haendler-case-icon-wrap {
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+  transition: transform var(--transition-fast);
+}
+
+.haendler-case-icon-accent {
+  background: rgba(14, 165, 233, 0.12);
+  color: var(--color-accent);
+}
+
+.haendler-case-item:hover .haendler-case-icon-wrap {
+  transform: scale(1.08);
+}
+
+.haendler-case-label {
+  display: inline-block;
+  font-family: var(--font-heading);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-bottom: 4px;
+}
+
+.haendler-case-quote {
+  font-family: var(--font-heading);
+  font-size: clamp(16px, 1.6vw, 18px);
+  font-weight: 700;
+  color: var(--heading-h2-color);
+  font-style: italic;
+  margin: 0 0 4px;
+  line-height: 1.3;
+}
+
+.haendler-case-result {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin: 0;
+}
+
+
+/* ---------- 6. CONDITIONS (Ergänzung zu pakete-layout) ---------- */
+.haendler-conditions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  list-style: none;
+  margin-top: 20px;
+}
+
+.haendler-conditions-list li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.haendler-conditions-list li svg {
+  flex-shrink: 0;
+  color: var(--color-primary);
+}
+
+
+/* ---------- 7. ONBOARDING ---------- */
+.haendler-onboarding-section {
+  position: relative;
+  z-index: 1;
+  background: transparent;
+}
+
+.haendler-form-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.haendler-form {
+  padding: clamp(32px, 4vw, 44px);
+  width: 100%;
+  max-width: 440px;
+}
+
+.haendler-form-group {
+  margin-bottom: 18px;
+}
+
+.haendler-form-group label {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--text-primary);
+  margin-bottom: 7px;
+}
+
+.haendler-form-group input,
+.haendler-form-group select {
+  width: 100%;
+  padding: 13px 16px;
+  border: 2px solid var(--color-bg-muted);
+  border-radius: var(--radius-md);
+  background: var(--color-bg);
+  font-family: var(--font-body);
+  font-size: 15px;
+  color: var(--text-primary);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  outline: none;
+  -webkit-appearance: none;
+}
+
+.haendler-form-group input:focus,
+.haendler-form-group select:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.12);
+}
+
+.haendler-form-group input::placeholder {
+  color: var(--text-muted);
+}
+
+.haendler-form-submit {
+  width: 100%;
+  margin-top: 4px;
+}
+
+.haendler-form-micro {
+  font-size: 12px;
+  color: var(--text-muted);
+  text-align: center;
+  margin-top: 12px;
+}
+
+
+/* ---------- POS-Material Banner (in Onboarding-Sektion) ---------- */
+.haendler-pos-banner {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 22px;
+  margin-top: 28px;
+}
+
+.haendler-pos-banner .haendler-pos-icon-wrap {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+}
+
+.haendler-pos-text {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.haendler-pos-text strong {
+  color: var(--heading-h2-color);
+}
+
+
+/* ---------- 8. FAQ Wrapper ---------- */
+.haendler-faq-wrap {
+  position: relative;
+  background: var(--color-bg-soft);
+}
+
+.haendler-faq-wrap .light-sections-blob-bg .light-blob {
+  opacity: 0.08;
+}
+
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 899px) {
+  .haendler-cases-list {
+    margin-top: 0;
+  }
+
+  .haendler-form-wrap {
+    justify-content: stretch;
+  }
+
+  .haendler-form {
+    max-width: 100%;
+  }
+
+  .haendler-pos-banner {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+@media (max-width: 479px) {
+  .haendler-hero-cta {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .haendler-hero-cta .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}

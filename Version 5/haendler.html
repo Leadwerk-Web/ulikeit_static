@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="U-like-it für Händler & Gastronomie – Mehr Kunden, mehr Umsatz, messbare Ergebnisse. Erstelle lokale Deals und bringe Kunden direkt in deinen Laden.">
+  <title>U-like-it – Für Händler & Gastronomie</title>
+  <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+  <link rel="icon" type="image/png" href="images/favicon.png" sizes="32x32">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geologica:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="user-styles.css">
+  <link rel="stylesheet" href="haendler-styles.css">
+</head>
+<body>
+  <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
+  <div class="custom-cursor" id="custom-cursor" aria-hidden="true"></div>
+  <div class="custom-cursor-shadow" id="custom-cursor-shadow" aria-hidden="true"></div>
+
+  <!-- ========== HEADER / NAV ========== -->
+  <header class="site-header" id="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo" aria-label="U-like-it Startseite">
+        <img src="images/logo.png" alt="U-like-it" class="logo-img">
+      </a>
+      <nav class="nav" id="main-nav" aria-label="Hauptnavigation">
+        <ul class="nav-list">
+          <li><a href="#vorteile">Vorteile</a></li>
+          <li><a href="#so-gehts">So geht's</a></li>
+          <li><a href="#dashboard">Dashboard</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+        <div class="mobile-nav-cta">
+          <a href="#onboarding" class="btn btn-primary btn-accent">Jetzt testen</a>
+        </div>
+      </nav>
+      <div class="header-cta">
+        <a href="user.html" class="btn btn-ghost btn-header">Für Nutzer</a>
+        <a href="#onboarding" class="btn btn-primary btn-accent btn-header">Jetzt testen</a>
+      </div>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Menü öffnen" aria-expanded="false">
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ========== 1. HERO ========== -->
+    <div class="hero-why-bg">
+      <div class="hero-bg-parallax" data-parallax="0.08" aria-hidden="true"></div>
+      <div class="hero-frau-layer" data-parallax="0.24" aria-hidden="true">
+        <img src="images/frau-freigestellt.png" alt="" class="hero-frau-img">
+      </div>
+      <section class="hero user-hero" id="hero">
+        <div class="hero-bg-wrap" aria-hidden="true"></div>
+        <div class="container hero-inner" id="hero-inner">
+          <div class="hero-content reveal reveal-up">
+            <h1 class="hero-title user-hero-title">
+              <span class="hero-title-line">Mehr Kunden.</span>
+              <span class="hero-title-line">Mehr Umsatz.</span>
+              <span class="hero-title-line haendler-hero-accent">Lokal.</span>
+            </h1>
+            <p class="user-hero-sub">Erstelle Angebote, die kaufbereite Nutzer in deiner Nähe direkt in deinen Laden bringen. Messbar, planbar, ohne Streuverlust.</p>
+            <div class="hero-cta haendler-hero-cta">
+              <a href="#onboarding" class="btn btn-accent-solid btn-lg">Jetzt testen</a>
+              <a href="#vorteile" class="btn btn-white btn-lg">Mehr erfahren</a>
+            </div>
+            <p class="user-hero-micro">Keine Fixkosten. Schnell eingerichtet.</p>
+          </div>
+        </div>
+      </section>
+      <div class="hero-arrow-wrap" aria-hidden="true">
+        <div class="hero-arrow-parallax">
+          <img src="images/pfeil-3.png" alt="" class="hero-arrow-img">
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== 2. BENEFITS (Exclusivity-Layout) ========== -->
+    <section class="section user-exclusive-section" id="vorteile">
+      <div class="user-exclusive-blob-bg" aria-hidden="true">
+        <div class="light-blob-parallax" data-parallax="0.12"><div class="light-blob light-blob-blue"></div></div>
+        <div class="light-blob-parallax" data-parallax="0.15"><div class="light-blob light-blob-orange"></div></div>
+        <div class="light-blob-parallax" data-parallax="0.1"><div class="light-blob light-blob-blue-2"></div></div>
+      </div>
+      <div class="container">
+        <div class="user-exclusive-layout">
+          <div class="user-exclusive-hero reveal">
+            <span class="solution-2-label">Deine Vorteile</span>
+            <h2 class="user-exclusive-title">Mehr Frequenz.<br>Weniger Streuverlust.<br>Volle Kontrolle.</h2>
+            <p class="user-exclusive-lead">U-like-it bringt kaufbereite Kunden direkt zu dir – planbar, messbar und ohne technischen Aufwand.</p>
+          </div>
+          <div class="user-exclusive-features">
+            <div class="user-exclusive-feature glass-card reveal reveal-delay-1">
+              <div class="user-exclusive-feature-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+              </div>
+              <div>
+                <h3>Mehr Frequenz im Laden</h3>
+                <p>Bringe gezielt neue Kunden zu dir – genau dann, wenn du sie brauchst. Nicht irgendwann.</p>
+              </div>
+            </div>
+            <div class="user-exclusive-feature glass-card reveal reveal-delay-2">
+              <div class="user-exclusive-feature-icon user-exclusive-feature-icon-accent">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+              </div>
+              <div>
+                <h3>Lokale Zielgruppe, kein Streuverlust</h3>
+                <p>Deine Angebote erreichen nur Nutzer, die wirklich in deiner Nähe sind und kaufbereit.</p>
+              </div>
+            </div>
+            <div class="user-exclusive-feature glass-card reveal reveal-delay-3">
+              <div class="user-exclusive-feature-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+              </div>
+              <div>
+                <h3>Messbare Einlösungen per QR</h3>
+                <p>Jede Einlösung wird erfasst. Du siehst genau, was funktioniert – in Echtzeit.</p>
+              </div>
+            </div>
+            <div class="user-exclusive-feature glass-card reveal reveal-delay-3">
+              <div class="user-exclusive-feature-icon user-exclusive-feature-icon-accent">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+              </div>
+              <div>
+                <h3>Einfach, ohne technisches Know-how</h3>
+                <p>Angebot erstellen, veröffentlichen, fertig. In unter 5 Minuten live.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== Ticker-Banner ========== -->
+    <div class="ticker-banner" aria-hidden="true">
+      <div class="ticker-track">
+        <span class="ticker-item">BOUTIQUEN</span>
+        <span class="ticker-item">CAFÉS</span>
+        <span class="ticker-item">RESTAURANTS</span>
+        <span class="ticker-item">CONCEPT STORES</span>
+        <span class="ticker-item">BARS</span>
+        <span class="ticker-item">LOKALE HÄNDLER</span>
+        <span class="ticker-item">GASTRONOMIE</span>
+        <span class="ticker-item">FASHION</span>
+        <span class="ticker-item">BOUTIQUEN</span>
+        <span class="ticker-item">CAFÉS</span>
+        <span class="ticker-item">RESTAURANTS</span>
+        <span class="ticker-item">CONCEPT STORES</span>
+        <span class="ticker-item">BARS</span>
+        <span class="ticker-item">LOKALE HÄNDLER</span>
+        <span class="ticker-item">GASTRONOMIE</span>
+        <span class="ticker-item">FASHION</span>
+      </div>
+    </div>
+
+    <!-- ========== 3. HOW IT WORKS (3 Steps — aus user.html) ========== -->
+    <section class="section user-how-section" id="so-gehts">
+      <div class="user-how-blob-bg" aria-hidden="true">
+        <div class="light-blob-parallax" data-parallax="0.12"><div class="light-blob light-blob-blue"></div></div>
+        <div class="light-blob-parallax" data-parallax="0.18"><div class="light-blob light-blob-orange"></div></div>
+        <div class="light-blob-parallax" data-parallax="0.08"><div class="light-blob light-blob-blue-2"></div></div>
+      </div>
+      <div class="container">
+        <header class="section-header reveal reveal-scale">
+          <span class="solution-2-label">So einfach geht's</span>
+          <h2 class="section-title">In 3 Schritten live</h2>
+        </header>
+        <div class="user-steps-grid">
+          <div class="user-step glass-card reveal">
+            <span class="user-step-number">1</span>
+            <div class="user-step-icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+            </div>
+            <h3>Angebot erstellen</h3>
+            <p>Beschreibe dein Angebot, lege den Rabatt fest und wähle den Zeitraum.</p>
+          </div>
+          <div class="user-step-arrow reveal" aria-hidden="true">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </div>
+          <div class="user-step glass-card reveal reveal-delay-1">
+            <span class="user-step-number">2</span>
+            <div class="user-step-icon user-step-icon-accent">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+            </div>
+            <h3>Regional veröffentlichen</h3>
+            <p>Dein Deal wird sofort für Nutzer in deiner Region sichtbar. Keine Wartezeit.</p>
+          </div>
+          <div class="user-step-arrow reveal" aria-hidden="true">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </div>
+          <div class="user-step glass-card reveal reveal-delay-2">
+            <span class="user-step-number">3</span>
+            <div class="user-step-icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            </div>
+            <h3>Kunde löst ein</h3>
+            <p>Der Kunde kommt vorbei, zeigt den QR-Code – du bestätigst. Fertig.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 4. DASHBOARD PREVIEW (App Showcase — aus user.html) ========== -->
+    <section class="section user-preview-section" id="dashboard">
+      <div class="user-preview-arrow" aria-hidden="true">
+        <img src="images/Pfeil4.png" alt="" class="user-preview-arrow-img" data-parallax="0.12">
+      </div>
+      <div class="container">
+        <header class="section-header reveal reveal-scale">
+          <span class="solution-2-label">Dein Dashboard</span>
+          <h2 class="section-title">Alles im Blick</h2>
+        </header>
+        <div class="app-showcase reveal reveal-scale" id="haendler-showcase">
+          <div class="app-showcase-tabs" role="tablist">
+            <button type="button" class="app-showcase-tab active" role="tab" aria-selected="true" data-slide="0">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+              <span>Erstellen</span>
+            </button>
+            <button type="button" class="app-showcase-tab" role="tab" aria-selected="false" data-slide="1">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect></svg>
+              <span>Übersicht</span>
+            </button>
+            <button type="button" class="app-showcase-tab" role="tab" aria-selected="false" data-slide="2">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+              <span>Statistiken</span>
+            </button>
+          </div>
+          <div class="app-showcase-body">
+            <div class="app-showcase-info">
+              <div class="app-showcase-slide-info active" data-info="0">
+                <h3>Angebot erstellen</h3>
+                <p>Titel, Beschreibung, Rabatt und Zeitraum eingeben – in wenigen Minuten ist dein Deal live.</p>
+              </div>
+              <div class="app-showcase-slide-info" data-info="1">
+                <h3>Deine Angebote</h3>
+                <p>Alle aktiven und vergangenen Deals auf einen Blick. Bearbeiten, verlängern oder pausieren.</p>
+              </div>
+              <div class="app-showcase-slide-info" data-info="2">
+                <h3>Einlösungen & Statistiken</h3>
+                <p>Sieh in Echtzeit, wie viele Kunden deinen Deal eingelöst haben. Klar und nachvollziehbar.</p>
+              </div>
+            </div>
+            <div class="app-showcase-phone">
+              <div class="app-showcase-phone-frame">
+                <div class="app-showcase-screen" id="haendler-showcase-screen">
+                  <img src="images/Screenshots/iPhone 11 Pro Max-11OwnerEditOffer_framed.png" alt="Angebot erstellen" class="app-showcase-img active" data-screen="0">
+                  <img src="images/Screenshots/iPhone 11 Pro Max-10OwnerOfferList_framed.png" alt="Angebotsübersicht" class="app-showcase-img" data-screen="1">
+                  <img src="images/Screenshots/iPhone 11 Pro Max-14OwnerStatYear_framed.png" alt="Statistiken" class="app-showcase-img" data-screen="2">
+                </div>
+              </div>
+            </div>
+            <div class="app-showcase-dots" aria-hidden="true">
+              <span class="app-showcase-dot active" data-dot="0"></span>
+              <span class="app-showcase-dot" data-dot="1"></span>
+              <span class="app-showcase-dot" data-dot="2"></span>
+            </div>
+          </div>
+          <p class="app-showcase-swipe-hint" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+            Wischen oder klicken
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== Parallax Image ========== -->
+    <section class="parallax-image-section" aria-hidden="true">
+      <div class="parallax-image-wrap"></div>
+    </section>
+
+    <!-- ========== Ticker-Banner ========== -->
+    <div class="ticker-banner" aria-hidden="true">
+      <div class="ticker-track">
+        <span class="ticker-item">MEHR FREQUENZ</span>
+        <span class="ticker-item">LOKALE DEALS</span>
+        <span class="ticker-item">MESSBAR</span>
+        <span class="ticker-item">KEIN STREUVERLUST</span>
+        <span class="ticker-item">QR-EINLÖSUNG</span>
+        <span class="ticker-item">PLANBAR</span>
+        <span class="ticker-item">EINFACH</span>
+        <span class="ticker-item">LOKAL</span>
+        <span class="ticker-item">MEHR FREQUENZ</span>
+        <span class="ticker-item">LOKALE DEALS</span>
+        <span class="ticker-item">MESSBAR</span>
+        <span class="ticker-item">KEIN STREUVERLUST</span>
+        <span class="ticker-item">QR-EINLÖSUNG</span>
+        <span class="ticker-item">PLANBAR</span>
+        <span class="ticker-item">EINFACH</span>
+        <span class="ticker-item">LOKAL</span>
+      </div>
+    </div>
+
+    <!-- ========== 5. USE CASES (Location-Layout — aus user.html) ========== -->
+    <section class="section user-location-section" id="beispiele">
+      <div class="user-location-blob-bg" aria-hidden="true">
+        <div class="light-blob-parallax" data-parallax="0.1"><div class="light-blob light-blob-blue"></div></div>
+        <div class="light-blob-parallax" data-parallax="0.16"><div class="light-blob light-blob-orange"></div></div>
+      </div>
+      <div class="container">
+        <div class="user-location-layout">
+          <div class="user-location-content reveal">
+            <span class="solution-2-label">Aus der Praxis</span>
+            <h2 class="section-title" style="text-align:left;">So nutzen es andere</h2>
+            <div class="haendler-cases-list">
+              <div class="haendler-case-item">
+                <div class="haendler-case-icon-wrap">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"/><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4"/><path d="M2 7h20"/></svg>
+                </div>
+                <div>
+                  <span class="haendler-case-label">Boutique</span>
+                  <p class="haendler-case-quote">„20 % auf Sommerkollektion"</p>
+                  <p class="haendler-case-result">Mehr Frequenz am Wochenende. Restposten planbar abverkauft.</p>
+                </div>
+              </div>
+              <div class="haendler-case-item">
+                <div class="haendler-case-icon-wrap haendler-case-icon-accent">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>
+                </div>
+                <div>
+                  <span class="haendler-case-label">Café</span>
+                  <p class="haendler-case-quote">„2-für-1 Frühstück"</p>
+                  <p class="haendler-case-result">Auslastung vormittags verdoppelt. Neue Stammkunden gewonnen.</p>
+                </div>
+              </div>
+              <div class="haendler-case-item">
+                <div class="haendler-case-icon-wrap">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
+                </div>
+                <div>
+                  <span class="haendler-case-label">Restaurant</span>
+                  <p class="haendler-case-quote">„Lunch-Deal: Hauptgericht + Getränk"</p>
+                  <p class="haendler-case-result">Mittagszeit besser ausgelastet. Tischreservierungen gestiegen.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="user-location-visual reveal reveal-right">
+            <div class="user-location-image-wrap">
+              <img src="images/Gruppe-Cafe-2.png" alt="Lokale Händler und Gastronomen" class="user-location-img">
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 6. CONDITIONS (Pakete-Layout — aus index.html) ========== -->
+    <div class="app-pakete-wrap">
+      <div class="app-pakete-blob-bg" aria-hidden="true">
+        <div class="light-blob-parallax" data-parallax="0.12"><div class="light-blob light-blob-blue"></div></div>
+        <div class="light-blob-parallax" data-parallax="0.18"><div class="light-blob light-blob-orange"></div></div>
+        <div class="light-blob-parallax" data-parallax="0.08"><div class="light-blob light-blob-blue-2"></div></div>
+      </div>
+      <section class="section pakete-section" id="konditionen">
+        <div class="container pakete-container">
+          <div class="pakete-layout">
+            <div class="pakete-image reveal">
+              <img src="images/bag.png" alt="U like it" class="pakete-img">
+            </div>
+            <div class="pakete-content reveal reveal-scale">
+              <span class="pakete-label">Einstieg ohne Risiko</span>
+              <h2 class="pakete-title">Fair. Flexibel. Transparent.</h2>
+              <div class="pakete-text">
+                <p>Du bestimmst, wie viel du investierst. Keine langen Verträge, keine versteckten Kosten. Starte mit einem Testangebot und sieh selbst, was passiert.</p>
+              </div>
+              <ul class="haendler-conditions-list">
+                <li>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                  Kein Abo, keine Mindestlaufzeit
+                </li>
+                <li>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                  Kosten abhängig von Reichweite & Dauer
+                </li>
+                <li>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                  Jederzeit kündbar, jederzeit erweiterbar
+                </li>
+                <li>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                  Persönliche Beratung bei Fragen
+                </li>
+              </ul>
+              <a href="#onboarding" class="btn btn-primary" style="margin-top:24px;">Jetzt kostenlos starten</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== 7. ONBOARDING (Location-Layout — aus user.html) ========== -->
+      <section class="section haendler-onboarding-section" id="onboarding">
+        <div class="container">
+          <div class="user-location-layout">
+            <div class="user-location-content reveal">
+              <span class="solution-2-label">Loslegen</span>
+              <h2 class="section-title" style="text-align:left;">In 2 Minuten dabei</h2>
+              <p class="user-location-text">Fülle das kurze Formular aus und wir melden uns innerhalb von 24 Stunden bei dir. Persönlich, nicht automatisiert.</p>
+              <div class="haendler-pos-banner glass-card">
+                <div class="haendler-pos-icon-wrap">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><rect x="7" y="7" width="3" height="9"></rect><rect x="14" y="7" width="3" height="5"></rect></svg>
+                </div>
+                <div>
+                  <p class="haendler-pos-text"><strong>POS-Material inklusive:</strong> Sticker, Aufsteller und QR-Materialien für deinen Laden.</p>
+                </div>
+              </div>
+            </div>
+            <div class="haendler-form-wrap reveal reveal-right">
+              <form class="haendler-form glass-card" onsubmit="return false;" id="haendler-form">
+                <div class="haendler-form-group">
+                  <label for="h-name">Name</label>
+                  <input type="text" id="h-name" placeholder="Max Mustermann" required>
+                </div>
+                <div class="haendler-form-group">
+                  <label for="h-branche">Branche</label>
+                  <select id="h-branche" required>
+                    <option value="" disabled selected>Bitte wählen</option>
+                    <option value="retail">Einzelhandel / Boutique</option>
+                    <option value="cafe">Café</option>
+                    <option value="restaurant">Restaurant</option>
+                    <option value="bar">Bar</option>
+                    <option value="other">Sonstiges</option>
+                  </select>
+                </div>
+                <div class="haendler-form-group">
+                  <label for="h-ort">Ort</label>
+                  <input type="text" id="h-ort" placeholder="z. B. Köln" required>
+                </div>
+                <div class="haendler-form-group">
+                  <label for="h-tel">Telefonnummer</label>
+                  <input type="tel" id="h-tel" placeholder="+49 123 456 789">
+                </div>
+                <button type="submit" class="btn btn-accent-solid btn-lg haendler-form-submit">Jetzt kostenlos starten</button>
+                <p class="haendler-form-micro">Keine Verpflichtung. Wir melden uns persönlich.</p>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ========== 8. FAQ (aus index.html) ========== -->
+    <section class="section solution-faq-section" id="faq">
+      <div class="light-sections-wrap haendler-faq-wrap">
+        <div class="light-sections-blob-bg" aria-hidden="true">
+          <div class="light-blob-parallax" data-parallax="0.12"><div class="light-blob light-blob-blue"></div></div>
+          <div class="light-blob-parallax" data-parallax="0.18"><div class="light-blob light-blob-orange"></div></div>
+          <div class="light-blob-parallax" data-parallax="0.08"><div class="light-blob light-blob-blue-2"></div></div>
+        </div>
+        <div class="container">
+          <header class="section-header solution-faq-header reveal">
+            <span class="solution-2-label">FAQ</span>
+            <h2 class="section-title solution-title-black">Häufige Fragen</h2>
+          </header>
+          <div class="solution-faq-layout">
+            <div class="solution-faq-list-wrap">
+              <div class="faq-list solution-faq-list">
+                <details class="faq-item glass-card reveal">
+                  <summary class="faq-question">
+                    <span>Wie viel kostet U-like-it für Händler?</span>
+                    <svg class="faq-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                  </summary>
+                  <div class="faq-answer">
+                    <p>Es gibt keine Fixkosten und kein Abo. Du zahlst nur für die Reichweite und Dauer deiner Angebote. Das erste Angebot ist kostenlos.</p>
+                  </div>
+                </details>
+                <details class="faq-item glass-card reveal">
+                  <summary class="faq-question">
+                    <span>Wie erstelle ich ein Angebot?</span>
+                    <svg class="faq-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                  </summary>
+                  <div class="faq-answer">
+                    <p>In der App oder im Dashboard: Titel, Beschreibung und Rabatt eingeben, Zeitraum wählen – fertig. Das dauert unter 5 Minuten.</p>
+                  </div>
+                </details>
+                <details class="faq-item glass-card reveal">
+                  <summary class="faq-question">
+                    <span>Wie funktioniert die Einlösung?</span>
+                    <svg class="faq-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                  </summary>
+                  <div class="faq-answer">
+                    <p>Der Kunde zeigt dir den QR-Code auf seinem Smartphone. Du scannst ihn mit deiner App und bestätigst die Einlösung. Fertig.</p>
+                  </div>
+                </details>
+                <details class="faq-item glass-card reveal">
+                  <summary class="faq-question">
+                    <span>Gibt es eine Mindestlaufzeit?</span>
+                    <svg class="faq-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                  </summary>
+                  <div class="faq-answer">
+                    <p>Nein. Du kannst jederzeit starten und jederzeit aufhören. Keine Vertragsbindung, kein Abo.</p>
+                  </div>
+                </details>
+                <details class="faq-item glass-card reveal">
+                  <summary class="faq-question">
+                    <span>Welche Branchen können teilnehmen?</span>
+                    <svg class="faq-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                  </summary>
+                  <div class="faq-answer">
+                    <p>Einzelhandel, Boutiquen, Cafés, Restaurants, Bars, Concept Stores – alle lokalen Geschäfte mit physischem Standort.</p>
+                  </div>
+                </details>
+              </div>
+            </div>
+            <div class="solution-faq-visual">
+              <div class="solution-faq-image-wrap">
+                <img src="images/shop.jpg" alt="" class="solution-faq-img" width="400" height="400">
+              </div>
+              <div class="solution-faq-badge" aria-hidden="true">
+                <svg class="solution-faq-badge-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 9. FINAL CTA ========== -->
+    <section class="section cta-section" id="download">
+      <div class="cta-bg-wrap" aria-hidden="true">
+        <div class="cta-bg-gradient"></div>
+        <div class="cta-floating cta-floating-1"></div>
+        <div class="cta-floating cta-floating-2"></div>
+      </div>
+      <div class="container cta-inner">
+        <h2 class="cta-title reveal">Werde Teil deiner<br>lokalen Community.</h2>
+        <p class="cta-subtitle reveal">Bringe neue Kunden direkt zu dir. Messbar, planbar, lokal.</p>
+        <div class="cta-buttons-row reveal">
+          <a href="#onboarding" class="btn btn-white btn-lg">Jetzt testen</a>
+          <a href="user.html" class="btn btn-accent-solid btn-lg">App für Nutzer</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a href="index.html" class="footer-logo-link" aria-label="U-like-it Startseite">
+            <img src="images/logo-weiss.png" alt="U-like-it" class="footer-logo-img" width="140" height="40">
+          </a>
+          <p class="footer-seo-text">
+            U-like-it verbindet lokale Händler und Gastronomie mit kaufbereiten Kunden in der Nähe.
+            Erstelle Deals, bringe Frequenz und messe deine Ergebnisse – direkt am Point of Sale.
+          </p>
+        </div>
+        <nav class="footer-nav" aria-label="Footer-Navigation">
+          <span class="footer-nav-label">Navigation</span>
+          <ul class="footer-nav-list">
+            <li><a href="#vorteile">Vorteile</a></li>
+            <li><a href="#so-gehts">So geht's</a></li>
+            <li><a href="#dashboard">Dashboard</a></li>
+            <li><a href="user.html">Für Nutzer</a></li>
+            <li><a href="#onboarding">Jetzt starten</a></li>
+          </ul>
+        </nav>
+        <div class="footer-download">
+          <span class="footer-download-label">App laden</span>
+          <div class="footer-badges">
+            <a href="#" class="footer-badge footer-badge-apple" target="_blank" rel="noopener noreferrer" aria-label="Im App Store herunterladen">
+              <img src="images/apple_app_store_badge.png" alt="Download on the App Store" width="135" height="40">
+            </a>
+            <a href="#" class="footer-badge footer-badge-google" target="_blank" rel="noopener noreferrer" aria-label="Bei Google Play herunterladen">
+              <img src="images/google-play-badge.png" alt="Bei Google Play herunterladen" width="135" height="40">
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-legal">
+          <a href="#">Impressum</a>
+          <a href="#">Datenschutz</a>
+          <a href="#">AGB</a>
+        </div>
+        <p class="footer-copy">&copy; 2026 U-like-it. Alle Rechte vorbehalten.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="haendler-script.js"></script>
+</body>
+</html>

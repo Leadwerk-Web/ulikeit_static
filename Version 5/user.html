@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="U-like-it – Entdecke exklusive Deals von lokalen Läden in deiner Nähe. Einfach App öffnen, vorbeigehen und sparen.">
+  <title>U-like-it – Deals entdecken. Vor Ort sparen.</title>
+  <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+  <link rel="icon" type="image/png" href="images/favicon.png" sizes="32x32">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geologica:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="user-styles.css">
+</head>
+<body>
+  <!-- Scroll Progress -->
+  <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
+  <!-- Custom Cursor -->
+  <div class="custom-cursor" id="custom-cursor" aria-hidden="true"></div>
+  <div class="custom-cursor-shadow" id="custom-cursor-shadow" aria-hidden="true"></div>
+
+  <!-- ========== HEADER / NAV ========== -->
+  <header class="site-header" id="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo" aria-label="U-like-it Startseite">
+        <img src="images/logo.png" alt="U-like-it" class="logo-img">
+      </a>
+      <nav class="nav" id="main-nav" aria-label="Hauptnavigation">
+        <ul class="nav-list">
+          <li><a href="#how-it-works">So geht's</a></li>
+          <li><a href="#app-preview">Die App</a></li>
+          <li><a href="#location">In deiner Nähe</a></li>
+          <li><a href="#exclusive">Vorteile</a></li>
+        </ul>
+        <div class="mobile-nav-cta">
+          <a href="#download" class="btn btn-primary btn-accent">App herunterladen</a>
+        </div>
+      </nav>
+      <div class="header-cta">
+        <a href="index.html#solution-2" class="btn btn-ghost btn-header">Für Händler</a>
+        <a href="#download" class="btn btn-primary btn-accent btn-header">App herunterladen</a>
+      </div>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Menü öffnen" aria-expanded="false">
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ========== 1. HERO ========== -->
+    <div class="hero-why-bg">
+      <div class="hero-bg-parallax" data-parallax="0.08" aria-hidden="true"></div>
+      <div class="hero-frau-layer" data-parallax="0.24" aria-hidden="true">
+        <img src="images/frau-freigestellt.png" alt="" class="hero-frau-img">
+      </div>
+      <section class="hero user-hero" id="hero">
+        <div class="hero-bg-wrap" aria-hidden="true"></div>
+        <div class="container hero-inner" id="hero-inner">
+          <div class="hero-content reveal reveal-up">
+            <h1 class="hero-title user-hero-title">
+              <span class="hero-title-line">Entdecken.</span>
+              <span class="hero-title-line">Sparen.</span>
+              <span class="hero-title-line">Vor&nbsp;Ort erleben.</span>
+            </h1>
+            <p class="user-hero-sub">Exklusive Deals von lokalen Läden, Restaurants und Cafés – direkt in deiner Nähe. Kein Abo, keine Kosten.</p>
+            <div class="hero-cta user-hero-cta">
+              <a href="#" class="store-badge" aria-label="Im App Store herunterladen">
+                <img src="images/apple_app_store_badge.png" alt="Download on the App Store" width="155" height="46">
+              </a>
+              <a href="#" class="store-badge" aria-label="Bei Google Play herunterladen">
+                <img src="images/google-play-badge.png" alt="Bei Google Play herunterladen" width="155" height="46">
+              </a>
+            </div>
+            <p class="user-hero-micro">Kostenlos. Schnell. In deiner Stadt.</p>
+          </div>
+        </div>
+      </section>
+      <div class="hero-arrow-wrap" aria-hidden="true">
+        <div class="hero-arrow-parallax">
+          <img src="images/pfeil-3.png" alt="" class="hero-arrow-img">
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== 2. HOW IT WORKS (3 Steps) ========== -->
+    <section class="section user-how-section" id="how-it-works">
+      <div class="user-how-blob-bg" aria-hidden="true">
+        <div class="light-blob-parallax" data-parallax="0.12"><div class="light-blob light-blob-blue"></div></div>
+        <div class="light-blob-parallax" data-parallax="0.18"><div class="light-blob light-blob-orange"></div></div>
+        <div class="light-blob-parallax" data-parallax="0.08"><div class="light-blob light-blob-blue-2"></div></div>
+      </div>
+      <div class="container">
+        <header class="section-header reveal reveal-scale">
+          <span class="solution-2-label">So einfach geht's</span>
+          <h2 class="section-title">In 3 Schritten zum Deal</h2>
+        </header>
+        <div class="user-steps-grid">
+          <div class="user-step glass-card reveal">
+            <span class="user-step-number">1</span>
+            <div class="user-step-icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+            </div>
+            <h3>App öffnen & Deals entdecken</h3>
+            <p>Sieh auf einen Blick, welche lokalen Angebote heute in deiner Nähe verfügbar sind.</p>
+          </div>
+          <div class="user-step-arrow reveal" aria-hidden="true">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </div>
+          <div class="user-step glass-card reveal reveal-delay-1">
+            <span class="user-step-number">2</span>
+            <div class="user-step-icon user-step-icon-accent">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"/><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4"/><path d="M2 7h20"/></svg>
+            </div>
+            <h3>Einfach vorbeigehen</h3>
+            <p>Geh zum Laden, Restaurant oder Café – wann immer du willst. Keine Reservierung nötig.</p>
+          </div>
+          <div class="user-step-arrow reveal" aria-hidden="true">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </div>
+          <div class="user-step glass-card reveal reveal-delay-2">
+            <span class="user-step-number">3</span>
+            <div class="user-step-icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            </div>
+            <h3>QR-Code zeigen & sparen</h3>
+            <p>Deal in der App öffnen, vorzeigen, fertig. So einfach sparst du vor Ort.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== Ticker-Banner ========== -->
+    <div class="ticker-banner" aria-hidden="true">
+      <div class="ticker-track">
+        <span class="ticker-item">FASHION</span>
+        <span class="ticker-item">GASTRO</span>
+        <span class="ticker-item">CAFÉS</span>
+        <span class="ticker-item">BOUTIQUEN</span>
+        <span class="ticker-item">RESTAURANTS</span>
+        <span class="ticker-item">BARS</span>
+        <span class="ticker-item">CONCEPT STORES</span>
+        <span class="ticker-item">LOKALE DEALS</span>
+        <span class="ticker-item">FASHION</span>
+        <span class="ticker-item">GASTRO</span>
+        <span class="ticker-item">CAFÉS</span>
+        <span class="ticker-item">BOUTIQUEN</span>
+        <span class="ticker-item">RESTAURANTS</span>
+        <span class="ticker-item">BARS</span>
+        <span class="ticker-item">CONCEPT STORES</span>
+        <span class="ticker-item">LOKALE DEALS</span>
+      </div>
+    </div>
+
+    <!-- ========== 3. APP PREVIEW (Interactive) ========== -->
+    <section class="section user-preview-section" id="app-preview">
+      <div class="user-preview-arrow" aria-hidden="true">
+        <img src="images/Pfeil4.png" alt="" class="user-preview-arrow-img" data-parallax="0.12">
+      </div>
+      <div class="container">
+        <header class="section-header reveal reveal-scale">
+          <span class="solution-2-label">Die App</span>
+          <h2 class="section-title">Deine Deals auf einen Blick</h2>
+        </header>
+        <div class="app-showcase reveal reveal-scale" id="app-showcase">
+          <div class="app-showcase-tabs" role="tablist">
+            <button type="button" class="app-showcase-tab active" role="tab" aria-selected="true" data-slide="0">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect></svg>
+              <span>Übersicht</span>
+            </button>
+            <button type="button" class="app-showcase-tab" role="tab" aria-selected="false" data-slide="1">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+              <span>Karte</span>
+            </button>
+            <button type="button" class="app-showcase-tab" role="tab" aria-selected="false" data-slide="2">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
+              <span>Deal-Detail</span>
+            </button>
+          </div>
+          <div class="app-showcase-body">
+            <div class="app-showcase-info">
+              <div class="app-showcase-slide-info active" data-info="0">
+                <h3>Deal-Übersicht</h3>
+                <p>Alle verfügbaren Angebote in deiner Umgebung – übersichtlich, aktuell und nach Kategorien sortiert.</p>
+              </div>
+              <div class="app-showcase-slide-info" data-info="1">
+                <h3>Deals auf der Karte</h3>
+                <p>Finde Angebote in deiner Nähe – mit Entfernung, Kategorie und Verfügbarkeit auf einen Blick.</p>
+              </div>
+              <div class="app-showcase-slide-info" data-info="2">
+                <h3>Deal-Detail</h3>
+                <p>Alle Infos zum Angebot. Direkt einlösen oder optional reservieren – du entscheidest.</p>
+              </div>
+            </div>
+            <div class="app-showcase-phone">
+              <div class="app-showcase-phone-frame">
+                <div class="app-showcase-screen" id="app-showcase-screen">
+                  <img src="images/Screenshots/Dealübersicht.png" alt="Deal-Übersicht" class="app-showcase-img active" data-screen="0">
+                  <img src="images/Ulikeit - map.png" alt="Deals auf der Karte" class="app-showcase-img" data-screen="1">
+                  <img src="images/Screenshots/Details.png" alt="Deal-Detail" class="app-showcase-img" data-screen="2">
+                </div>
+              </div>
+            </div>
+            <div class="app-showcase-dots" aria-hidden="true">
+              <span class="app-showcase-dot active" data-dot="0"></span>
+              <span class="app-showcase-dot" data-dot="1"></span>
+              <span class="app-showcase-dot" data-dot="2"></span>
+            </div>
+          </div>
+          <p class="app-showcase-swipe-hint" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+            Wischen oder klicken
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 4. LOCATION PERSONALIZATION ========== -->
+    <section class="section user-location-section" id="location">
+      <div class="user-location-blob-bg" aria-hidden="true">
+        <div class="light-blob-parallax" data-parallax="0.1"><div class="light-blob light-blob-blue"></div></div>
+        <div class="light-blob-parallax" data-parallax="0.16"><div class="light-blob light-blob-orange"></div></div>
+      </div>
+      <div class="container">
+        <div class="user-location-layout">
+          <div class="user-location-content reveal">
+            <span class="solution-2-label">Lokal & persönlich</span>
+            <h2 class="section-title" style="text-align:left;">Top-Deals in deiner Nähe</h2>
+            <p class="user-location-text">
+              U-like-it zeigt dir Deals, die wirklich relevant sind – basierend auf deinem Standort. Keine Massenangebote, sondern handverlesene Aktionen aus deiner Stadt.
+            </p>
+            <div class="user-location-mock glass-card" id="location-input-trigger">
+              <div class="user-location-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+              </div>
+              <input type="text" class="user-location-input" id="location-city-input" placeholder="Deine Stadt eingeben…" autocomplete="off">
+            </div>
+            <div class="user-location-tags">
+              <button type="button" class="user-location-tag" data-city="Köln">Köln</button>
+              <button type="button" class="user-location-tag" data-city="Düsseldorf">Düsseldorf</button>
+              <button type="button" class="user-location-tag" data-city="Bonn">Bonn</button>
+              <button type="button" class="user-location-tag" data-city="Aachen">Aachen</button>
+              <button type="button" class="user-location-tag user-location-tag-more" data-city="">+ weitere</button>
+            </div>
+          </div>
+          <div class="user-location-visual reveal reveal-right">
+            <div class="user-location-image-wrap">
+              <img src="images/hand.png" alt="" class="user-location-img">
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== Ticker-Banner (Location → Shops & Gastro) ========== -->
+    <div class="ticker-banner" aria-hidden="true">
+      <div class="ticker-track">
+        <span class="ticker-item">FASHION</span>
+        <span class="ticker-item">GASTRO</span>
+        <span class="ticker-item">CAFÉS</span>
+        <span class="ticker-item">BOUTIQUEN</span>
+        <span class="ticker-item">RESTAURANTS</span>
+        <span class="ticker-item">BARS</span>
+        <span class="ticker-item">CONCEPT STORES</span>
+        <span class="ticker-item">LOKALE DEALS</span>
+        <span class="ticker-item">FASHION</span>
+        <span class="ticker-item">GASTRO</span>
+        <span class="ticker-item">CAFÉS</span>
+        <span class="ticker-item">BOUTIQUEN</span>
+        <span class="ticker-item">RESTAURANTS</span>
+        <span class="ticker-item">BARS</span>
+        <span class="ticker-item">CONCEPT STORES</span>
+        <span class="ticker-item">LOKALE DEALS</span>
+      </div>
+    </div>
+
+    <!-- ========== SHOPS & GASTRO ========== -->
+    <section class="section user-categories-section" id="categories">
+      <div class="container">
+        <header class="section-header reveal reveal-scale">
+          <span class="solution-2-label">Mehr als nur Shopping</span>
+          <h2 class="section-title">Lokale Läden. Cafés. Restaurants.</h2>
+        </header>
+        <div class="user-categories-grid">
+          <div class="user-category-card reveal">
+            <div class="user-category-img-wrap">
+              <img src="images/shopping.jpg" alt="Lokale Shops & Boutiquen" class="user-category-img">
+            </div>
+            <div class="user-category-body">
+              <div class="user-category-icon-wrap">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"/><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4"/><path d="M2 7h20"/></svg>
+              </div>
+              <h3>Shops & Boutiquen</h3>
+              <p>Fashion, Accessoires, Concept Stores – entdecke exklusive Angebote von lokalen Einzelhändlern direkt bei dir um die Ecke.</p>
+            </div>
+          </div>
+          <div class="user-category-card reveal reveal-delay-1">
+            <div class="user-category-img-wrap">
+              <img src="images/Gruppe-Cafe-2.png" alt="Cafés & Restaurants" class="user-category-img">
+            </div>
+            <div class="user-category-body">
+              <div class="user-category-icon-wrap user-category-icon-accent">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>
+              </div>
+              <h3>Cafés & Restaurants</h3>
+              <p>Lunch-Deals, After-Work-Specials oder Sonntagsbrunch – spare bei deinen Lieblingslokalen und entdecke neue Geheimtipps.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== Parallax Image ========== -->
+    <section class="parallax-image-section" aria-hidden="true">
+      <div class="parallax-image-wrap"></div>
+    </section>
+
+    <!-- ========== 6. EXCLUSIVITY / VALUE ========== -->
+    <section class="section user-exclusive-section" id="exclusive">
+      <div class="user-exclusive-blob-bg" aria-hidden="true">
+        <div class="light-blob-parallax" data-parallax="0.12"><div class="light-blob light-blob-blue"></div></div>
+        <div class="light-blob-parallax" data-parallax="0.15"><div class="light-blob light-blob-orange"></div></div>
+        <div class="light-blob-parallax" data-parallax="0.1"><div class="light-blob light-blob-blue-2"></div></div>
+      </div>
+      <div class="container">
+        <div class="user-exclusive-layout">
+          <div class="user-exclusive-hero reveal">
+            <span class="solution-2-label">Nicht für alle. Für dich.</span>
+            <h2 class="user-exclusive-title">Exklusiv.<br>Lokal.<br>Limitiert.</h2>
+            <p class="user-exclusive-lead">Diese Deals findest du nirgendwo anders – nur in der U-like-it App, nur von echten Läden und Restaurants in deiner Nähe.</p>
+          </div>
+          <div class="user-exclusive-features">
+            <div class="user-exclusive-feature glass-card reveal reveal-delay-1">
+              <div class="user-exclusive-feature-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+              </div>
+              <div>
+                <h3>Nur lokale Anbieter</h3>
+                <p>Keine Konzerne, keine Massenware. Ausschließlich Händler und Gastronomen aus deiner Umgebung.</p>
+              </div>
+            </div>
+            <div class="user-exclusive-feature glass-card reveal reveal-delay-2">
+              <div class="user-exclusive-feature-icon user-exclusive-feature-icon-accent">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+              </div>
+              <div>
+                <h3>Begrenzt & zeitlich limitiert</h3>
+                <p>Jeder Deal hat ein Verfallsdatum und eine begrenzte Stückzahl. Wer zuerst kommt, spart zuerst.</p>
+              </div>
+            </div>
+            <div class="user-exclusive-feature glass-card reveal reveal-delay-3">
+              <div class="user-exclusive-feature-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+              </div>
+              <div>
+                <h3>App-exklusiv</h3>
+                <p>Kein Gutscheinportal, keine Website. Alles läuft über die App – einfach, direkt, persönlich.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 7. FINAL CTA ========== -->
+    <section class="section cta-section" id="download">
+      <div class="cta-bg-wrap" aria-hidden="true">
+        <div class="cta-bg-gradient"></div>
+        <div class="cta-floating cta-floating-1"></div>
+        <div class="cta-floating cta-floating-2"></div>
+      </div>
+      <div class="container cta-inner">
+        <h2 class="cta-title reveal">Entdecke deine<br>Stadt neu.</h2>
+        <p class="cta-subtitle reveal">Lokale Deals. Echte Vorteile. Direkt um die Ecke.</p>
+        <div class="user-cta-badges reveal">
+          <a href="#" class="store-badge" aria-label="Im App Store herunterladen">
+            <img src="images/apple_app_store_badge.png" alt="Download on the App Store" width="155" height="46">
+          </a>
+          <a href="#" class="store-badge" aria-label="Bei Google Play herunterladen">
+            <img src="images/google-play-badge.png" alt="Bei Google Play herunterladen" width="155" height="46">
+          </a>
+        </div>
+        <p class="cta-micro reveal">Kostenlos für iOS & Android</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a href="index.html" class="footer-logo-link" aria-label="U-like-it Startseite">
+            <img src="images/logo-weiss.png" alt="U-like-it" class="footer-logo-img" width="140" height="40">
+          </a>
+          <p class="footer-seo-text">
+            U-like-it verbindet lokale Händler und Gastronomie mit dir.
+            Entdecke exklusive Deals in deiner Nähe und löse sie direkt vor Ort ein.
+          </p>
+        </div>
+        <nav class="footer-nav" aria-label="Footer-Navigation">
+          <span class="footer-nav-label">Navigation</span>
+          <ul class="footer-nav-list">
+            <li><a href="#how-it-works">So geht's</a></li>
+            <li><a href="#app-preview">Die App</a></li>
+            <li><a href="#location">In deiner Nähe</a></li>
+            <li><a href="index.html#solution-2">Für Händler</a></li>
+            <li><a href="#download">App herunterladen</a></li>
+          </ul>
+        </nav>
+        <div class="footer-download">
+          <span class="footer-download-label">App laden</span>
+          <div class="footer-badges">
+            <a href="#" class="footer-badge footer-badge-apple" target="_blank" rel="noopener noreferrer" aria-label="Im App Store herunterladen">
+              <img src="images/apple_app_store_badge.png" alt="Download on the App Store" width="135" height="40">
+            </a>
+            <a href="#" class="footer-badge footer-badge-google" target="_blank" rel="noopener noreferrer" aria-label="Bei Google Play herunterladen">
+              <img src="images/google-play-badge.png" alt="Bei Google Play herunterladen" width="135" height="40">
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-legal">
+          <a href="#">Impressum</a>
+          <a href="#">Datenschutz</a>
+          <a href="#">AGB</a>
+        </div>
+        <p class="footer-copy">&copy; 2026 U-like-it. Alle Rechte vorbehalten.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Location Modal -->
+  <div class="loc-modal-overlay" id="loc-modal-overlay" aria-hidden="true">
+    <div class="loc-modal glass-card" role="dialog" aria-labelledby="loc-modal-title">
+      <button type="button" class="loc-modal-close" id="loc-modal-close" aria-label="Schließen">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+      <div class="loc-modal-icon-wrap">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+      </div>
+      <h3 class="loc-modal-title" id="loc-modal-title">Deals in <span id="loc-modal-city">deiner Stadt</span></h3>
+      <p class="loc-modal-text">Lade die App und entdecke exklusive Angebote von lokalen Händlern und Restaurants direkt bei dir um die Ecke.</p>
+      <div class="loc-modal-badges">
+        <a href="#" class="store-badge" aria-label="Im App Store herunterladen">
+          <img src="images/apple_app_store_badge.png" alt="Download on the App Store" width="155" height="46">
+        </a>
+        <a href="#" class="store-badge" aria-label="Bei Google Play herunterladen">
+          <img src="images/google-play-badge.png" alt="Bei Google Play herunterladen" width="155" height="46">
+        </a>
+      </div>
+      <p class="loc-modal-micro">Kostenlos für iOS & Android</p>
+    </div>
+  </div>
+
+  <script src="user-script.js"></script>
+</body>
+</html>

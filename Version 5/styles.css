@@ -895,8 +895,9 @@ body.cursor-idle .custom-cursor-shadow { opacity: 0; }
 .hero-content {
   flex: 0 1 auto;
   min-width: 0;
-  max-width: 520px;
+  max-width: 100%;
   margin-right: auto;
+  container-type: inline-size;
 }
 
 .hero-title {
@@ -908,22 +909,34 @@ body.cursor-idle .custom-cursor-shadow { opacity: 0; }
   color: #fff;
 }
 
+.hero .hero-title {
+  width: 60%;
+}
+
 .hero .hero-title .text-gradient {
   color: #fff;
   background: none;
   -webkit-background-clip: unset;
   -webkit-text-fill-color: #fff;
   background-clip: unset;
-  white-space: nowrap;
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .hero-title-solid {
   color: #fff;
 }
 
-.hero-typewriter-wrap {
-  display: block;
-  min-height: 2.2em;
+.hero .hero-typewriter-wrap {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+  overflow-wrap: break-word;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .hero-typewriter-cursor {
@@ -1673,7 +1686,7 @@ body.cursor-idle .custom-cursor-shadow { opacity: 0; }
   inset: 0;
   width: 100%;
   height: 100%;
-  background-image: url("images/gruppe-neu.png");
+  background-image: url("images/Gruppe-Cafe.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -2392,11 +2405,11 @@ body.cursor-idle .custom-cursor-shadow { opacity: 0; }
   to { opacity: 1; transform: translateY(0); }
 }
 
-.why-float-1 { top: 18%;  left: 2%;  animation: whyFloat1 6s ease-in-out infinite; }
-.why-float-2 { top: 13%;  right: 12%; animation: whyFloat2 5.5s ease-in-out infinite; }
-.why-float-3 { bottom: 34%; left: 10%;  animation: whyFloat3 6.5s ease-in-out infinite; }
-.why-float-4 { bottom: 24%; right: 8%; animation: whyFloat4 5s ease-in-out infinite; }
-.why-float-5 { top: 42%; right: 6%; animation: whyFloat5 5.8s ease-in-out infinite; }
+.why-float-1 { top: 16%;  left: 1%;  animation: whyFloat1 6s ease-in-out infinite; }
+.why-float-2 { top: 12%;  right: 14%; animation: whyFloat2 5.5s ease-in-out infinite; }
+.why-float-3 { bottom: 44%; left: 8%; animation: whyFloat3 6.5s ease-in-out infinite; }
+.why-float-4 { bottom: 20%; right: 22%; animation: whyFloat4 5s ease-in-out infinite; }
+.why-float-5 { top: 44%; right: 10%; animation: whyFloat5 5.8s ease-in-out infinite; }
 
 @keyframes whyFloat1 {
   0%, 100% { transform: translate(0, 0); }
@@ -2489,11 +2502,11 @@ body.cursor-idle .custom-cursor-shadow { opacity: 0; }
 }
 
 @media (min-width: 900px) {
-  .why-float-1 { left: 8%; }
-  .why-float-2 { right: 18%; }
-  .why-float-3 { left: 14%; }
-  .why-float-4 { right: 18%; }
-  .why-float-5 { right: 14%; }
+  .why-float-1 { left: 6%; }
+  .why-float-2 { right: 20%; }
+  .why-float-3 { left: 11%; bottom: 46%; }
+  .why-float-4 { right: 30%; }
+  .why-float-5 { right: 16%; }
 }
 
 
@@ -3114,10 +3127,6 @@ body.cursor-idle .custom-cursor-shadow { opacity: 0; }
 
   .hero-floating-badges {
     display: none;
-  }
-
-  .hero .hero-title .text-gradient {
-    white-space: normal;
   }
 
   .hero-title {

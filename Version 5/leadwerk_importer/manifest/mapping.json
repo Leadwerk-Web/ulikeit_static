@@ -1,0 +1,47 @@
+{
+  "version": "1",
+  "source_root": "",
+  "site_title": "U-like-it – Mode entdecken. Stadt beleben.",
+  "site_tagline": "Lokale Fashion-Deals von Läden in deiner Nähe.",
+  "pages": [
+    {
+      "source_key": "ulikeit-home-v1",
+      "target_type": "page",
+      "post_status": "publish",
+      "is_front_page": true,
+      "slug": "home",
+      "title": "U-like-it",
+      "seo": {
+        "title": "U-like-it – Mode entdecken. Stadt beleben. | Lokale Fashion-Deals",
+        "meta_description": "U-like-it – Mode entdecken. Stadt beleben. Lokale Fashion-Deals von Läden in deiner Nähe. Reservier direkt, spar vor Ort.",
+        "og_title": "U-like-it – Mode entdecken. Stadt beleben.",
+        "og_description": "Lokale Fashion-Deals von Läden in deiner Nähe. Reservier direkt, spar vor Ort.",
+        "focus_keyphrase": "lokale Fashion-Deals"
+      }
+    },
+    {
+      "source_key": "ulikeit-impressum-v1",
+      "target_type": "page",
+      "post_status": "publish",
+      "slug": "impressum",
+      "title": "Impressum",
+      "seo": {
+        "title": "Impressum – U-like-it",
+        "meta_description": "Impressum und rechtliche Angaben zu U-like-it.",
+        "meta_robots": "noindex, follow"
+      }
+    },
+    {
+      "source_key": "ulikeit-datenschutz-v1",
+      "target_type": "page",
+      "post_status": "publish",
+      "slug": "datenschutz",
+      "title": "Datenschutzerklärung",
+      "seo": {
+        "title": "Datenschutzerklärung – U-like-it",
+        "meta_description": "Datenschutzerklärung von U-like-it. Informationen zur Verarbeitung personenbezogener Daten gemäß DSGVO.",
+        "meta_robots": "noindex, follow"
+      }
+    }
+  ]
+}

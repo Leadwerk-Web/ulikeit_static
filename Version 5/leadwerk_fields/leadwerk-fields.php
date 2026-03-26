@@ -18,6 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 define( 'LEADWERK_FIELDS_VERSION', '1.0.0' );
 define( 'LEADWERK_FIELDS_PATH', plugin_dir_path( __FILE__ ) );
 
+require_once LEADWERK_FIELDS_PATH . 'includes/class-leadwerk-content-schema.php';
 require_once LEADWERK_FIELDS_PATH . 'includes/class-leadwerk-fields-api.php';
 require_once LEADWERK_FIELDS_PATH . 'includes/class-leadwerk-fields-metabox.php';
 

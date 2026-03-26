@@ -26,6 +26,41 @@ function leadwerk_theme_enqueue_assets() {
 		array(),
 		LEADWERK_THEME_VERSION
 	);
+
+	if ( is_page( 'fuer-nutzer' ) ) {
+		wp_enqueue_style(
+			'leadwerk-theme-subpages',
+			LEADWERK_THEME_URI . '/assets/css/subpages-shared.css',
+			array( 'leadwerk-theme-style' ),
+			LEADWERK_THEME_VERSION
+		);
+		wp_enqueue_script(
+			'leadwerk-theme-subpages',
+			LEADWERK_THEME_URI . '/assets/js/subpages-shared.js',
+			array(),
+			LEADWERK_THEME_VERSION,
+			true
+		);
+		return;
+	}
+
+	if ( is_page( 'fuer-haendler' ) ) {
+		wp_enqueue_style(
+			'leadwerk-theme-subpages',
+			LEADWERK_THEME_URI . '/assets/css/subpages-shared.css',
+			array( 'leadwerk-theme-style' ),
+			LEADWERK_THEME_VERSION
+		);
+		wp_enqueue_script(
+			'leadwerk-theme-subpages',
+			LEADWERK_THEME_URI . '/assets/js/subpages-shared.js',
+			array(),
+			LEADWERK_THEME_VERSION,
+			true
+		);
+		return;
+	}
+
 	wp_enqueue_script(
 		'leadwerk-theme-main',
 		LEADWERK_THEME_URI . '/assets/js/main.js',
@@ -89,20 +124,48 @@ add_action( 'wp_head', 'leadwerk_theme_favicon', 1 );
  * ────────────────────────────────────────────────────────────────────── */
 
 function leadwerk_theme_register_blocks() {
-	if ( function_exists( 'acf_register_block_type' ) ) {
-		acf_register_block_type( array(
+	$blocks = array(
+		array(
 			'name'            => 'ulikeit-home-sections',
 			'title'           => __( 'U-like-it Startseiten-Sektionen', 'leadwerk-theme' ),
 			'description'     => __( 'Hero, Why, App Steps, Pakete, Solutions, FAQ, CTA', 'leadwerk-theme' ),
 			'render_callback' => 'leadwerk_theme_render_home_sections',
-			'category'        => 'theme',
-			'icon'            => 'store',
-			'supports'        => array( 'align' => false ),
-		) );
-	} else {
-		register_block_type( 'acf/ulikeit-home-sections', array(
-			'render_callback' => 'leadwerk_theme_render_home_sections',
-		) );
+		),
+		array(
+			'name'            => 'ulikeit-user-sections',
+			'title'           => __( 'U-like-it Nutzer-Seite', 'leadwerk-theme' ),
+			'description'     => __( 'Hero, How It Works, App Preview, Location, Categories, Exclusive, CTA', 'leadwerk-theme' ),
+			'render_callback' => 'leadwerk_theme_render_user_sections',
+		),
+		array(
+			'name'            => 'ulikeit-haendler-sections',
+			'title'           => __( 'U-like-it Haendler-Seite', 'leadwerk-theme' ),
+			'description'     => __( 'Hero, Benefits, How It Works, Dashboard, Cases, Conditions, Onboarding, FAQ, CTA', 'leadwerk-theme' ),
+			'render_callback' => 'leadwerk_theme_render_haendler_sections',
+		),
+	);
+
+	foreach ( $blocks as $block ) {
+		if ( function_exists( 'acf_register_block_type' ) ) {
+			acf_register_block_type(
+				array(
+					'name'            => $block['name'],
+					'title'           => $block['title'],
+					'description'     => $block['description'],
+					'render_callback' => $block['render_callback'],
+					'category'        => 'theme',
+					'icon'            => 'store',
+					'supports'        => array( 'align' => false ),
+				)
+			);
+		} else {
+			register_block_type(
+				'acf/' . $block['name'],
+				array(
+					'render_callback' => $block['render_callback'],
+				)
+			);
+		}
 	}
 }
 add_action( 'init', 'leadwerk_theme_register_blocks' );
@@ -140,12 +203,57 @@ function leadwerk_theme_render_home_sections() {
 	include LEADWERK_THEME_DIR . '/inc/block-home-sections.php';
 }
 
+function leadwerk_theme_render_user_sections() {
+	$post_id = get_the_ID();
+	if ( ! $post_id || ! function_exists( 'get_field' ) ) {
+		return;
+	}
+	$sections = get_field( 'user_sections', $post_id );
+	if ( ! is_array( $sections ) || empty( $sections ) ) {
+		return;
+	}
+	include LEADWERK_THEME_DIR . '/inc/block-user-sections.php';
+}
+
+function leadwerk_theme_render_haendler_sections() {
+	$post_id = get_the_ID();
+	if ( ! $post_id || ! function_exists( 'get_field' ) ) {
+		return;
+	}
+	$sections = get_field( 'haendler_sections', $post_id );
+	if ( ! is_array( $sections ) || empty( $sections ) ) {
+		return;
+	}
+	include LEADWERK_THEME_DIR . '/inc/block-haendler-sections.php';
+}
+
+function leadwerk_theme_get_option_url( $field_name, $default = '#' ) {
+	if ( ! function_exists( 'get_field' ) ) {
+		return $default;
+	}
+
+	$url = get_field( $field_name, 'option' );
+	return ! empty( $url ) ? $url : $default;
+}
+
+function leadwerk_theme_get_store_badge_data() {
+	$apple_badge = function_exists( 'get_field' ) ? get_field( 'app_store_badge', 'option' ) : null;
+	$google_badge = function_exists( 'get_field' ) ? get_field( 'google_play_badge', 'option' ) : null;
+
+	return array(
+		'apple_url'      => leadwerk_theme_get_option_url( 'app_store_url', '#' ),
+		'google_url'     => leadwerk_theme_get_option_url( 'google_play_url', '#' ),
+		'apple_badge'    => leadwerk_theme_resolve_acf_image_url( $apple_badge, 'full' ) ?: LEADWERK_THEME_URI . '/assets/images/apple_app_store_badge.png',
+		'google_badge'   => leadwerk_theme_resolve_acf_image_url( $google_badge, 'full' ) ?: LEADWERK_THEME_URI . '/assets/images/google-play-badge.png',
+	);
+}
+
 /* ──────────────────────────────────────────────────────────────────────
  * 8. Dynamic Footer Data
  * ────────────────────────────────────────────────────────────────────── */
 
 function leadwerk_theme_dynamic_footer( $content ) {
-	if ( strpos( $content, 'data-logo-field=' ) === false && strpos( $content, 'data-field=' ) === false && strpos( $content, 'data-badge=' ) === false ) {
+	if ( strpos( $content, 'data-logo-field=' ) === false && strpos( $content, 'data-field=' ) === false && strpos( $content, 'data-badge=' ) === false && strpos( $content, 'data-store-link=' ) === false ) {
 		return $content;
 	}
 	$has_fields = function_exists( 'get_field' );
@@ -228,6 +336,11 @@ function leadwerk_theme_dynamic_footer( $content ) {
 			);
 		}
 	}
+
+	$apple_store_url  = leadwerk_theme_get_option_url( 'app_store_url', '#' );
+	$google_store_url = leadwerk_theme_get_option_url( 'google_play_url', '#' );
+	$content          = str_replace( 'href="#" data-store-link="apple"', 'href="' . esc_url( $apple_store_url ) . '" data-store-link="apple"', $content );
+	$content          = str_replace( 'href="#" data-store-link="google"', 'href="' . esc_url( $google_store_url ) . '" data-store-link="google"', $content );
 
 	return $content;
 }

@@ -64,17 +64,33 @@ class Leadwerk_Importer {
 		}
 		// Startseite: Custom Fields aus index.html befüllen.
 		if ( ! $this->dry_run && $this->source_root !== '' ) {
-			$front_page_id = $this->find_page_by_source_key( 'ulikeit-home-v1' );
-			if ( $front_page_id ) {
-				$filler = new Leadwerk_ACF_Filler();
-				$filler->fill_front_page( $front_page_id, $this->source_root );
-			}
+			$this->fill_structured_pages();
 		}
 		// Options befüllen.
 		if ( ! $this->dry_run ) {
 			$this->fill_options();
 		}
 		Leadwerk_Logger::save();
+	}
+
+	protected function fill_structured_pages() {
+		$filler   = new Leadwerk_ACF_Filler();
+		$page_map = array(
+			'ulikeit-home-v1'     => array( $filler, 'fill_front_page' ),
+			'ulikeit-user-v1'     => array( $filler, 'fill_user_page' ),
+			'ulikeit-haendler-v1' => array( $filler, 'fill_haendler_page' ),
+			'ulikeit-impressum-v1' => array( $filler, 'fill_impressum_page' ),
+			'ulikeit-datenschutz-v1' => array( $filler, 'fill_datenschutz_page' ),
+		);
+
+		foreach ( $page_map as $source_key => $callback ) {
+			$post_id = $this->find_page_by_source_key( $source_key );
+			if ( ! $post_id || ! is_callable( $callback ) ) {
+				continue;
+			}
+
+			call_user_func( $callback, $post_id, $this->source_root );
+		}
 	}
 
 	protected function run_media_import() {
@@ -137,6 +153,9 @@ class Leadwerk_Importer {
 			if ( is_file( $content_path ) ) {
 				$content = file_get_contents( $content_path );
 			}
+		}
+		if ( '' === trim( $content ) ) {
+			$content = $this->get_default_block_content( $source_key );
 		}
 		$post_data = array(
 			'post_type'    => $config['target_type'] ?? 'page',
@@ -215,6 +234,16 @@ class Leadwerk_Importer {
 		if ( ! empty( $fields_written ) ) {
 			Leadwerk_Logger::log( "SEO-Meta für ID $post_id: " . implode( ', ', $fields_written ) );
 		}
+	}
+
+	protected function get_default_block_content( $source_key ) {
+		$map = array(
+			'ulikeit-home-v1'     => '<!-- wp:acf/ulikeit-home-sections /-->',
+			'ulikeit-user-v1'     => '<!-- wp:acf/ulikeit-user-sections /-->',
+			'ulikeit-haendler-v1' => '<!-- wp:acf/ulikeit-haendler-sections /-->',
+		);
+
+		return $map[ $source_key ] ?? '';
 	}
 
 	protected function fill_options() {

@@ -19,6 +19,11 @@ define( 'LEADWERK_IMPORTER_VERSION', '1.0.0' );
 define( 'LEADWERK_IMPORTER_PATH', plugin_dir_path( __FILE__ ) );
 define( 'LEADWERK_IMPORTER_URL', plugin_dir_url( __FILE__ ) );
 
+$leadwerk_schema_file = dirname( LEADWERK_IMPORTER_PATH ) . '/leadwerk_fields/includes/class-leadwerk-content-schema.php';
+if ( ! class_exists( 'Leadwerk_Content_Schema' ) && is_file( $leadwerk_schema_file ) ) {
+	require_once $leadwerk_schema_file;
+}
+
 require_once LEADWERK_IMPORTER_PATH . 'includes/class-leadwerk-importer.php';
 require_once LEADWERK_IMPORTER_PATH . 'includes/class-leadwerk-media-importer.php';
 require_once LEADWERK_IMPORTER_PATH . 'includes/class-leadwerk-logger.php';

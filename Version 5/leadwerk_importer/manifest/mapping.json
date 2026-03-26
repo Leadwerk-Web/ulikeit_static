@@ -42,6 +42,30 @@
         "meta_description": "Datenschutzerklärung von U-like-it. Informationen zur Verarbeitung personenbezogener Daten gemäß DSGVO.",
         "meta_robots": "noindex, follow"
       }
+    },
+    {
+      "source_key": "ulikeit-haendler-v1",
+      "target_type": "page",
+      "post_status": "publish",
+      "slug": "fuer-haendler",
+      "title": "Für Händler",
+      "seo": {
+        "title": "U-like-it – Für lokale Händler",
+        "meta_description": "U-like-it für lokale Händler – Mehr Kunden, mehr Umsatz, messbare Ergebnisse. Erstelle lokale Deals und bringe Kunden direkt in deinen Laden.",
+        "focus_keyphrase": "lokale Händler Deals"
+      }
+    },
+    {
+      "source_key": "ulikeit-user-v1",
+      "target_type": "page",
+      "post_status": "publish",
+      "slug": "fuer-nutzer",
+      "title": "Für Nutzer",
+      "seo": {
+        "title": "U-like-it – Deals entdecken. Vor Ort sparen.",
+        "meta_description": "U-like-it – Entdecke exklusive Deals von lokalen Läden in deiner Nähe. Einfach App öffnen, vorbeigehen und sparen.",
+        "focus_keyphrase": "lokale Deals App"
+      }
     }
   ]
 }

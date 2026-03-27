@@ -21,6 +21,11 @@ class Leadwerk_Fields_Metabox {
 		'google_play_url'   => array( 'label' => 'Google Play URL', 'type' => 'url' ),
 		'app_store_badge'   => array( 'label' => 'App Store Badge', 'type' => 'image' ),
 		'google_play_badge' => array( 'label' => 'Google Play Badge', 'type' => 'image' ),
+		'haendler_wpforms_id' => array(
+			'label'       => 'Haendler WPForms ID',
+			'type'        => 'text',
+			'description' => 'ID oder Shortcode eingeben, z. B. 1420 oder [wpforms id="1420"].',
+		),
 	);
 
 	public static function init() {
@@ -184,6 +189,7 @@ class Leadwerk_Fields_Metabox {
 
 			Leadwerk_Fields_API::update_field( $field_name, $values, $post_id );
 			self::sync_post_content_if_needed( $post_id, $group, $values );
+			self::sync_last_good_snapshot( $post_id, $field_name, $group, $values );
 			return;
 		}
 
@@ -219,6 +225,7 @@ class Leadwerk_Fields_Metabox {
 
 		Leadwerk_Fields_API::update_field( $field_name, $sections, $post_id );
 		self::sync_post_content_if_needed( $post_id, $group, $sections );
+		self::sync_last_good_snapshot( $post_id, $field_name, $group, $sections );
 	}
 
 	public static function register_options_page() {
@@ -264,7 +271,7 @@ class Leadwerk_Fields_Metabox {
 		foreach ( self::$options_fields as $key => $definition ) {
 			$form_key = 'leadwerk_opt_' . $key;
 			if ( array_key_exists( $form_key, $_POST ) ) {
-				Leadwerk_Fields_API::update_field( $key, self::sanitize_field_value( $_POST[ $form_key ], $definition ), 'option' );
+				Leadwerk_Fields_API::update_field( $key, self::sanitize_option_value( $key, $_POST[ $form_key ], $definition ), 'option' );
 			}
 		}
 	}
@@ -346,7 +353,40 @@ class Leadwerk_Fields_Metabox {
 				break;
 		}
 
+		if ( ! empty( $definition['description'] ) ) {
+			echo '<p class="description">' . esc_html( $definition['description'] ) . '</p>';
+		}
+
 		echo '</div>';
+	}
+
+	private static function sanitize_option_value( $key, $value, $definition ) {
+		if ( 'haendler_wpforms_id' === $key ) {
+			return self::normalize_wpforms_option_value( $value );
+		}
+
+		return self::sanitize_field_value( $value, $definition );
+	}
+
+	private static function normalize_wpforms_option_value( $value ) {
+		$value = trim( (string) wp_unslash( is_null( $value ) ? '' : $value ) );
+		if ( '' === $value ) {
+			return '';
+		}
+
+		if ( preg_match( '/\bid\s*=\s*(["\']?)(\d+)\1/i', $value, $matches ) ) {
+			return $matches[2];
+		}
+
+		if ( preg_match( '/^\d+$/', $value ) ) {
+			return $value;
+		}
+
+		if ( preg_match( '/\d+/', $value, $matches ) ) {
+			return $matches[0];
+		}
+
+		return sanitize_text_field( $value );
 	}
 
 	private static function render_repeater_field( $name, $definition, $value, $id ) {
@@ -455,11 +495,23 @@ class Leadwerk_Fields_Metabox {
 	}
 
 	private static function sync_post_content_if_needed( $post_id, $group, $value ) {
-		if ( empty( $group['sync_post_content'] ) || ! is_array( $value ) ) {
+		$post_content = '';
+
+		if ( ! empty( $group['sync_post_content'] ) && is_array( $value ) ) {
+			$post_content = self::build_legal_page_content( $value );
+		} elseif ( ! empty( $group['block_content'] ) ) {
+			$post_content = (string) $group['block_content'];
+		}
+
+		if ( '' === $post_content ) {
 			return;
 		}
 
-		$post_content = self::build_legal_page_content( $value );
+		$current_post_content = (string) get_post_field( 'post_content', $post_id );
+		if ( trim( $current_post_content ) === trim( $post_content ) ) {
+			return;
+		}
+
 		remove_action( 'save_post_page', array( __CLASS__, 'save_sections' ), 10 );
 		wp_update_post(
 			array(
@@ -468,6 +520,81 @@ class Leadwerk_Fields_Metabox {
 			)
 		);
 		add_action( 'save_post_page', array( __CLASS__, 'save_sections' ), 10, 2 );
+	}
+
+	private static function sync_last_good_snapshot( $post_id, $field_name, $group, $value ) {
+		$meta_key = '_leadwerk_last_good_' . sanitize_key( (string) $field_name );
+
+		if ( self::group_has_visible_content( $group, $value ) ) {
+			update_post_meta(
+				$post_id,
+				$meta_key,
+				array(
+					'value'      => $value,
+					'source'     => 'manual_save',
+					'saved_at'   => current_time( 'mysql', true ),
+					'field_name' => $field_name,
+				)
+			);
+			return;
+		}
+
+		delete_post_meta( $post_id, $meta_key );
+	}
+
+	private static function group_has_visible_content( $group, $value ) {
+		if ( empty( $group['layouts'] ) ) {
+			$headline = is_array( $value ) ? (string) ( $value['headline'] ?? '' ) : '';
+			$content  = is_array( $value ) ? (string) ( $value['content'] ?? '' ) : '';
+			return '' !== trim( wp_strip_all_tags( $headline . ' ' . $content ) );
+		}
+
+		if ( ! is_array( $value ) || empty( $value ) ) {
+			return false;
+		}
+
+		foreach ( array_values( $value ) as $section ) {
+			if ( is_array( $section ) && self::section_has_visible_content( $section ) ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	private static function section_has_visible_content( $value ) {
+		foreach ( (array) $value as $field_key => $field_value ) {
+			if ( 'acf_fc_layout' === (string) $field_key ) {
+				continue;
+			}
+
+			if ( is_array( $field_value ) ) {
+				if ( self::section_has_visible_content( $field_value ) ) {
+					return true;
+				}
+				continue;
+			}
+
+			if ( is_bool( $field_value ) ) {
+				if ( $field_value ) {
+					return true;
+				}
+				continue;
+			}
+
+			if ( is_numeric( $field_value ) ) {
+				if ( (int) $field_value > 0 ) {
+					return true;
+				}
+				continue;
+			}
+
+			if ( '' !== trim( wp_strip_all_tags( (string) $field_value ) ) ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	private static function build_legal_page_content( $value ) {

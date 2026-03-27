@@ -1380,54 +1380,229 @@
   justify-content: center;
 }
 
-.haendler-form {
+.haendler-form-card {
   padding: clamp(32px, 4vw, 44px);
   width: 100%;
-  max-width: 440px;
+  max-width: 468px;
 }
 
-.haendler-form-group {
-  margin-bottom: 18px;
+.haendler-form-embed {
+  min-height: 220px;
+  padding: clamp(20px, 3vw, 28px);
+  border-radius: 24px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.92) 0%, rgba(248, 251, 255, 0.82) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.82);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.88), 0 18px 40px rgba(148, 163, 184, 0.14);
 }
 
-.haendler-form-group label {
-  display: block;
-  font-family: var(--font-heading);
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  color: var(--text-primary);
-  margin-bottom: 7px;
-}
-
-.haendler-form-group input,
-.haendler-form-group select {
-  width: 100%;
-  padding: 13px 16px;
-  border: 2px solid var(--color-bg-muted);
+.haendler-form-placeholder,
+.haendler-form-admin-note {
+  margin: 0;
+  padding: 18px 20px;
   border-radius: var(--radius-md);
-  background: var(--color-bg);
+  background: rgba(255, 255, 255, 0.72);
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.haendler-form-admin-note strong {
+  color: var(--heading-h2-color);
+}
+
+.haendler-form-embed .wpforms-container,
+.haendler-form-embed .wpforms-form {
+  margin: 0 !important;
+  width: 100%;
+}
+
+.haendler-form-embed .wpforms-container.wpforms-render-modern {
+  margin: 0 !important;
+}
+
+.haendler-form-embed .wpforms-field,
+.haendler-form-embed .wpforms-form .wpforms-field {
+  padding: 0 !important;
+  margin: 0 0 18px !important;
+}
+
+.haendler-form-embed .wpforms-field[data-leadwerk-hidden="true"] {
+  display: none !important;
+}
+
+.haendler-form-embed .wpforms-field-name fieldset {
+  min-width: 0;
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
+
+.haendler-form-embed .wpforms-field-row {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px !important;
+}
+
+.haendler-form-embed .wpforms-field-name .wpforms-field-row {
+  grid-template-columns: 1fr !important;
+}
+
+.haendler-form-embed .wpforms-field-row-block {
+  width: auto !important;
+  max-width: none !important;
+  min-width: 0;
+  margin: 0 !important;
+  padding: 0 !important;
+  float: none !important;
+}
+
+.haendler-form-embed .wpforms-field-small,
+.haendler-form-embed .wpforms-field-medium,
+.haendler-form-embed .wpforms-field-large {
+  width: 100% !important;
+  max-width: none !important;
+}
+
+.haendler-form-embed .wpforms-field-label {
+  display: block !important;
+  font-family: var(--font-heading);
+  font-size: 14px !important;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--heading-h2-color) !important;
+  margin: 0 0 8px !important;
+}
+
+.haendler-form-embed .wpforms-field-name .wpforms-field-label {
+  margin-bottom: 10px !important;
+}
+
+.haendler-form-embed .wpforms-field-sublabel {
+  display: block;
+  margin-top: 6px !important;
+  font-size: 11px !important;
+  line-height: 1.4;
+  color: var(--text-muted) !important;
+}
+
+.haendler-form-embed input,
+.haendler-form-embed select,
+.haendler-form-embed textarea {
+  width: 100%;
+  min-height: 56px;
+  padding: 0 18px;
+  border: 1.5px solid rgba(15, 23, 42, 0.08) !important;
+  border-radius: 16px !important;
+  background: rgba(255, 255, 255, 0.92) !important;
   font-family: var(--font-body);
-  font-size: 15px;
-  color: var(--text-primary);
-  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
-  outline: none;
+  font-size: 15px !important;
+  color: var(--text-primary) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.82), 0 10px 24px rgba(148, 163, 184, 0.12) !important;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast);
+  outline: none !important;
   -webkit-appearance: none;
+  appearance: none;
+  box-sizing: border-box;
 }
 
-.haendler-form-group input:focus,
-.haendler-form-group select:focus {
-  border-color: var(--color-accent);
-  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.12);
+.haendler-form-embed input:focus,
+.haendler-form-embed select:focus,
+.haendler-form-embed textarea:focus {
+  border-color: rgba(14, 165, 233, 0.58) !important;
+  box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.12), 0 14px 28px rgba(14, 165, 233, 0.16) !important;
+  transform: translateY(-1px);
 }
 
-.haendler-form-group input::placeholder {
+.haendler-form-embed input::placeholder,
+.haendler-form-embed textarea::placeholder,
+.haendler-form-embed select:invalid {
   color: var(--text-muted);
 }
 
-.haendler-form-submit {
-  width: 100%;
-  margin-top: 4px;
+.haendler-form-embed select {
+  padding-right: 48px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M4 6L8 10L12 6' stroke='%230f172a' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 18px center;
+  background-size: 16px 16px;
+}
+
+.haendler-form-embed textarea {
+  min-height: 140px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  resize: vertical;
+}
+
+.haendler-form-embed .wpforms-field-description {
+  margin: 8px 4px 0 !important;
+  font-size: 13px !important;
+  line-height: 1.5;
+  color: var(--text-muted) !important;
+}
+
+.haendler-form-embed .wpforms-field.wpforms-description-promoted .wpforms-field-description,
+.haendler-form-embed .wpforms-field.is-placeholder-split .wpforms-field-sublabel {
+  display: none !important;
+}
+
+.haendler-form-embed .wpforms-submit-container {
+  margin-top: 10px !important;
+  padding: 0 !important;
+  position: relative;
+}
+
+.haendler-form-embed button[type="submit"],
+.haendler-form-embed .wpforms-submit {
+  width: 100% !important;
+  min-height: 58px;
+  justify-content: center;
+  padding: 16px 28px !important;
+  border-radius: 999px !important;
+  border: 2px solid var(--color-accent) !important;
+  background: var(--color-accent) !important;
+  color: var(--text-inverse) !important;
+  font-family: var(--font-heading) !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  line-height: 1.2;
+  box-shadow: 0 18px 30px rgba(14, 165, 233, 0.22) !important;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast) !important;
+}
+
+.haendler-form-embed button[type="submit"]:hover,
+.haendler-form-embed .wpforms-submit:hover {
+  background: var(--color-accent-dark) !important;
+  border-color: var(--color-accent-dark) !important;
+  box-shadow: 0 22px 36px rgba(14, 165, 233, 0.28) !important;
+  transform: translateY(-1px);
+}
+
+.haendler-form-embed .wpforms-submit-spinner {
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.haendler-form-embed .wpforms-field.wpforms-has-error input,
+.haendler-form-embed .wpforms-field.wpforms-has-error select,
+.haendler-form-embed .wpforms-field.wpforms-has-error textarea {
+  border-color: rgba(220, 38, 38, 0.35) !important;
+  box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.08) !important;
+}
+
+.haendler-form-embed .wpforms-error {
+  font-size: 12px !important;
+  margin-top: 6px !important;
+}
+
+.haendler-form-embed .wpforms-confirmation-container-full {
+  margin: 0 !important;
+  padding: 18px 20px !important;
+  border: 0 !important;
+  border-radius: 16px !important;
+  background: rgba(16, 123, 212, 0.1) !important;
+  color: var(--text-primary) !important;
 }
 
 .haendler-form-micro {
@@ -1495,7 +1670,7 @@
     justify-content: stretch;
   }
 
-  .haendler-form {
+  .haendler-form-card {
     max-width: 100%;
   }
 
@@ -1514,5 +1689,185 @@
   .haendler-hero-cta .btn {
     width: 100%;
     justify-content: center;
+  }
+}
+
+@media (max-width: 860px) {
+  .user-hero-title {
+    font-size: clamp(36px, 10vw, 54px);
+  }
+
+  .user-hero-sub {
+    font-size: 15px;
+    max-width: 34ch;
+  }
+
+  .user-hero-cta {
+    width: 100%;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .store-badge {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .store-badge img {
+    width: min(100%, 176px);
+    height: auto;
+  }
+
+  .user-steps-grid {
+    gap: 12px;
+  }
+
+  .user-step,
+  .user-redeem-step {
+    padding: 22px 18px;
+    border-radius: 18px;
+  }
+
+  .user-step p,
+  .user-redeem-step p {
+    max-width: 100%;
+    font-size: 14px;
+  }
+
+  .user-steps-highlight {
+    flex-direction: column;
+    gap: 14px;
+    padding: 20px 18px;
+    margin-top: 32px;
+    text-align: center;
+  }
+
+  .app-showcase {
+    max-width: 100%;
+  }
+
+  .app-showcase-tabs {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .app-showcase-tab {
+    flex: 1 1 120px;
+    justify-content: center;
+  }
+
+  .app-showcase-body {
+    gap: 20px;
+  }
+
+  .app-showcase-phone {
+    width: min(100%, 250px);
+  }
+
+  .app-showcase-slide-info h3 {
+    font-size: clamp(20px, 6vw, 26px);
+  }
+
+  .app-showcase-swipe-hint {
+    margin-top: 12px;
+  }
+
+  .user-location-layout,
+  .user-exclusive-layout {
+    gap: 28px;
+  }
+
+  .user-location-mock,
+  .user-location-image-wrap {
+    max-width: min(100%, 280px);
+  }
+
+  .user-location-tags {
+    gap: 8px;
+  }
+
+  .user-exclusive-feature {
+    gap: 14px;
+    padding: 18px 16px;
+  }
+
+  .user-exclusive-feature h3 {
+    font-size: 1rem;
+  }
+
+  .haendler-onboarding-arrow {
+    display: none;
+  }
+
+  .haendler-hero-cta {
+    width: 100%;
+    max-width: 320px;
+    margin-left: auto;
+    margin-right: auto;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .haendler-hero-cta .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .haendler-cases-list {
+    gap: 14px;
+  }
+
+  .haendler-case-item,
+  .haendler-form-card {
+    padding: 22px 18px;
+    border-radius: 18px;
+  }
+
+  .haendler-form-embed {
+    min-height: 0;
+    padding: 18px;
+    border-radius: 20px;
+  }
+
+  .haendler-form-embed .wpforms-field-row {
+    grid-template-columns: 1fr;
+  }
+
+  .haendler-pos-banner {
+    gap: 12px;
+    padding: 18px 16px;
+  }
+}
+
+@media (max-width: 479px) {
+  .user-hero-title {
+    font-size: clamp(32px, 11vw, 42px);
+  }
+
+  .app-showcase-tab {
+    flex-basis: calc(50% - 4px);
+    padding: 10px 12px;
+  }
+
+  .user-step,
+  .user-redeem-step,
+  .user-exclusive-feature,
+  .user-steps-highlight,
+  .haendler-case-item,
+  .haendler-form-card {
+    padding: 18px 14px;
+  }
+
+  .user-location-tags {
+    justify-content: center;
+  }
+
+  .haendler-pos-banner {
+    padding: 16px 14px;
+  }
+
+  .haendler-form-embed {
+    padding: 16px;
   }
 }

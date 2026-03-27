@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="de">
 <head>
   <meta charset="UTF-8">
@@ -27,20 +27,51 @@
       </a>
       <nav class="nav" id="main-nav" aria-label="Hauptnavigation">
         <ul class="nav-list">
-          <li><a href="#vorteile">Vorteile</a></li>
-          <li><a href="#so-gehts">So geht's</a></li>
-          <li><a href="#dashboard">Dashboard</a></li>
-          <li><a href="#faq">FAQ</a></li>
+          <li><a href="index.html#app-steps">So funktioniert's</a></li>
+          <li class="nav-item nav-item-has-submenu">
+            <div class="nav-link-row">
+              <a href="haendler.html">F&uuml;r H&auml;ndler</a>
+              <button type="button" class="nav-submenu-toggle" aria-expanded="false" aria-label="Untermen&uuml; f&uuml;r H&auml;ndler &ouml;ffnen">
+                <span class="nav-submenu-toggle-icon" aria-hidden="true"></span>
+              </button>
+            </div>
+            <ul class="nav-submenu">
+              <li><a href="haendler.html">&Uuml;bersicht</a></li>
+              <li><a href="haendler.html#vorteile">Vorteile</a></li>
+              <li><a href="haendler.html#so-gehts">So geht's</a></li>
+              <li><a href="haendler.html#dashboard">Dashboard</a></li>
+              <li><a href="haendler.html#faq">FAQ</a></li>
+              <li><a href="haendler.html#onboarding">Onboarding</a></li>
+            </ul>
+          </li>
+          <li class="nav-item nav-item-has-submenu">
+            <div class="nav-link-row">
+              <a href="user.html">F&uuml;r Nutzer:innen</a>
+              <button type="button" class="nav-submenu-toggle" aria-expanded="false" aria-label="Untermen&uuml; f&uuml;r Nutzer:innen &ouml;ffnen">
+                <span class="nav-submenu-toggle-icon" aria-hidden="true"></span>
+              </button>
+            </div>
+            <ul class="nav-submenu">
+              <li><a href="user.html">&Uuml;bersicht</a></li>
+              <li><a href="user.html#how-it-works">So geht's</a></li>
+              <li><a href="user.html#app-preview">Die App</a></li>
+              <li><a href="user.html#location">In deiner N&auml;he</a></li>
+              <li><a href="user.html#exclusive">Vorteile</a></li>
+              <li><a href="user.html#download">Download</a></li>
+            </ul>
+          </li>
+          <li><a href="index.html#solution-faq">FAQ</a></li>
         </ul>
         <div class="mobile-nav-cta">
-          <a href="#onboarding" class="btn btn-primary btn-accent">Jetzt testen</a>
+          <a href="haendler.html#onboarding" class="btn btn-ghost">Unternehmen registrieren</a>
+          <a href="index.html#download" class="btn btn-primary btn-accent">App herunterladen</a>
         </div>
       </nav>
       <div class="header-cta">
-        <a href="user.html" class="btn btn-ghost btn-header">Für Nutzer</a>
-        <a href="#onboarding" class="btn btn-primary btn-accent btn-header">Jetzt testen</a>
+        <a href="haendler.html#onboarding" class="btn btn-ghost btn-header">Unternehmen registrieren</a>
+        <a href="index.html#download" class="btn btn-primary btn-accent btn-header">App herunterladen</a>
       </div>
-      <button class="nav-toggle" id="nav-toggle" aria-label="Menü öffnen" aria-expanded="false">
+      <button class="nav-toggle" id="nav-toggle" aria-label="Men&uuml; &ouml;ffnen" aria-expanded="false">
         <span class="nav-toggle-bar"></span>
         <span class="nav-toggle-bar"></span>
         <span class="nav-toggle-bar"></span>
@@ -318,7 +349,7 @@
                   </div>
                   <div>
                     <span class="haendler-case-label">Boutique</span>
-                    <p class="haendler-case-quote">„20 % auf Sommerkollektion"</p>
+                    <p class="haendler-case-quote">20 % auf Sommerkollektion"</p>
                     <p class="haendler-case-result">Mehr Frequenz am Wochenende. Restposten planbar abverkauft.</p>
                   </div>
                 </div>
@@ -328,7 +359,7 @@
                   </div>
                   <div>
                     <span class="haendler-case-label">Concept Store</span>
-                    <p class="haendler-case-quote">„Überraschungspaket: 3 Teile zum Preis von 2"</p>
+                    <p class="haendler-case-quote">Überraschungspaket: 3 Teile zum Preis von 2"</p>
                     <p class="haendler-case-result">Neue Kundschaft gewonnen. Warenkorbwert gesteigert.</p>
                   </div>
                 </div>
@@ -338,7 +369,7 @@
                   </div>
                   <div>
                     <span class="haendler-case-label">Schuhgeschäft</span>
-                    <p class="haendler-case-quote">„2. Paar 50 % günstiger"</p>
+                    <p class="haendler-case-quote">2. Paar 50 % günstiger"</p>
                     <p class="haendler-case-result">Abverkauf der Vorsaison beschleunigt. Lagerplatz freigemacht.</p>
                   </div>
                 </div>
@@ -405,35 +436,13 @@
               </div>
             </div>
             <div class="haendler-form-wrap reveal reveal-right">
-              <form class="haendler-form glass-card" onsubmit="return false;" id="haendler-form">
-                <div class="haendler-form-group">
-                  <label for="h-name">Name</label>
-                  <input type="text" id="h-name" placeholder="Max Mustermann" required>
+              <div class="haendler-form-card glass-card">
+                <div class="haendler-form-placeholder">
+                  <strong>WPForms Platzhalter</strong><br>
+                  Dieses Formular wird in WordPress ueber die Leadwerk Optionen per WPForms ID eingebunden.
                 </div>
-                <div class="haendler-form-group">
-                  <label for="h-branche">Branche</label>
-                  <select id="h-branche" required>
-                    <option value="" disabled selected>Bitte wählen</option>
-                    <option value="boutique">Boutique</option>
-                    <option value="fashion">Fashion / Bekleidung</option>
-                    <option value="concept">Concept Store</option>
-                    <option value="accessoires">Accessoires / Schmuck</option>
-                    <option value="schuhe">Schuhe</option>
-                    <option value="interior">Interior / Wohnen</option>
-                    <option value="other">Sonstiges</option>
-                  </select>
-                </div>
-                <div class="haendler-form-group">
-                  <label for="h-ort">Ort</label>
-                  <input type="text" id="h-ort" placeholder="z. B. Köln" required>
-                </div>
-                <div class="haendler-form-group">
-                  <label for="h-tel">Telefonnummer</label>
-                  <input type="tel" id="h-tel" placeholder="+49 123 456 789">
-                </div>
-                <button type="submit" class="btn btn-accent-solid btn-lg haendler-form-submit">Jetzt kostenlos starten</button>
-                <p class="haendler-form-micro">Keine Verpflichtung. Wir melden uns persönlich.</p>
-              </form>
+                <p class="haendler-form-micro">Keine Verpflichtung. Wir melden uns pers&ouml;nlich.</p>
+              </div>
             </div>
           </div>
         </div>
@@ -528,7 +537,7 @@
         <p class="cta-subtitle reveal">Bringe neue Kunden direkt zu dir. Messbar, planbar, lokal.</p>
         <div class="cta-buttons-row reveal">
           <a href="#onboarding" class="btn btn-white btn-lg">Jetzt testen</a>
-          <a href="user.html" class="btn btn-accent-solid btn-lg">App für Nutzer</a>
+          <a href="index.html#download" class="btn btn-accent-solid btn-lg">App f&uuml;r Nutzer</a>
         </div>
       </div>
     </section>
@@ -544,27 +553,27 @@
             <img src="images/logo-weiss.png" alt="U-like-it" class="footer-logo-img" width="140" height="40">
           </a>
           <p class="footer-seo-text">
-            U-like-it verbindet lokale Einzelhändler mit kaufbereiten Kunden in der Nähe.
-            Erstelle Deals, bringe Frequenz in deinen Laden und messe deine Ergebnisse – direkt am Point of Sale.
+            U-like-it verbindet lokale H&auml;ndler und Gastronomie mit Kund:innen in der N&auml;he.
+            Zeitgesteuerte Deals reservieren, vor Ort per QR-Code einl&ouml;sen - so belebt die App deine Innenstadt.
           </p>
         </div>
         <nav class="footer-nav" aria-label="Footer-Navigation">
           <span class="footer-nav-label">Navigation</span>
           <ul class="footer-nav-list">
-            <li><a href="#vorteile">Vorteile</a></li>
-            <li><a href="#so-gehts">So geht's</a></li>
-            <li><a href="#dashboard">Dashboard</a></li>
-            <li><a href="user.html">Für Nutzer</a></li>
-            <li><a href="#onboarding">Jetzt starten</a></li>
+            <li><a href="index.html#app-steps">So funktioniert's</a></li>
+            <li><a href="haendler.html">F&uuml;r H&auml;ndler</a></li>
+            <li><a href="user.html">F&uuml;r Nutzer:innen</a></li>
+            <li><a href="index.html#solution-faq">FAQ</a></li>
+            <li><a href="index.html#download">App herunterladen</a></li>
           </ul>
         </nav>
         <div class="footer-download">
           <span class="footer-download-label">App laden</span>
           <div class="footer-badges">
-            <a href="#" class="footer-badge footer-badge-apple" target="_blank" rel="noopener noreferrer" aria-label="Im App Store herunterladen">
+            <a href="https://apps.apple.com/de/app/u-like-it/id1593884667" class="footer-badge footer-badge-apple" target="_blank" rel="noopener noreferrer" aria-label="Im App Store herunterladen">
               <img src="images/apple_app_store_badge.png" alt="Download on the App Store" width="135" height="40">
             </a>
-            <a href="#" class="footer-badge footer-badge-google" target="_blank" rel="noopener noreferrer" aria-label="Bei Google Play herunterladen">
+            <a href="https://play.google.com/store/apps/details?id=de.u_like_it" class="footer-badge footer-badge-google" target="_blank" rel="noopener noreferrer" aria-label="Bei Google Play herunterladen">
               <img src="images/google-play-badge.png" alt="Bei Google Play herunterladen" width="135" height="40">
             </a>
           </div>
@@ -583,3 +592,5 @@
   <script src="haendler-script.js"></script>
 </body>
 </html>
+
+

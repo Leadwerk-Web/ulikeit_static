@@ -28,6 +28,11 @@ class Leadwerk_Content_Schema {
 				'label'       => 'U-like-it Startseiten-Sektionen',
 				'description' => 'Sektionen der Startseite bearbeiten. Reihenfolge und Anzahl bleiben erhalten.',
 				'source_keys' => array( 'ulikeit-home-v1' ),
+				'post_match'  => array(
+					'is_front_page' => true,
+					'slugs'         => array( 'home' ),
+				),
+				'block_content' => '<!-- wp:acf/ulikeit-home-sections /-->',
 				'layouts'     => array(
 					'hero'      => array(
 						'label'  => 'Hero',
@@ -140,6 +145,10 @@ class Leadwerk_Content_Schema {
 				'label'       => 'U-like-it Nutzer-Seite',
 				'description' => 'Sektionen der Nutzer-Seite bearbeiten. Reihenfolge und Anzahl bleiben erhalten.',
 				'source_keys' => array( 'ulikeit-user-v1' ),
+				'post_match'  => array(
+					'slugs' => array( 'fuer-nutzer' ),
+				),
+				'block_content' => '<!-- wp:acf/ulikeit-user-sections /-->',
 				'layouts'     => array(
 					'hero'         => array(
 						'label'  => 'Hero',
@@ -273,6 +282,10 @@ class Leadwerk_Content_Schema {
 				'label'       => 'U-like-it Haendler-Seite',
 				'description' => 'Sektionen der Haendler-Seite bearbeiten. Reihenfolge und Anzahl bleiben erhalten.',
 				'source_keys' => array( 'ulikeit-haendler-v1' ),
+				'post_match'  => array(
+					'slugs' => array( 'fuer-haendler' ),
+				),
+				'block_content' => '<!-- wp:acf/ulikeit-haendler-sections /-->',
 				'layouts'     => array(
 					'hero'              => array(
 						'label'  => 'Hero',
@@ -399,20 +412,6 @@ class Leadwerk_Content_Schema {
 							'body_text'   => array( 'label' => 'Text', 'type' => 'textarea' ),
 							'pos_title'   => array( 'label' => 'POS Titel', 'type' => 'text' ),
 							'pos_text'    => array( 'label' => 'POS Text', 'type' => 'textarea' ),
-							'form_fields' => array(
-								'label'            => 'Formularfelder',
-								'type'             => 'repeater',
-								'add_button_label' => 'Feld hinzufuegen',
-								'fields'           => array(
-									'field_type'  => array( 'label' => 'Feldtyp', 'type' => 'text' ),
-									'field_id'    => array( 'label' => 'Name/ID', 'type' => 'text' ),
-									'label'       => array( 'label' => 'Label', 'type' => 'text' ),
-									'placeholder' => array( 'label' => 'Placeholder', 'type' => 'text' ),
-									'required'    => array( 'label' => 'Required', 'type' => 'checkbox' ),
-									'options'     => array( 'label' => 'Select-Optionen', 'type' => 'select_options' ),
-								),
-							),
-							'submit_text' => array( 'label' => 'Submit Text', 'type' => 'text' ),
 							'micro_text'  => array( 'label' => 'Micro-Text', 'type' => 'text' ),
 						),
 					),
@@ -451,6 +450,9 @@ class Leadwerk_Content_Schema {
 				'label'             => 'U-like-it Impressum',
 				'description'       => 'Impressum ueber Leadwerk Fields bearbeiten. Der Inhalt wird in das Seiten-HTML synchronisiert.',
 				'source_keys'       => array( 'ulikeit-impressum-v1' ),
+				'post_match'        => array(
+					'slugs' => array( 'impressum' ),
+				),
 				'sync_post_content' => true,
 				'fields'            => array(
 					'headline' => array( 'label' => 'Seitenueberschrift', 'type' => 'text' ),
@@ -461,6 +463,9 @@ class Leadwerk_Content_Schema {
 				'label'             => 'U-like-it Datenschutz',
 				'description'       => 'Datenschutzerklaerung ueber Leadwerk Fields bearbeiten. Der Inhalt wird in das Seiten-HTML synchronisiert.',
 				'source_keys'       => array( 'ulikeit-datenschutz-v1' ),
+				'post_match'        => array(
+					'slugs' => array( 'datenschutz' ),
+				),
 				'sync_post_content' => true,
 				'fields'            => array(
 					'headline' => array( 'label' => 'Seitenueberschrift', 'type' => 'text' ),
@@ -513,7 +518,77 @@ class Leadwerk_Content_Schema {
 		}
 
 		$source_key = (string) get_post_meta( $post_id, 'leadwerk_source_key', true );
-		return self::get_group_for_source_key( $source_key );
+		if ( '' !== $source_key ) {
+			$group = self::get_group_for_source_key( $source_key );
+			if ( $group ) {
+				return $group;
+			}
+		}
+
+		foreach ( self::get_groups() as $field_name => $group ) {
+			if ( self::group_matches_post( $group, $post_id ) ) {
+				$group['field_name'] = $field_name;
+				return $group;
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * Return the expected default post_content for one source key.
+	 *
+	 * @param string $source_key Source key.
+	 * @return string
+	 */
+	public static function get_default_post_content_for_source_key( $source_key ) {
+		$group = self::get_group_for_source_key( $source_key );
+		if ( ! $group ) {
+			return '';
+		}
+
+		return isset( $group['block_content'] ) ? (string) $group['block_content'] : '';
+	}
+
+	/**
+	 * Return the expected default post_content for one field group.
+	 *
+	 * @param string $field_name Field group name.
+	 * @return string
+	 */
+	public static function get_default_post_content_for_group( $field_name ) {
+		$group = self::get_group( $field_name );
+		if ( ! $group ) {
+			return '';
+		}
+
+		return isset( $group['block_content'] ) ? (string) $group['block_content'] : '';
+	}
+
+	/**
+	 * Check whether a schema group belongs to one post.
+	 *
+	 * @param array<string,mixed> $group   Group schema.
+	 * @param int                 $post_id Post ID.
+	 * @return bool
+	 */
+	private static function group_matches_post( $group, $post_id ) {
+		$post_match = isset( $group['post_match'] ) && is_array( $group['post_match'] ) ? $group['post_match'] : array();
+		$post_slug  = (string) get_post_field( 'post_name', $post_id );
+
+		if ( ! empty( $post_match['slugs'] ) && is_array( $post_match['slugs'] ) ) {
+			foreach ( $post_match['slugs'] as $slug ) {
+				if ( (string) $slug === $post_slug ) {
+					return true;
+				}
+			}
+		}
+
+		if ( ! empty( $post_match['is_front_page'] ) && (int) get_option( 'page_on_front' ) === (int) $post_id ) {
+			return true;
+		}
+
+		return false;
 	}
 
 	/**

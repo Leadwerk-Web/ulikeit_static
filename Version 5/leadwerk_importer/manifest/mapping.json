@@ -6,6 +6,8 @@
   "pages": [
     {
       "source_key": "ulikeit-home-v1",
+      "field_name": "home_sections",
+      "source_file": "index.html",
       "target_type": "page",
       "post_status": "publish",
       "is_front_page": true,
@@ -21,6 +23,8 @@
     },
     {
       "source_key": "ulikeit-impressum-v1",
+      "field_name": "impressum_page",
+      "source_file": "impressum.html",
       "target_type": "page",
       "post_status": "publish",
       "slug": "impressum",
@@ -33,6 +37,8 @@
     },
     {
       "source_key": "ulikeit-datenschutz-v1",
+      "field_name": "datenschutz_page",
+      "source_file": "datenschutz.html",
       "target_type": "page",
       "post_status": "publish",
       "slug": "datenschutz",
@@ -45,6 +51,8 @@
     },
     {
       "source_key": "ulikeit-haendler-v1",
+      "field_name": "haendler_sections",
+      "source_file": "haendler.html",
       "target_type": "page",
       "post_status": "publish",
       "slug": "fuer-haendler",
@@ -57,6 +65,8 @@
     },
     {
       "source_key": "ulikeit-user-v1",
+      "field_name": "user_sections",
+      "source_file": "user.html",
       "target_type": "page",
       "post_status": "publish",
       "slug": "fuer-nutzer",

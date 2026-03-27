@@ -277,7 +277,15 @@ foreach ( $sections as $index => $section ) {
 			break;
 
 		case 'onboarding':
-			$form_fields = is_array( $section['form_fields'] ?? null ) ? $section['form_fields'] : array();
+			$wpforms_value = function_exists( 'get_field' ) ? get_field( 'haendler_wpforms_id', 'option' ) : '';
+			$wpforms_embed = function_exists( 'leadwerk_theme_resolve_wpforms_embed' ) ? leadwerk_theme_resolve_wpforms_embed( $wpforms_value ) : array(
+				'id'                   => preg_replace( '/\D+/', '', (string) $wpforms_value ),
+				'shortcode'            => '',
+				'shortcode_registered' => shortcode_exists( 'wpforms' ),
+				'html'                 => '',
+				'is_ready'             => false,
+				'reason'               => 'missing_helper',
+			);
 			?>
 			<section class="section haendler-onboarding-section" id="onboarding">
 				<div class="haendler-onboarding-arrow" aria-hidden="true">
@@ -299,27 +307,18 @@ foreach ( $sections as $index => $section ) {
 							</div>
 						</div>
 						<div class="haendler-form-wrap reveal reveal-right">
-							<form class="haendler-form glass-card" onsubmit="return false;" id="haendler-form">
-								<?php foreach ( $form_fields as $field ) : ?>
-									<div class="haendler-form-group">
-										<label for="<?php echo esc_attr( $field['field_id'] ?? '' ); ?>"><?php echo esc_html( $field['label'] ?? '' ); ?></label>
-										<?php if ( 'select' === ( $field['field_type'] ?? '' ) ) : ?>
-											<select id="<?php echo esc_attr( $field['field_id'] ?? '' ); ?>"<?php echo ! empty( $field['required'] ) ? ' required' : ''; ?>>
-												<?php if ( ! empty( $field['placeholder'] ) ) : ?>
-													<option value="" disabled selected><?php echo esc_html( $field['placeholder'] ); ?></option>
-												<?php endif; ?>
-												<?php foreach ( $field['options'] ?? array() as $option ) : ?>
-													<option value="<?php echo esc_attr( sanitize_title( $option ) ); ?>"><?php echo esc_html( $option ); ?></option>
-												<?php endforeach; ?>
-											</select>
-										<?php else : ?>
-											<input type="<?php echo esc_attr( $field['field_type'] ?? 'text' ); ?>" id="<?php echo esc_attr( $field['field_id'] ?? '' ); ?>" placeholder="<?php echo esc_attr( $field['placeholder'] ?? '' ); ?>"<?php echo ! empty( $field['required'] ) ? ' required' : ''; ?>>
-										<?php endif; ?>
-									</div>
-								<?php endforeach; ?>
-								<button type="submit" class="btn btn-accent-solid btn-lg haendler-form-submit"><?php echo esc_html( $section['submit_text'] ?? '' ); ?></button>
-								<p class="haendler-form-micro"><?php echo esc_html( $section['micro_text'] ?? '' ); ?></p>
-							</form>
+							<div class="haendler-form-card glass-card">
+								<div class="haendler-form-embed">
+									<?php if ( ! empty( $wpforms_embed['is_ready'] ) ) : ?>
+										<?php echo $wpforms_embed['html']; ?>
+									<?php elseif ( current_user_can( 'manage_options' ) ) : ?>
+										<?php echo function_exists( 'leadwerk_theme_get_wpforms_admin_note' ) ? leadwerk_theme_get_wpforms_admin_note( $wpforms_embed ) : '<p class="haendler-form-admin-note">Leadwerk Optionen unter <strong>Haendler WPForms ID</strong> pflegen und WPForms aktivieren, damit das Formular hier erscheint.</p>'; ?>
+									<?php endif; ?>
+								</div>
+								<?php if ( ! empty( $section['micro_text'] ) ) : ?>
+									<p class="haendler-form-micro"><?php echo esc_html( $section['micro_text'] ?? '' ); ?></p>
+								<?php endif; ?>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -387,7 +386,7 @@ foreach ( $sections as $index => $section ) {
 					<p class="cta-subtitle reveal"><?php echo esc_html( $section['subtitle'] ?? '' ); ?></p>
 					<div class="cta-buttons-row reveal">
 						<a href="<?php echo esc_url( $section['button_1_url'] ?? '#onboarding' ); ?>" class="btn btn-white btn-lg"><?php echo esc_html( $section['button_1_text'] ?? '' ); ?></a>
-						<a href="<?php echo esc_url( $section['button_2_url'] ?? '/fuer-nutzer/' ); ?>" class="btn btn-accent-solid btn-lg"><?php echo esc_html( $section['button_2_text'] ?? '' ); ?></a>
+						<a href="<?php echo esc_url( function_exists( 'leadwerk_theme_normalize_home_download_url' ) ? leadwerk_theme_normalize_home_download_url( $section['button_2_url'] ?? '/#download' ) : ( $section['button_2_url'] ?? '/#download' ) ); ?>" class="btn btn-accent-solid btn-lg"><?php echo esc_html( $section['button_2_text'] ?? '' ); ?></a>
 					</div>
 				</div>
 			</section>

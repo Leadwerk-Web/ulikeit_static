@@ -51,7 +51,8 @@ function leadwerk_render_hero( $f ) {
 	$title_grad  = isset( $f['title_gradient'] ) ? $f['title_gradient'] : 'Rette&nbsp;deine Innenstadt.';
 	$typewriter  = isset( $f['typewriter_words'] ) ? $f['typewriter_words'] : 'Shoppe lokal.|Finde Deals.|Entdecke Mode.|Stärke deine Stadt.';
 	$cta_text    = isset( $f['cta_text'] ) ? $f['cta_text'] : 'App herunterladen';
-	$cta_url     = isset( $f['cta_url'] ) ? $f['cta_url'] : '#download';
+	$cta_url     = isset( $f['cta_url'] ) ? $f['cta_url'] : '/#download';
+	$cta_url     = function_exists( 'leadwerk_theme_normalize_home_download_url' ) ? leadwerk_theme_normalize_home_download_url( $cta_url ) : $cta_url;
 	$hero_img_id = isset( $f['hero_image'] ) ? (int) $f['hero_image'] : 0;
 	$hero_img_url = $hero_img_id ? wp_get_attachment_image_url( $hero_img_id, 'full' ) : '';
 	// Fallback: use theme asset if no attachment
@@ -242,7 +243,8 @@ function leadwerk_render_pakete( $f ) {
 	$title    = isset( $f['title'] ) ? $f['title'] : 'U like it Pakete';
 	$content  = isset( $f['content'] ) ? $f['content'] : '';
 	$cta_text = isset( $f['cta_text'] ) ? $f['cta_text'] : 'Mehr erfahren';
-	$cta_url  = isset( $f['cta_url'] ) ? $f['cta_url'] : '#download';
+	$cta_url  = isset( $f['cta_url'] ) ? $f['cta_url'] : '/#download';
+	$cta_url  = function_exists( 'leadwerk_theme_normalize_home_download_url' ) ? leadwerk_theme_normalize_home_download_url( $cta_url ) : $cta_url;
 	$img_id   = isset( $f['image'] ) ? (int) $f['image'] : 0;
 	$img_url  = $img_id ? wp_get_attachment_image_url( $img_id, 'full' ) : '';
 	if ( ! $img_url ) {
@@ -289,7 +291,8 @@ function leadwerk_render_solutions( $f ) {
 	$title           = isset( $f['title'] ) ? $f['title'] : 'Unsere Lösungen für Unternehmen';
 	$intro           = isset( $f['intro_text'] ) ? $f['intro_text'] : '';
 	$reg_btn_text    = isset( $f['register_btn_text'] ) ? $f['register_btn_text'] : 'Unternehmen registrieren';
-	$reg_btn_url     = isset( $f['register_btn_url'] ) ? $f['register_btn_url'] : '#download';
+	$reg_btn_url     = isset( $f['register_btn_url'] ) ? $f['register_btn_url'] : '/fuer-haendler/#onboarding';
+	$reg_btn_url     = function_exists( 'leadwerk_theme_normalize_home_registration_url' ) ? leadwerk_theme_normalize_home_registration_url( $reg_btn_url ) : $reg_btn_url;
 	$cards           = isset( $f['cards'] ) && is_array( $f['cards'] ) ? $f['cards'] : array();
 	?>
 	<div class="light-sections-wrap">
@@ -400,9 +403,11 @@ function leadwerk_render_faq( $f ) {
 function leadwerk_render_cta( $f ) {
 	$title   = isset( $f['title'] ) ? $f['title'] : "Jetzt mitmachen\nund lokale Deals erleben.";
 	$btn1_t  = isset( $f['button_1_text'] ) ? $f['button_1_text'] : 'Unternehmen registrieren';
-	$btn1_u  = isset( $f['button_1_url'] ) ? $f['button_1_url'] : '#';
+	$btn1_u  = isset( $f['button_1_url'] ) ? $f['button_1_url'] : '/fuer-haendler/#onboarding';
 	$btn2_t  = isset( $f['button_2_text'] ) ? $f['button_2_text'] : 'App herunterladen';
-	$btn2_u  = isset( $f['button_2_url'] ) ? $f['button_2_url'] : '#';
+	$btn2_u  = isset( $f['button_2_url'] ) ? $f['button_2_url'] : '/#download';
+	$btn1_u  = function_exists( 'leadwerk_theme_normalize_home_registration_url' ) ? leadwerk_theme_normalize_home_registration_url( $btn1_u ) : $btn1_u;
+	$btn2_u  = function_exists( 'leadwerk_theme_normalize_home_download_url' ) ? leadwerk_theme_normalize_home_download_url( $btn2_u ) : $btn2_u;
 	?>
 	<section class="section cta-section" id="download">
 		<div class="cta-bg-wrap" aria-hidden="true">

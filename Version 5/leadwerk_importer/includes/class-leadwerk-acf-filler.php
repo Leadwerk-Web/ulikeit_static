@@ -9,6 +9,7 @@ class Leadwerk_ACF_Filler {
 
 	protected $source_root = '';
 	protected $attachment_cache = array();
+	protected $last_parser_diagnostics = array();
 
 	/**
 	 * Attachment-ID anhand des Quellpfads ermitteln.
@@ -71,6 +72,39 @@ class Leadwerk_ACF_Filler {
 		return trim( $path, '/' );
 	}
 
+	protected function normalize_wp_internal_url( $url ) {
+		$url = trim( (string) $url );
+
+		if ( '' === $url ) {
+			return '';
+		}
+
+		$map = array(
+			'#download'                 => '/#download',
+			'index.html#download'       => '/#download',
+			'/index.html#download'      => '/#download',
+			'http://index.html#download'=> '/#download',
+			'https://index.html#download'=> '/#download',
+			'#onboarding'               => '/fuer-haendler/#onboarding',
+			'haendler.html#onboarding'  => '/fuer-haendler/#onboarding',
+			'/haendler.html#onboarding' => '/fuer-haendler/#onboarding',
+			'user.html#download'        => '/fuer-nutzer/#download',
+			'/user.html#download'       => '/fuer-nutzer/#download',
+			'index.html'                => '/',
+			'/index.html'               => '/',
+			'haendler.html'             => '/fuer-haendler/',
+			'/haendler.html'            => '/fuer-haendler/',
+			'user.html'                 => '/fuer-nutzer/',
+			'/user.html'                => '/fuer-nutzer/',
+		);
+
+		return isset( $map[ $url ] ) ? $map[ $url ] : $url;
+	}
+
+	public function set_source_root( $source_root ) {
+		$this->source_root = rtrim( (string) $source_root, '/\\' );
+	}
+
 	public function fill_front_page( $post_id, $source_root ) {
 		return $this->fill_group_from_file( $post_id, $source_root, 'index.html', 'home_sections', 'build_home_sections_from_html' );
 	}
@@ -115,7 +149,7 @@ class Leadwerk_ACF_Filler {
 		$sections = $this->normalize_sections_for_field( $field_name, $sections );
 
 		if ( empty( $sections ) ) {
-			Leadwerk_Logger::log( 'Keine Sektionen aus ' . $file_name . ' extrahiert.' );
+			Leadwerk_Logger::log( 'Keine Sektionen aus ' . $file_name . ' extrahiert. Field=' . $field_name . '. ' . $this->get_last_parser_diagnostics_message() );
 			return false;
 		}
 
@@ -322,6 +356,308 @@ class Leadwerk_ACF_Filler {
 		);
 	}
 
+	public function build_page_payload( $page_config, $lang = 'de', $override_relative_file = '' ) {
+		$field_name = (string) ( $page_config['field_name'] ?? '' );
+		$source_key = (string) ( $page_config['source_key'] ?? '' );
+		$source_file = (string) ( $override_relative_file ?: ( $page_config['source_file'] ?? '' ) );
+		$group      = class_exists( 'Leadwerk_Content_Schema' ) ? Leadwerk_Content_Schema::get_group( $field_name ) : null;
+		$payload    = array(
+			'field_name'         => $field_name,
+			'source_key'         => $source_key,
+			'source_file'        => $source_file,
+			'value'              => array(),
+			'validation'         => array(
+				'field_name'             => $field_name,
+				'has_visible_content'    => false,
+				'visible_content_score'  => 0,
+				'expected_layout_count'  => 0,
+				'parsed_layout_count'    => 0,
+				'parsed_section_count'   => 0,
+				'non_empty_layout_count' => 0,
+				'missing_sections'       => 0,
+				'empty_layouts'          => array(),
+				'empty_fields'           => array(),
+			),
+			'layout_diagnostics' => array(),
+			'parser_diagnostics' => $this->last_parser_diagnostics,
+		);
+
+		if ( ! $group || ! is_array( $group ) ) {
+			$payload['validation']['empty_fields'][] = 'schema_missing';
+			return $payload;
+		}
+
+		if ( '' === $source_file ) {
+			$payload['validation']['empty_fields'][] = 'source_file_missing';
+			return $payload;
+		}
+
+		$file_path = $this->resolve_source_file_path( $source_file );
+		if ( '' === $file_path || ! is_file( $file_path ) ) {
+			$payload['validation']['empty_fields'][] = 'source_file_missing';
+			return $payload;
+		}
+
+		$html = (string) file_get_contents( $file_path );
+		if ( empty( $group['layouts'] ) ) {
+			$value = $this->normalize_scalar_group_for_field( $field_name, $this->build_legal_page_from_html( $html ) );
+			$payload['value']              = $value;
+			$payload['parser_diagnostics'] = $this->last_parser_diagnostics;
+			$payload['validation'] = $this->build_payload_validation( $field_name, $group, $value, $this->group_has_visible_content( $group, $value ) ? 1 : 0 );
+			return $payload;
+		}
+
+		$builder_method = $this->get_builder_method_for_field( $field_name );
+		if ( '' === $builder_method || ! method_exists( $this, $builder_method ) ) {
+			$payload['validation']['empty_fields'][] = 'builder_missing';
+			return $payload;
+		}
+
+		$sections = call_user_func( array( $this, $builder_method ), $html );
+		$sections = $this->normalize_sections_for_field( $field_name, $sections );
+
+		$payload['value']              = $sections;
+		$payload['parser_diagnostics'] = $this->last_parser_diagnostics;
+		$payload['validation']         = $this->build_payload_validation( $field_name, $group, $sections, is_array( $sections ) ? count( $sections ) : 0 );
+		$payload['layout_diagnostics'] = $this->build_layout_diagnostics( $field_name, $group, $sections );
+
+		return $payload;
+	}
+
+	public function validate_group_value( $field_name, $value ) {
+		$group = class_exists( 'Leadwerk_Content_Schema' ) ? Leadwerk_Content_Schema::get_group( $field_name ) : null;
+		if ( ! $group || ! is_array( $group ) ) {
+			return array(
+				'field_name'             => $field_name,
+				'has_visible_content'    => false,
+				'visible_content_score'  => 0,
+				'expected_layout_count'  => 0,
+				'parsed_layout_count'    => 0,
+				'parsed_section_count'   => 0,
+				'non_empty_layout_count' => 0,
+				'missing_sections'       => 0,
+				'empty_layouts'          => array(),
+				'empty_fields'           => array( 'schema_missing' ),
+			);
+		}
+
+		$parsed_count = is_array( $value ) ? count( $value ) : ( $this->group_has_visible_content( $group, $value ) ? 1 : 0 );
+		return $this->build_payload_validation( $field_name, $group, $value, $parsed_count );
+	}
+
+	protected function build_payload_validation( $field_name, $group, $value, $parsed_section_count = 0 ) {
+		$validation = array(
+			'field_name'             => (string) $field_name,
+			'has_visible_content'    => false,
+			'visible_content_score'  => 0,
+			'expected_layout_count'  => 0,
+			'parsed_layout_count'    => 0,
+			'parsed_section_count'   => (int) $parsed_section_count,
+			'non_empty_layout_count' => 0,
+			'missing_sections'       => 0,
+			'empty_layouts'          => array(),
+			'empty_fields'           => array(),
+		);
+
+		if ( empty( $group['layouts'] ) ) {
+			$validation['has_visible_content'] = $this->group_has_visible_content( $group, $value );
+			$validation['visible_content_score'] = $validation['has_visible_content'] ? $this->count_visible_fields( $value ) : 0;
+			if ( ! $validation['has_visible_content'] ) {
+				foreach ( array_keys( (array) ( $group['fields'] ?? array() ) ) as $field_key ) {
+					$validation['empty_fields'][] = $field_key;
+				}
+			}
+
+			return $validation;
+		}
+
+		$sections          = is_array( $value ) ? array_values( $value ) : array();
+		$expected_layouts  = array_keys( (array) ( $group['layouts'] ?? array() ) );
+		$visible_score     = 0;
+
+		$validation['expected_layout_count'] = count( $expected_layouts );
+		$validation['parsed_layout_count']   = count( $sections );
+		$validation['parsed_section_count']  = (int) $parsed_section_count;
+		$validation['missing_sections']      = max( 0, $validation['expected_layout_count'] - $validation['parsed_layout_count'] );
+
+		foreach ( $expected_layouts as $index => $layout_key ) {
+			$layout_schema = $group['layouts'][ $layout_key ] ?? array();
+			$section       = isset( $sections[ $index ] ) && is_array( $sections[ $index ] ) ? $sections[ $index ] : array( 'acf_fc_layout' => $layout_key );
+			$is_present    = isset( $sections[ $index ] ) && is_array( $sections[ $index ] );
+
+			if ( ! $is_present ) {
+				$validation['empty_layouts'][] = $layout_key;
+			}
+
+			$layout_visible = false;
+			foreach ( (array) ( $layout_schema['fields'] ?? array() ) as $field_key => $definition ) {
+				$field_value = $section[ $field_key ] ?? null;
+				if ( $this->field_value_has_visible_content( $field_value, $definition ) ) {
+					$layout_visible = true;
+					$visible_score += $this->count_visible_fields( $field_value, $definition );
+				} else {
+					$validation['empty_fields'][] = $layout_key . '.' . $field_key;
+				}
+			}
+
+			if ( $layout_visible ) {
+				++$validation['non_empty_layout_count'];
+			} elseif ( ! in_array( $layout_key, $validation['empty_layouts'], true ) ) {
+				$validation['empty_layouts'][] = $layout_key;
+			}
+		}
+
+		$validation['has_visible_content']   = $validation['non_empty_layout_count'] > 0;
+		$validation['visible_content_score'] = $visible_score;
+		$validation['empty_layouts']         = array_values( array_unique( $validation['empty_layouts'] ) );
+		$validation['empty_fields']          = array_slice( array_values( array_unique( $validation['empty_fields'] ) ), 0, 20 );
+
+		return $validation;
+	}
+
+	protected function build_layout_diagnostics( $field_name, $group, $value ) {
+		if ( empty( $group['layouts'] ) ) {
+			return array();
+		}
+
+		$sections     = is_array( $value ) ? array_values( $value ) : array();
+		$diagnostics  = array();
+
+		foreach ( (array) ( $group['layouts'] ?? array() ) as $layout_key => $layout_schema ) {
+			$index      = count( $diagnostics );
+			$is_present = isset( $sections[ $index ] ) && is_array( $sections[ $index ] );
+			$section    = $is_present ? $sections[ $index ] : array( 'acf_fc_layout' => $layout_key );
+			$empty      = array();
+
+			foreach ( (array) ( $layout_schema['fields'] ?? array() ) as $field_key => $definition ) {
+				if ( ! $this->field_value_has_visible_content( $section[ $field_key ] ?? null, $definition ) ) {
+					$empty[] = $field_key;
+				}
+			}
+
+			$diagnostics[] = array(
+				'layout'              => $layout_key,
+				'index'               => $index,
+				'present'             => $is_present,
+				'stored_layout'       => sanitize_key( (string) ( $section['acf_fc_layout'] ?? '' ) ),
+				'selector_miss'       => ! $is_present,
+				'has_visible_content' => $this->section_has_visible_content( $section ),
+				'empty_fields'        => $empty,
+			);
+		}
+
+		return $diagnostics;
+	}
+
+	protected function group_has_visible_content( $group, $value ) {
+		if ( empty( $group['layouts'] ) ) {
+			foreach ( (array) ( $group['fields'] ?? array() ) as $field_key => $definition ) {
+				if ( $this->field_value_has_visible_content( $value[ $field_key ] ?? null, $definition ) ) {
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		if ( ! is_array( $value ) || empty( $value ) ) {
+			return false;
+		}
+
+		foreach ( array_values( $value ) as $section ) {
+			if ( is_array( $section ) && $this->section_has_visible_content( $section ) ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	protected function section_has_visible_content( $section ) {
+		foreach ( (array) $section as $field_key => $field_value ) {
+			if ( 'acf_fc_layout' === (string) $field_key ) {
+				continue;
+			}
+
+			if ( $this->field_value_has_visible_content( $field_value ) ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	protected function field_value_has_visible_content( $value, $definition = array() ) {
+		$type = isset( $definition['type'] ) ? (string) $definition['type'] : '';
+
+		if ( is_array( $value ) ) {
+			if ( 'repeater' === $type || isset( $definition['fields'] ) ) {
+				foreach ( array_values( $value ) as $row ) {
+					if ( is_array( $row ) && $this->section_has_visible_content( $row ) ) {
+						return true;
+					}
+				}
+
+				return false;
+			}
+
+			foreach ( $value as $item ) {
+				if ( $this->field_value_has_visible_content( $item ) ) {
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		if ( is_bool( $value ) ) {
+			return $value;
+		}
+
+		if ( is_numeric( $value ) ) {
+			return (int) $value > 0;
+		}
+
+		return '' !== trim( wp_strip_all_tags( (string) $value ) );
+	}
+
+	protected function count_visible_fields( $value, $definition = array() ) {
+		if ( is_array( $value ) ) {
+			$count = 0;
+			foreach ( $value as $field_key => $field_value ) {
+				if ( 'acf_fc_layout' === (string) $field_key ) {
+					continue;
+				}
+
+				$count += $this->count_visible_fields( $field_value );
+			}
+
+			return $count;
+		}
+
+		return $this->field_value_has_visible_content( $value, $definition ) ? 1 : 0;
+	}
+
+	protected function get_builder_method_for_field( $field_name ) {
+		$map = array(
+			'home_sections'     => 'build_home_sections_from_html',
+			'user_sections'     => 'build_user_sections_from_html',
+			'haendler_sections' => 'build_haendler_sections_from_html',
+			'impressum_page'    => 'build_legal_page_from_html',
+			'datenschutz_page'  => 'build_legal_page_from_html',
+		);
+
+		return isset( $map[ $field_name ] ) ? $map[ $field_name ] : '';
+	}
+
+	protected function resolve_source_file_path( $relative_path ) {
+		if ( '' === $this->source_root ) {
+			return '';
+		}
+
+		return rtrim( $this->source_root, '/\\' ) . DIRECTORY_SEPARATOR . str_replace( array( '/', '\\' ), DIRECTORY_SEPARATOR, (string) $relative_path );
+	}
+
 	protected function build_home_sections_from_html( $html ) {
 		list( $dom, $xpath ) = $this->create_dom_xpath( $html );
 		$sections            = array();
@@ -334,7 +670,7 @@ class Leadwerk_ACF_Filler {
 				'title_gradient'   => $this->text( $xpath, './/h1[contains(@class,"hero-title")]//span[contains(@class,"text-gradient")]', $hero ),
 				'typewriter_words' => 'Shoppe lokal.|Finde Deals.|Entdecke Mode.|Staerke deine Stadt.',
 				'cta_text'         => $this->text( $xpath, './/div[contains(@class,"hero-cta")]//a', $hero ) ?: 'App herunterladen',
-				'cta_url'          => $this->attr( $xpath, './/div[contains(@class,"hero-cta")]//a', 'href', $hero ) ?: '#download',
+				'cta_url'          => $this->normalize_wp_internal_url( $this->attr( $xpath, './/div[contains(@class,"hero-cta")]//a', 'href', $hero ) ?: '/#download' ),
 				'hero_image'       => $hero_img ? $this->get_attachment_id_by_source( $hero_img ) : 0,
 			);
 		}
@@ -395,7 +731,7 @@ class Leadwerk_ACF_Filler {
 				'title'         => $this->text( $xpath, './/h2[contains(@class,"pakete-title")]', $pakete ),
 				'content'       => $content,
 				'cta_text'      => $this->text( $xpath, './/a[contains(@class,"pakete-cta")]', $pakete ) ?: 'Mehr erfahren',
-				'cta_url'       => $this->attr( $xpath, './/a[contains(@class,"pakete-cta")]', 'href', $pakete ) ?: '#download',
+				'cta_url'       => $this->normalize_wp_internal_url( $this->attr( $xpath, './/a[contains(@class,"pakete-cta")]', 'href', $pakete ) ?: '/#download' ),
 				'image'         => $pkg_img ? $this->get_attachment_id_by_source( $pkg_img ) : 0,
 			);
 		}
@@ -425,7 +761,7 @@ class Leadwerk_ACF_Filler {
 				'title'             => $this->text( $xpath, './/h2[contains(@class,"solution-title")]', $sol ),
 				'intro_text'        => $content,
 				'register_btn_text' => $this->text( $xpath, './/div[contains(@class,"solution-intro")]//a[contains(@class,"btn")]', $sol ) ?: 'Unternehmen registrieren',
-				'register_btn_url'  => $this->attr( $xpath, './/div[contains(@class,"solution-intro")]//a[contains(@class,"btn")]', 'href', $sol ) ?: '#download',
+				'register_btn_url'  => $this->normalize_wp_internal_url( $this->attr( $xpath, './/div[contains(@class,"solution-intro")]//a[contains(@class,"btn")]', 'href', $sol ) ?: '/fuer-haendler/#onboarding' ),
 				'cards'             => $cards,
 			);
 		}
@@ -455,9 +791,9 @@ class Leadwerk_ACF_Filler {
 				'acf_fc_layout' => 'cta',
 				'title'         => $this->multiline_text( $dom, $xpath, './/h2[contains(@class,"cta-title")]', $cta ),
 				'button_1_text' => $this->text( $xpath, './/div[contains(@class,"cta-buttons-row")]//a[1]', $cta ) ?: 'Unternehmen registrieren',
-				'button_1_url'  => $this->attr( $xpath, './/div[contains(@class,"cta-buttons-row")]//a[1]', 'href', $cta ) ?: '#',
+				'button_1_url'  => $this->normalize_wp_internal_url( $this->attr( $xpath, './/div[contains(@class,"cta-buttons-row")]//a[1]', 'href', $cta ) ?: '/fuer-haendler/#onboarding' ),
 				'button_2_text' => $this->text( $xpath, './/div[contains(@class,"cta-buttons-row")]//a[2]', $cta ) ?: 'App herunterladen',
-				'button_2_url'  => $this->attr( $xpath, './/div[contains(@class,"cta-buttons-row")]//a[2]', 'href', $cta ) ?: '#',
+				'button_2_url'  => $this->normalize_wp_internal_url( $this->attr( $xpath, './/div[contains(@class,"cta-buttons-row")]//a[2]', 'href', $cta ) ?: '/#download' ),
 			);
 		}
 
@@ -719,47 +1055,6 @@ class Leadwerk_ACF_Filler {
 
 		$onboarding = $this->xpath_section( $xpath, 'onboarding' );
 		if ( $onboarding ) {
-			$form_fields = array();
-			foreach ( $xpath->query( './/form[@id="haendler-form"]//div[contains(@class,"haendler-form-group")]', $onboarding ) as $group ) {
-				$field       = $xpath->query( './/input | .//select', $group )->item( 0 );
-				$field_type  = '';
-				$field_id    = '';
-				$options     = array();
-				$required    = false;
-				$placeholder = '';
-
-				if ( $field instanceof DOMElement ) {
-					$field_type = strtolower( $field->tagName );
-					if ( 'input' === $field_type ) {
-						$field_type = $field->getAttribute( 'type' ) ?: 'text';
-					} elseif ( 'select' === $field_type ) {
-						$field_type = 'select';
-						foreach ( $xpath->query( './/option', $field ) as $option ) {
-							if ( ! $option instanceof DOMElement ) {
-								continue;
-							}
-							if ( $option->hasAttribute( 'disabled' ) && $option->hasAttribute( 'selected' ) ) {
-								$placeholder = trim( $option->textContent );
-								continue;
-							}
-							$options[] = trim( $option->textContent );
-						}
-					}
-					$field_id    = $field->getAttribute( 'id' );
-					$placeholder = $placeholder ?: $field->getAttribute( 'placeholder' );
-					$required    = $field->hasAttribute( 'required' );
-				}
-
-				$form_fields[] = array(
-					'field_type'  => $field_type,
-					'field_id'    => $field_id,
-					'label'       => $this->text( $xpath, './/label', $group ),
-					'placeholder' => $placeholder,
-					'required'    => $required,
-					'options'     => $options,
-				);
-			}
-
 			$pos_title = '';
 			$pos_text  = '';
 			$pos_wrap  = $xpath->query( './/p[contains(@class,"haendler-pos-text")]', $onboarding )->item( 0 );
@@ -777,8 +1072,6 @@ class Leadwerk_ACF_Filler {
 				'body_text'     => $this->text( $xpath, './/p[contains(@class,"user-location-text")]', $onboarding ),
 				'pos_title'     => $pos_title,
 				'pos_text'      => $pos_text,
-				'form_fields'   => $form_fields,
-				'submit_text'   => $this->text( $xpath, './/button[contains(@class,"haendler-form-submit")]', $onboarding ),
 				'micro_text'    => $this->text( $xpath, './/p[contains(@class,"haendler-form-micro")]', $onboarding ),
 			);
 		}
@@ -903,11 +1196,66 @@ class Leadwerk_ACF_Filler {
 	}
 
 	protected function create_dom_xpath( $html ) {
+		$html = (string) $html;
+		$mode = 'raw_html';
+
+		if ( preg_match( '/<body\b[^>]*>(.*)<\/body>/is', $html, $matches ) ) {
+			$html = (string) $matches[1];
+			$mode = 'body_fragment';
+		}
+
 		libxml_use_internal_errors( true );
 		$dom = new DOMDocument();
 		$dom->loadHTML( '<?xml encoding="UTF-8">' . $html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD );
+		$errors = libxml_get_errors();
 		libxml_clear_errors();
+
+		$this->last_parser_diagnostics = array(
+			'mode'          => $mode,
+			'error_count'   => is_array( $errors ) ? count( $errors ) : 0,
+			'error_summary' => $this->summarize_libxml_errors( is_array( $errors ) ? $errors : array() ),
+		);
+
 		return array( $dom, new DOMXPath( $dom ) );
+	}
+
+	protected function get_last_parser_diagnostics_message() {
+		if ( empty( $this->last_parser_diagnostics ) || ! is_array( $this->last_parser_diagnostics ) ) {
+			return 'Parser diagnostics unavailable.';
+		}
+
+		$mode        = (string) ( $this->last_parser_diagnostics['mode'] ?? 'unknown' );
+		$error_count = (int) ( $this->last_parser_diagnostics['error_count'] ?? 0 );
+		$summary     = (string) ( $this->last_parser_diagnostics['error_summary'] ?? '' );
+
+		$message = 'Parser mode=' . $mode . ', errors=' . $error_count . '.';
+		if ( '' !== $summary ) {
+			$message .= ' ' . $summary;
+		}
+
+		return $message;
+	}
+
+	protected function summarize_libxml_errors( $errors ) {
+		if ( empty( $errors ) || ! is_array( $errors ) ) {
+			return '';
+		}
+
+		$messages = array();
+		foreach ( array_slice( $errors, 0, 3 ) as $error ) {
+			if ( ! $error instanceof LibXMLError ) {
+				continue;
+			}
+
+			$message = trim( preg_replace( '/\s+/', ' ', (string) $error->message ) );
+			if ( '' === $message ) {
+				continue;
+			}
+
+			$messages[] = $message;
+		}
+
+		return ! empty( $messages ) ? 'LibXML: ' . implode( ' | ', $messages ) : '';
 	}
 
 	protected function xpath_section( DOMXPath $xpath, $id ) {

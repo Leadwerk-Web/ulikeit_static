@@ -191,40 +191,112 @@ add_action( 'init', 'leadwerk_theme_acf_options_page' );
  * 7. Render-Callback: home_sections
  * ────────────────────────────────────────────────────────────────────── */
 
-function leadwerk_theme_render_home_sections() {
+function leadwerk_theme_resolve_render_post_id( $block = null ) {
+	if ( is_object( $block ) && ! empty( $block->context['postId'] ) ) {
+		return (int) $block->context['postId'];
+	}
+
 	$post_id = get_the_ID();
-	if ( ! $post_id || ! function_exists( 'get_field' ) ) {
-		return;
+	if ( $post_id ) {
+		return (int) $post_id;
 	}
-	$sections = get_field( 'home_sections', $post_id );
-	if ( ! is_array( $sections ) || empty( $sections ) ) {
-		return;
+
+	$post_id = get_queried_object_id();
+	if ( $post_id ) {
+		return (int) $post_id;
 	}
-	include LEADWERK_THEME_DIR . '/inc/block-home-sections.php';
+
+	global $post;
+	if ( $post instanceof WP_Post ) {
+		return (int) $post->ID;
+	}
+
+	return 0;
 }
 
-function leadwerk_theme_render_user_sections() {
-	$post_id = get_the_ID();
-	if ( ! $post_id || ! function_exists( 'get_field' ) ) {
-		return;
+function leadwerk_theme_get_last_good_field_value( $field_name, $post_id ) {
+	$snapshot = get_post_meta( $post_id, '_leadwerk_last_good_' . sanitize_key( (string) $field_name ), true );
+	if ( ! is_array( $snapshot ) || ! array_key_exists( 'value', $snapshot ) ) {
+		return null;
 	}
-	$sections = get_field( 'user_sections', $post_id );
-	if ( ! is_array( $sections ) || empty( $sections ) ) {
-		return;
-	}
-	include LEADWERK_THEME_DIR . '/inc/block-user-sections.php';
+
+	return $snapshot['value'];
 }
 
-function leadwerk_theme_render_haendler_sections() {
-	$post_id = get_the_ID();
-	if ( ! $post_id || ! function_exists( 'get_field' ) ) {
-		return;
+function leadwerk_theme_render_missing_content_notice( $label, $post_id = 0 ) {
+	if ( ! current_user_can( 'edit_post', $post_id ) ) {
+		return '';
 	}
-	$sections = get_field( 'haendler_sections', $post_id );
+
+	return '<section style="padding:32px 0;"><div class="container"><div style="padding:18px 20px;border:1px solid #fdba74;border-radius:18px;background:#fff7ed;color:#9a3412;">Leadwerk content is empty for &quot;' . esc_html( (string) $label ) . '&quot;. Run the importer or fill the Leadwerk Fields metabox.</div></div></section>';
+}
+
+function leadwerk_theme_resolve_structured_sections( $field_name, $post_id ) {
+	$sections = function_exists( 'get_field' ) ? get_field( $field_name, $post_id ) : null;
+	if ( is_array( $sections ) && ! empty( $sections ) ) {
+		return array(
+			'sections'                 => $sections,
+			'used_last_good_fallback'  => false,
+		);
+	}
+
+	$snapshot = leadwerk_theme_get_last_good_field_value( $field_name, $post_id );
+	if ( is_array( $snapshot ) && ! empty( $snapshot ) ) {
+		return array(
+			'sections'                 => $snapshot,
+			'used_last_good_fallback'  => true,
+		);
+	}
+
+	return array(
+		'sections'                 => array(),
+		'used_last_good_fallback'  => false,
+	);
+}
+
+function leadwerk_theme_render_structured_sections_template( $field_name, $label, $template_file, $block = null ) {
+	$post_id = leadwerk_theme_resolve_render_post_id( $block );
+	if ( ! $post_id || ! is_file( $template_file ) ) {
+		return '';
+	}
+
+	$resolved = leadwerk_theme_resolve_structured_sections( $field_name, $post_id );
+	$sections = leadwerk_theme_fix_mojibake_deep( $resolved['sections'] );
+
 	if ( ! is_array( $sections ) || empty( $sections ) ) {
-		return;
+		return leadwerk_theme_render_missing_content_notice( $label, $post_id );
 	}
-	include LEADWERK_THEME_DIR . '/inc/block-haendler-sections.php';
+
+	ob_start();
+	include $template_file;
+	return (string) ob_get_clean();
+}
+
+function leadwerk_theme_render_home_sections( $attributes = array(), $content = '', $block = null ) {
+	return leadwerk_theme_render_structured_sections_template(
+		'home_sections',
+		'U-like-it Startseiten-Sektionen',
+		LEADWERK_THEME_DIR . '/inc/block-home-sections.php',
+		$block
+	);
+}
+
+function leadwerk_theme_render_user_sections( $attributes = array(), $content = '', $block = null ) {
+	return leadwerk_theme_render_structured_sections_template(
+		'user_sections',
+		'U-like-it Nutzer-Seite',
+		LEADWERK_THEME_DIR . '/inc/block-user-sections.php',
+		$block
+	);
+}
+
+function leadwerk_theme_render_haendler_sections( $attributes = array(), $content = '', $block = null ) {
+	return leadwerk_theme_render_structured_sections_template(
+		'haendler_sections',
+		'U-like-it Haendler-Seite',
+		LEADWERK_THEME_DIR . '/inc/block-haendler-sections.php',
+		$block
+	);
 }
 
 function leadwerk_theme_get_option_url( $field_name, $default = '#' ) {
@@ -233,16 +305,197 @@ function leadwerk_theme_get_option_url( $field_name, $default = '#' ) {
 	}
 
 	$url = get_field( $field_name, 'option' );
-	return ! empty( $url ) ? $url : $default;
+	$url = trim( (string) $url );
+
+	if ( '' === $url || '#' === $url || '/#' === $url ) {
+		return $default;
+	}
+
+	return $url;
+}
+
+function leadwerk_theme_fix_mojibake( $value ) {
+	if ( ! is_string( $value ) || '' === $value ) {
+		return $value;
+	}
+
+	if ( false === strpos( $value, 'Ã' ) && false === strpos( $value, 'â' ) && false === strpos( $value, 'Â' ) ) {
+		return $value;
+	}
+
+	return strtr(
+		$value,
+		array(
+			'Ã„'  => 'Ä',
+			'Ã–'  => 'Ö',
+			'Ãœ'  => 'Ü',
+			'Ã¤'  => 'ä',
+			'Ã¶'  => 'ö',
+			'Ã¼'  => 'ü',
+			'ÃŸ'  => 'ß',
+			'â€“' => '–',
+			'â€”' => '—',
+			'â€¦' => '…',
+			'â€ž' => '„',
+			'â€œ' => '“',
+			'â€�' => '”',
+			'â€˜' => "'",
+			'â€™' => "'",
+			'â†’' => '→',
+			'Â'   => '',
+		)
+	);
+}
+
+function leadwerk_theme_fix_mojibake_deep( $value ) {
+	if ( is_array( $value ) ) {
+		foreach ( $value as $key => $item ) {
+			$value[ $key ] = leadwerk_theme_fix_mojibake_deep( $item );
+		}
+
+		return $value;
+	}
+
+	return leadwerk_theme_fix_mojibake( $value );
+}
+
+function leadwerk_theme_normalize_home_download_url( $url ) {
+	$url = trim( (string) $url );
+
+	if ( in_array( $url, array( '', '#', '#download', '/#download', 'index.html#download', '/index.html#download', 'http://index.html#download', 'https://index.html#download' ), true ) ) {
+		return '/#download';
+	}
+
+	return $url;
+}
+
+function leadwerk_theme_normalize_home_registration_url( $url ) {
+	$url = trim( (string) $url );
+
+	if ( in_array( $url, array( '', '#', '#download', '/#download', 'index.html#download', '/index.html#download', '#onboarding', 'haendler.html#onboarding', '/haendler.html#onboarding' ), true ) ) {
+		return '/fuer-haendler/#onboarding';
+	}
+
+	return $url;
+}
+
+function leadwerk_theme_normalize_user_download_url( $url ) {
+	$url = trim( (string) $url );
+
+	if ( in_array( $url, array( '', '#', '#download', '/#download', 'index.html#download', '/index.html#download', 'http://index.html#download', 'https://index.html#download', 'user.html', '/user.html', 'user.html#download', '/user.html#download', '/fuer-nutzer/', '/fuer-nutzer/#download', 'http://user.html#download' ), true ) ) {
+		return '/#download';
+	}
+
+	return $url;
+}
+
+function leadwerk_theme_get_default_store_urls() {
+	return array(
+		'apple'  => 'https://apps.apple.com/de/app/u-like-it/id1593884667',
+		'google' => 'https://play.google.com/store/apps/details?id=de.u_like_it',
+	);
+}
+
+function leadwerk_theme_normalize_wpforms_value( $value ) {
+	$raw = trim( wp_unslash( (string) $value ) );
+	if ( '' === $raw ) {
+		return array(
+			'id'        => '',
+			'shortcode' => '',
+		);
+	}
+
+	if ( preg_match( '/\bid\s*=\s*(["\']?)(\d+)\1/i', $raw, $matches ) ) {
+		$id = $matches[2];
+	} elseif ( preg_match( '/\d+/', $raw, $matches ) ) {
+		$id = $matches[0];
+	} else {
+		$id = '';
+	}
+
+	if ( '' === $id ) {
+		return array(
+			'id'        => '',
+			'shortcode' => '',
+		);
+	}
+
+	return array(
+		'id'        => $id,
+		'shortcode' => sprintf( '[wpforms id="%s" title="false" description="false"]', $id ),
+	);
+}
+
+function leadwerk_theme_resolve_wpforms_embed( $value ) {
+	$data = leadwerk_theme_normalize_wpforms_value( $value );
+	$id   = (string) ( $data['id'] ?? '' );
+
+	$result = array(
+		'id'                   => $id,
+		'shortcode'            => (string) ( $data['shortcode'] ?? '' ),
+		'shortcode_registered' => shortcode_exists( 'wpforms' ),
+		'html'                 => '',
+		'is_ready'             => false,
+		'reason'               => 'missing_id',
+	);
+
+	if ( '' === $id ) {
+		return $result;
+	}
+
+	if ( '' === $result['shortcode'] ) {
+		$result['reason'] = 'invalid_shortcode';
+		return $result;
+	}
+
+	$rendered = do_shortcode( $result['shortcode'] );
+	$trimmed  = trim( (string) $rendered );
+
+	if ( '' !== $trimmed && false === stripos( $trimmed, '[wpforms' ) ) {
+		$result['html']     = $rendered;
+		$result['is_ready'] = true;
+		$result['reason']   = 'rendered';
+		return $result;
+	}
+
+	$result['reason'] = $result['shortcode_registered'] ? 'empty_output' : 'shortcode_unavailable';
+	return $result;
+}
+
+function leadwerk_theme_get_wpforms_admin_note( $embed_state ) {
+	$id                  = esc_html( (string) ( $embed_state['id'] ?? '' ) );
+	$shortcode_available = ! empty( $embed_state['shortcode_registered'] ) ? 'ja' : 'nein';
+	$reason              = (string) ( $embed_state['reason'] ?? 'missing_id' );
+
+	$diagnostic_map = array(
+		'missing_id'           => 'Keine gueltige Formular-ID gespeichert.',
+		'invalid_shortcode'    => 'Die gespeicherte Eingabe konnte nicht als WPForms-ID erkannt werden.',
+		'shortcode_unavailable'=> 'Der WPForms-Shortcode ist in dieser Anfrage nicht registriert.',
+		'empty_output'         => 'WPForms ist registriert, liefert aber fuer diese ID keinen Output.',
+		'rendered'             => 'Formular erfolgreich gerendert.',
+	);
+
+	$diagnostic = esc_html( $diagnostic_map[ $reason ] ?? $reason );
+	$message    = 'Leadwerk Optionen unter <strong>Haendler WPForms ID</strong> pflegen und WPForms aktivieren, damit das Formular hier erscheint.';
+	$message   .= ' Aktuelle Diagnose: ' . $diagnostic;
+
+	if ( '' !== $id ) {
+		$message .= ' Erkannte ID: <strong>' . $id . '</strong>.';
+	}
+
+	$message .= ' Shortcode registriert: <strong>' . esc_html( $shortcode_available ) . '</strong>.';
+
+	return '<p class="haendler-form-admin-note">' . wp_kses_post( $message ) . '</p>';
 }
 
 function leadwerk_theme_get_store_badge_data() {
+	$default_store_urls = leadwerk_theme_get_default_store_urls();
 	$apple_badge = function_exists( 'get_field' ) ? get_field( 'app_store_badge', 'option' ) : null;
 	$google_badge = function_exists( 'get_field' ) ? get_field( 'google_play_badge', 'option' ) : null;
 
 	return array(
-		'apple_url'      => leadwerk_theme_get_option_url( 'app_store_url', '#' ),
-		'google_url'     => leadwerk_theme_get_option_url( 'google_play_url', '#' ),
+		'apple_url'      => leadwerk_theme_get_option_url( 'app_store_url', $default_store_urls['apple'] ),
+		'google_url'     => leadwerk_theme_get_option_url( 'google_play_url', $default_store_urls['google'] ),
 		'apple_badge'    => leadwerk_theme_resolve_acf_image_url( $apple_badge, 'full' ) ?: LEADWERK_THEME_URI . '/assets/images/apple_app_store_badge.png',
 		'google_badge'   => leadwerk_theme_resolve_acf_image_url( $google_badge, 'full' ) ?: LEADWERK_THEME_URI . '/assets/images/google-play-badge.png',
 	);
@@ -289,58 +542,50 @@ function leadwerk_theme_dynamic_footer( $content ) {
 		$content
 	);
 
-	if ( ! $has_fields ) {
-		return $content;
-	}
-
-	// Footer text
-	$footer_text = get_field( 'footer_text', 'option' );
-	if ( $footer_text ) {
-		$content = preg_replace(
-			'/<p[^>]*data-field="footer_text"[^>]*>.*?<\/p>/s',
-			'<p class="footer-seo-text">' . esc_html( $footer_text ) . '</p>',
-			$content
-		);
-	}
-
-	// Copyright
-	$copy = get_field( 'copyright_text', 'option' );
-	if ( $copy ) {
-		$content = preg_replace(
-			'/<p[^>]*data-field="copyright"[^>]*>.*?<\/p>/s',
-			'<p class="footer-copy">' . wp_kses_post( $copy ) . '</p>',
-			$content
-		);
-	}
-
-	// App Store badges
-	$apple_badge_id = get_field( 'app_store_badge', 'option' );
-	if ( $apple_badge_id && is_numeric( $apple_badge_id ) ) {
-		$u = wp_get_attachment_image_url( (int) $apple_badge_id, 'full' );
-		if ( $u ) {
+	if ( $has_fields ) {
+		// Footer text
+		$footer_text = get_field( 'footer_text', 'option' );
+		if ( $footer_text ) {
 			$content = preg_replace(
-				'/<img[^>]*data-badge="apple"[^>]*>/s',
-				'<img src="' . esc_url( $u ) . '" alt="Download on the App Store" width="135" height="40">',
+				'/<p[^>]*data-field="footer_text"[^>]*>.*?<\/p>/s',
+				'<p class="footer-seo-text">' . esc_html( $footer_text ) . '</p>',
 				$content
 			);
 		}
-	}
-	$google_badge_id = get_field( 'google_play_badge', 'option' );
-	if ( $google_badge_id && is_numeric( $google_badge_id ) ) {
-		$u = wp_get_attachment_image_url( (int) $google_badge_id, 'full' );
-		if ( $u ) {
+
+		// Copyright
+		$copy = get_field( 'copyright_text', 'option' );
+		if ( $copy ) {
 			$content = preg_replace(
-				'/<img[^>]*data-badge="google"[^>]*>/s',
-				'<img src="' . esc_url( $u ) . '" alt="Bei Google Play herunterladen" width="135" height="40">',
+				'/<p[^>]*data-field="copyright"[^>]*>.*?<\/p>/s',
+				'<p class="footer-copy">' . wp_kses_post( $copy ) . '</p>',
 				$content
 			);
 		}
 	}
 
-	$apple_store_url  = leadwerk_theme_get_option_url( 'app_store_url', '#' );
-	$google_store_url = leadwerk_theme_get_option_url( 'google_play_url', '#' );
-	$content          = str_replace( 'href="#" data-store-link="apple"', 'href="' . esc_url( $apple_store_url ) . '" data-store-link="apple"', $content );
-	$content          = str_replace( 'href="#" data-store-link="google"', 'href="' . esc_url( $google_store_url ) . '" data-store-link="google"', $content );
+	$store_badges = leadwerk_theme_get_store_badge_data();
+
+	$content = preg_replace(
+		'/<img[^>]*data-badge="apple"[^>]*>/s',
+		'<img src="' . esc_url( $store_badges['apple_badge'] ) . '" alt="Download on the App Store" width="135" height="40" data-badge="apple">',
+		$content
+	);
+	$content = preg_replace(
+		'/<img[^>]*data-badge="google"[^>]*>/s',
+		'<img src="' . esc_url( $store_badges['google_badge'] ) . '" alt="Bei Google Play herunterladen" width="135" height="40" data-badge="google">',
+		$content
+	);
+	$content = preg_replace(
+		'/href="[^"]*" data-store-link="apple"/',
+		'href="' . esc_url( $store_badges['apple_url'] ) . '" data-store-link="apple"',
+		$content
+	);
+	$content = preg_replace(
+		'/href="[^"]*" data-store-link="google"/',
+		'href="' . esc_url( $store_badges['google_url'] ) . '" data-store-link="google"',
+		$content
+	);
 
 	return $content;
 }

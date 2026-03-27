@@ -89,6 +89,7 @@ class Leadwerk_Fields_API {
 			return;
 		}
 		$stored = self::maybe_json_encode( $value );
+		$stored = is_string( $stored ) ? wp_slash( $stored ) : $stored;
 		update_post_meta( $post_id, $name, $stored );
 	}
 
@@ -106,6 +107,9 @@ class Leadwerk_Fields_API {
 			return self::$options_cache[ $key ];
 		}
 		$raw = get_option( $key, null );
+		if ( is_string( $raw ) ) {
+			$raw = wp_unslash( $raw );
+		}
 		$val = self::maybe_json_decode( $raw );
 		self::$options_cache[ $key ] = $val;
 		return $val;

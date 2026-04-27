@@ -19,7 +19,7 @@ if ( ! function_exists( 'leadwerk_theme_render_store_badges' ) ) {
 	function leadwerk_theme_render_store_badges( $store, $width = 155, $height = 46, $class = 'store-badge' ) {
 		?>
 		<a href="<?php echo esc_url( $store['apple_url'] ); ?>" class="<?php echo esc_attr( $class ); ?>" aria-label="Im App Store herunterladen">
-			<img src="<?php echo esc_url( $store['apple_badge'] ); ?>" alt="Download on the App Store" width="<?php echo (int) $width; ?>" height="<?php echo (int) $height; ?>">
+			<img src="<?php echo esc_url( $store['apple_badge'] ); ?>" alt="Im App Store herunterladen" width="<?php echo (int) $width; ?>" height="<?php echo (int) $height; ?>">
 		</a>
 		<a href="<?php echo esc_url( $store['google_url'] ); ?>" class="<?php echo esc_attr( $class ); ?>" aria-label="Bei Google Play herunterladen">
 			<img src="<?php echo esc_url( $store['google_badge'] ); ?>" alt="Bei Google Play herunterladen" width="<?php echo (int) $width; ?>" height="<?php echo (int) $height; ?>">
@@ -118,7 +118,7 @@ foreach ( $sections as $section ) {
 				</div>
 			</section>
 			<?php
-			leadwerk_theme_render_user_ticker( array( 'FASHION', 'GASTRO', 'CAFES', 'BOUTIQUEN', 'RESTAURANTS', 'BARS', 'CONCEPT STORES', 'LOKALE DEALS' ) );
+			leadwerk_theme_render_user_ticker( array( 'MODE', 'GASTRO', 'CAFÉS', 'BOUTIQUEN', 'RESTAURANTS', 'BARS', 'KONZEPTLÄDEN', 'LOKALE ANGEBOTE' ) );
 			break;
 
 		case 'app_preview':
@@ -215,11 +215,11 @@ foreach ( $sections as $section ) {
 				</div>
 			</section>
 			<?php
-			leadwerk_theme_render_user_ticker( array( 'FASHION', 'GASTRO', 'CAFES', 'BOUTIQUEN', 'RESTAURANTS', 'BARS', 'CONCEPT STORES', 'LOKALE DEALS' ) );
+			leadwerk_theme_render_user_ticker( array( 'MODE', 'GASTRO', 'CAFÉS', 'BOUTIQUEN', 'RESTAURANTS', 'BARS', 'KONZEPTLÄDEN', 'LOKALE ANGEBOTE' ) );
 			?>
 			<div class="loc-modal-overlay" id="loc-modal-overlay" aria-hidden="true">
 				<div class="loc-modal glass-card" role="dialog" aria-labelledby="loc-modal-title">
-					<button type="button" class="loc-modal-close" id="loc-modal-close" aria-label="Schliessen">
+					<button type="button" class="loc-modal-close" id="loc-modal-close" aria-label="Schließen">
 						<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
 					</button>
 					<div class="loc-modal-icon-wrap">

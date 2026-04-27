@@ -1,6 +1,6 @@
 /* ============================================================
    U-like-it Version 3 — Styles
-   Mode entdecken. Stadt beleben.
+   App herunterladen. Schnäppchen sichern.
    ============================================================ */
  
 /* ---------- Design Tokens ---------- */
@@ -89,6 +89,11 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: var(--color-bg);
+}
+
+section[id],
+div[id] {
+  scroll-margin-top: 96px;
 }
 
 body {
@@ -591,6 +596,54 @@ body.cursor-idle .custom-cursor-shadow { opacity: 0; }
   width: 100%;
 }
 
+@media (min-width: 1024px) {
+  .nav-list .nav-link-featured {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: none;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    transition: color var(--transition-fast);
+  }
+
+  .nav-list .nav-link-featured::after {
+    display: none;
+  }
+
+  .nav-list .nav-link-featured-label {
+    position: relative;
+    display: inline-block;
+    font-size: 17px;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: 0.01em;
+    color: var(--color-accent);
+    text-shadow:
+      -1px -1px 0 #fff,
+      1px -1px 0 #fff,
+      -1px 1px 0 #fff,
+      1px 1px 0 #fff,
+      -1px 0 0 #fff,
+      1px 0 0 #fff,
+      0 -1px 0 #fff,
+      0 1px 0 #fff;
+  }
+
+  .nav-list .nav-link-featured:hover,
+  .nav-list .nav-link-featured:focus-visible {
+    color: var(--color-accent);
+    background: transparent;
+  }
+
+  .nav-list .nav-link-featured:hover .nav-link-featured-label,
+  .nav-list .nav-link-featured:focus-visible .nav-link-featured-label {
+    color: var(--color-accent);
+  }
+}
+
 .nav-item {
   position: relative;
 }
@@ -1043,7 +1096,7 @@ body.cursor-idle .custom-cursor-shadow { opacity: 0; }
 }
 
 .hero .hero-title {
-  width: 60%;
+  width: 90%;
 }
 
 .hero .hero-title .text-gradient {
@@ -1058,26 +1111,85 @@ body.cursor-idle .custom-cursor-shadow { opacity: 0; }
 }
 
 .hero-title-solid {
-  color: #fff;
+  display: inline-block;
+  color: var(--color-accent);
+  line-height: 1.18;
+  text-shadow:
+    -1px -1px 0 #fff,
+    1px -1px 0 #fff,
+    -1px 1px 0 #fff,
+    1px 1px 0 #fff,
+    -1px 0 0 #fff,
+    1px 0 0 #fff,
+    0 -1px 0 #fff,
+    0 1px 0 #fff,
+    -2px -2px 0 #fff,
+    2px -2px 0 #fff,
+    -2px 2px 0 #fff,
+    2px 2px 0 #fff,
+    -2px 0 0 #fff,
+    2px 0 0 #fff,
+    0 -2px 0 #fff,
+    0 2px 0 #fff,
+    -3px -1px 0 #fff,
+    -3px 1px 0 #fff,
+    3px -1px 0 #fff,
+    3px 1px 0 #fff,
+    -1px -3px 0 #fff,
+    1px -3px 0 #fff,
+    -1px 3px 0 #fff,
+    1px 3px 0 #fff,
+    -3px 0 0 #fff,
+    3px 0 0 #fff,
+    0 -3px 0 #fff,
+    0 3px 0 #fff;
 }
 
 .hero .hero-typewriter-wrap {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
-  overflow: hidden;
+  display: block;
+  overflow: visible;
   overflow-wrap: break-word;
+  padding: 0.04em 0.08em 0.2em;
+  margin: -0.04em -0.08em -0.2em;
   width: 100%;
   box-sizing: border-box;
 }
 
 .hero-typewriter-cursor {
   display: inline-block;
-  color: #fff;
+  color: var(--color-accent);
   font-weight: 800;
   animation: hero-cursor-blink 1s step-end infinite;
   margin-left: 1px;
+  text-shadow:
+    -1px -1px 0 #fff,
+    1px -1px 0 #fff,
+    -1px 1px 0 #fff,
+    1px 1px 0 #fff,
+    -1px 0 0 #fff,
+    1px 0 0 #fff,
+    0 -1px 0 #fff,
+    0 1px 0 #fff,
+    -2px -2px 0 #fff,
+    2px -2px 0 #fff,
+    -2px 2px 0 #fff,
+    2px 2px 0 #fff,
+    -2px 0 0 #fff,
+    2px 0 0 #fff,
+    0 -2px 0 #fff,
+    0 2px 0 #fff,
+    -3px -1px 0 #fff,
+    -3px 1px 0 #fff,
+    3px -1px 0 #fff,
+    3px 1px 0 #fff,
+    -1px -3px 0 #fff,
+    1px -3px 0 #fff,
+    -1px 3px 0 #fff,
+    1px 3px 0 #fff,
+    -3px 0 0 #fff,
+    3px 0 0 #fff,
+    0 -3px 0 #fff,
+    0 3px 0 #fff;
 }
 
 @keyframes hero-cursor-blink {
@@ -1099,6 +1211,27 @@ body.cursor-idle .custom-cursor-shadow { opacity: 0; }
   flex-wrap: wrap;
   gap: 14px;
   align-items: center;
+}
+
+.hero .hero-cta.user-hero-cta {
+  gap: 12px;
+}
+
+.hero .hero-cta.user-hero-cta .store-badge {
+  display: inline-block;
+  line-height: 0;
+  transition: transform var(--transition-fast), opacity var(--transition-fast);
+}
+
+.hero .hero-cta.user-hero-cta .store-badge:hover {
+  transform: scale(1.04);
+  opacity: 0.9;
+}
+
+.hero .hero-cta.user-hero-cta .store-badge img {
+  height: 46px;
+  width: auto;
+  border-radius: 8px;
 }
 
 /* Einflug: App herunterladen von links (zuerst), Unternehmen registrieren von rechts (kurz versetzt) */
@@ -1954,12 +2087,12 @@ body.cursor-idle .custom-cursor-shadow { opacity: 0; }
     margin: 0 auto;
   }
   .app-steps-badge {
-    width: 80px;
-    height: 80px;
+    width: 56px;
+    height: 56px;
   }
   .app-steps-badge-icon {
-    width: 28px;
-    height: 28px;
+    width: 20px;
+    height: 20px;
   }
 }
 
@@ -2101,16 +2234,17 @@ body.cursor-idle .custom-cursor-shadow { opacity: 0; }
 
 .app-steps-badge {
   position: absolute;
-  bottom: 10%;
-  left: 6%;
-  width: 155px;
-  height: 155px;
+  bottom: -2%;
+  left: -4%;
+  width: 96px;
+  height: 96px;
   border-radius: 50%;
   background: var(--color-primary);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 20px rgba(16, 123, 212, 0.4);
+  opacity: 0.9;
+  box-shadow: 0 3px 14px rgba(16, 123, 212, 0.24);
   transition: transform 0.1s ease-out;
   will-change: transform;
 }
@@ -2118,8 +2252,8 @@ body.cursor-idle .custom-cursor-shadow { opacity: 0; }
 .app-steps-badge-icon {
   color: #fff;
   flex-shrink: 0;
-  width: 50px;
-  height: 50px;
+  width: 32px;
+  height: 32px;
 }
 
 
@@ -3354,6 +3488,32 @@ body.cursor-idle .custom-cursor-shadow { opacity: 0; }
     justify-content: center;
   }
 
+  .hero .hero-cta.user-hero-cta {
+    width: 100%;
+    max-width: 290px;
+    margin-left: auto;
+    margin-right: auto;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .hero .hero-cta.user-hero-cta .store-badge {
+    display: flex;
+    justify-content: center;
+    flex: 1 1 128px;
+    width: auto;
+    min-width: 0;
+    max-width: 140px;
+  }
+
+  .hero .hero-cta.user-hero-cta .store-badge img {
+    width: 100%;
+    max-width: 140px;
+    height: auto;
+  }
+
   .hero-device-wrap {
     width: 260px;
     margin: 0 auto;
@@ -3387,6 +3547,21 @@ body.cursor-idle .custom-cursor-shadow { opacity: 0; }
   .hero-cta .btn {
     width: 100%;
     justify-content: center;
+  }
+
+  .hero .hero-cta.user-hero-cta {
+    max-width: 272px;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .hero .hero-cta.user-hero-cta .store-badge {
+    flex-basis: 120px;
+    max-width: 132px;
+  }
+
+  .hero .hero-cta.user-hero-cta .store-badge img {
+    max-width: 132px;
   }
 
   .tabs-nav {
@@ -3498,6 +3673,12 @@ body.nav-open {
 .legal-content a {
   overflow-wrap: anywhere;
   word-break: break-word;
+}
+
+.legal-no-copy {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 @media (max-width: 860px) {
@@ -3742,6 +3923,16 @@ body.nav-open {
   .legal-section {
     padding-top: 124px !important;
     padding-bottom: 56px !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .footer-badges {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
   }
 }
 

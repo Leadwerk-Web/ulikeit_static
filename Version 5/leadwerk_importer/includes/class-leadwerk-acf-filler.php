@@ -664,11 +664,12 @@ class Leadwerk_ACF_Filler {
 
 		$hero = $this->xpath_section( $xpath, 'hero' );
 		if ( $hero ) {
-			$hero_img    = $this->attr( $xpath, './/div[contains(@class,"hero-frau-layer")]//img', 'src', $hero );
+			$hero_img         = $this->attr( $xpath, './/div[contains(@class,"hero-frau-layer")]//img', 'src', $hero );
+			$typewriter_words = $this->attr( $xpath, './/span[contains(@class,"hero-typewriter-wrap")]', 'data-words', $hero );
 			$sections[] = array(
 				'acf_fc_layout'    => 'hero',
 				'title_gradient'   => $this->text( $xpath, './/h1[contains(@class,"hero-title")]//span[contains(@class,"text-gradient")]', $hero ),
-				'typewriter_words' => 'Shoppe lokal.|Finde Deals.|Entdecke Mode.|Staerke deine Stadt.',
+				'typewriter_words' => $typewriter_words ? $typewriter_words : 'App herunterladen. Schnäppchen sichern.|Lokale Angebote in deiner Nähe.|Vor Ort einlösen. Direkt sparen.',
 				'cta_text'         => $this->text( $xpath, './/div[contains(@class,"hero-cta")]//a', $hero ) ?: 'App herunterladen',
 				'cta_url'          => $this->normalize_wp_internal_url( $this->attr( $xpath, './/div[contains(@class,"hero-cta")]//a', 'href', $hero ) ?: '/#download' ),
 				'hero_image'       => $hero_img ? $this->get_attachment_id_by_source( $hero_img ) : 0,

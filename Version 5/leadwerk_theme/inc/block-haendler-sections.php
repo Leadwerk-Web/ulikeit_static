@@ -51,6 +51,14 @@ foreach ( $sections as $index => $section ) {
 		case 'hero':
 			$title_lines = is_array( $section['title_lines'] ?? null ) ? $section['title_lines'] : array();
 			$hero_image  = leadwerk_theme_resolve_acf_image_url( $section['hero_image'] ?? 0, 'full' );
+			$store_badges = function_exists( 'leadwerk_theme_get_store_badge_data' ) ? leadwerk_theme_get_store_badge_data() : array();
+			$primary_button_url = trim( (string) ( $section['primary_button_url'] ?? '#onboarding' ) );
+			$secondary_button_url = $section['secondary_button_url'] ?? '#vorteile';
+			$is_store_swap_trigger = in_array(
+				$primary_button_url,
+				array( '', '#onboarding', '/fuer-haendler/#onboarding', 'haendler.html#onboarding', '/haendler.html#onboarding' ),
+				true
+			);
 			if ( ! $hero_image ) {
 				$hero_image = LEADWERK_THEME_URI . '/assets/images/frau-freigestellt.png';
 			}
@@ -70,9 +78,9 @@ foreach ( $sections as $index => $section ) {
 								<?php endforeach; ?>
 							</h1>
 							<p class="user-hero-sub"><?php echo esc_html( $section['subtitle'] ?? '' ); ?></p>
-							<div class="hero-cta haendler-hero-cta">
-								<a href="<?php echo esc_url( $section['primary_button_url'] ?? '#onboarding' ); ?>" class="btn btn-accent-solid btn-lg"><?php echo esc_html( $section['primary_button_text'] ?? '' ); ?></a>
-								<a href="<?php echo esc_url( $section['secondary_button_url'] ?? '#vorteile' ); ?>" class="btn btn-white btn-lg"><?php echo esc_html( $section['secondary_button_text'] ?? '' ); ?></a>
+							<div class="hero-cta haendler-hero-cta"<?php if ( ! empty( $store_badges ) ) : ?> data-haendler-hero-store-root="true" data-haendler-store-apple-url="<?php echo esc_url( $store_badges['apple_url'] ?? '' ); ?>" data-haendler-store-apple-badge="<?php echo esc_url( $store_badges['apple_badge'] ?? '' ); ?>" data-haendler-store-google-url="<?php echo esc_url( $store_badges['google_url'] ?? '' ); ?>" data-haendler-store-google-badge="<?php echo esc_url( $store_badges['google_badge'] ?? '' ); ?>"<?php endif; ?>>
+								<a href="<?php echo esc_url( $primary_button_url ); ?>" class="btn btn-accent-solid btn-lg"<?php if ( $is_store_swap_trigger ) : ?> data-haendler-hero-store-trigger="true"<?php endif; ?>><?php echo esc_html( $section['primary_button_text'] ?? '' ); ?></a>
+								<a href="<?php echo esc_url( $secondary_button_url ); ?>" class="btn btn-white btn-lg"><?php echo esc_html( $section['secondary_button_text'] ?? '' ); ?></a>
 							</div>
 							<p class="user-hero-micro"><?php echo esc_html( $section['micro_text'] ?? '' ); ?></p>
 						</div>
@@ -120,7 +128,7 @@ foreach ( $sections as $index => $section ) {
 				</div>
 			</section>
 			<?php
-			leadwerk_theme_render_generic_ticker( array( 'BOUTIQUEN', 'FASHION', 'CONCEPT STORES', 'ACCESSOIRES', 'LOKALE HAENDLER', 'SCHUHE', 'SCHMUCK', 'INTERIOR' ) );
+			leadwerk_theme_render_generic_ticker( array( 'BOUTIQUEN', 'CAFÉS', 'RESTAURANTS', 'KONZEPTLÄDEN', 'LOKALE ANGEBOTE', 'MODE', 'GASTRO', 'LOKALE HÄNDLER' ) );
 			break;
 
 		case 'how_it_works':
@@ -215,7 +223,7 @@ foreach ( $sections as $index => $section ) {
 				<div class="parallax-image-wrap"></div>
 			</section>
 			<?php
-			leadwerk_theme_render_generic_ticker( array( 'MEHR FREQUENZ', 'LOKALE DEALS', 'MESSBAR', 'KEIN STREUVERLUST', 'QR-EINLOESUNG', 'PLANBAR', 'EINFACH', 'LOKAL' ) );
+			leadwerk_theme_render_generic_ticker( array( 'MEHR FREQUENZ', 'LOKALE ANGEBOTE', 'MESSBAR', 'KEIN STREUVERLUST', 'QR-EINLÖSUNG', 'PLANBAR', 'EINFACH', 'LOKAL' ) );
 			break;
 
 		case 'use_cases':

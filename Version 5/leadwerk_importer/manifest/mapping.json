@@ -1,8 +1,8 @@
 {
   "version": "1",
   "source_root": "",
-  "site_title": "U-like-it – Mode entdecken. Stadt beleben.",
-  "site_tagline": "Lokale Fashion-Deals von Läden in deiner Nähe.",
+  "site_title": "U-like-it - App herunterladen. Schn\u00e4ppchen sichern.",
+  "site_tagline": "Lokale Angebote von L\u00e4den, Caf\u00e9s und Restaurants in deiner N\u00e4he.",
   "pages": [
     {
       "source_key": "ulikeit-home-v1",
@@ -14,11 +14,11 @@
       "slug": "home",
       "title": "U-like-it",
       "seo": {
-        "title": "U-like-it – Mode entdecken. Stadt beleben. | Lokale Fashion-Deals",
-        "meta_description": "U-like-it – Mode entdecken. Stadt beleben. Lokale Fashion-Deals von Läden in deiner Nähe. Reservier direkt, spar vor Ort.",
-        "og_title": "U-like-it – Mode entdecken. Stadt beleben.",
-        "og_description": "Lokale Fashion-Deals von Läden in deiner Nähe. Reservier direkt, spar vor Ort.",
-        "focus_keyphrase": "lokale Fashion-Deals"
+        "title": "U-like-it - App herunterladen. Schn\u00e4ppchen sichern.",
+        "meta_description": "U-like-it bringt lokale Angebote von L\u00e4den, Caf\u00e9s und Restaurants direkt in deine N\u00e4he. App herunterladen, Schn\u00e4ppchen sichern und vor Ort einl\u00f6sen.",
+        "og_title": "U-like-it - App herunterladen. Schn\u00e4ppchen sichern.",
+        "og_description": "Lokale Angebote von L\u00e4den, Caf\u00e9s und Restaurants in deiner N\u00e4he.",
+        "focus_keyphrase": "lokale Angebote App"
       }
     },
     {
@@ -30,7 +30,7 @@
       "slug": "impressum",
       "title": "Impressum",
       "seo": {
-        "title": "Impressum – U-like-it",
+        "title": "Impressum - U-like-it",
         "meta_description": "Impressum und rechtliche Angaben zu U-like-it.",
         "meta_robots": "noindex, follow"
       }
@@ -42,10 +42,10 @@
       "target_type": "page",
       "post_status": "publish",
       "slug": "datenschutz",
-      "title": "Datenschutzerklärung",
+      "title": "Datenschutzerkl\u00e4rung",
       "seo": {
-        "title": "Datenschutzerklärung – U-like-it",
-        "meta_description": "Datenschutzerklärung von U-like-it. Informationen zur Verarbeitung personenbezogener Daten gemäß DSGVO.",
+        "title": "Datenschutzerkl\u00e4rung - U-like-it",
+        "meta_description": "Datenschutzerkl\u00e4rung von U-like-it. Informationen zur Verarbeitung personenbezogener Daten gem\u00e4\u00df DSGVO.",
         "meta_robots": "noindex, follow"
       }
     },
@@ -56,11 +56,11 @@
       "target_type": "page",
       "post_status": "publish",
       "slug": "fuer-haendler",
-      "title": "Für Händler",
+      "title": "F\u00fcr H\u00e4ndler & Gastronomie",
       "seo": {
-        "title": "U-like-it – Für lokale Händler",
-        "meta_description": "U-like-it für lokale Händler – Mehr Kunden, mehr Umsatz, messbare Ergebnisse. Erstelle lokale Deals und bringe Kunden direkt in deinen Laden.",
-        "focus_keyphrase": "lokale Händler Deals"
+        "title": "U-like-it - F\u00fcr H\u00e4ndler & Gastronomie",
+        "meta_description": "U-like-it f\u00fcr H\u00e4ndler und Gastronomie - Mehr Sichtbarkeit, mehr Frequenz, messbare Ergebnisse. Erstelle lokale Angebote und bringe Kundschaft direkt in dein Gesch\u00e4ft.",
+        "focus_keyphrase": "lokale Angebote f\u00fcr H\u00e4ndler"
       }
     },
     {
@@ -70,11 +70,11 @@
       "target_type": "page",
       "post_status": "publish",
       "slug": "fuer-nutzer",
-      "title": "Für Nutzer",
+      "title": "F\u00fcr Nutzer",
       "seo": {
-        "title": "U-like-it – Deals entdecken. Vor Ort sparen.",
-        "meta_description": "U-like-it – Entdecke exklusive Deals von lokalen Läden in deiner Nähe. Einfach App öffnen, vorbeigehen und sparen.",
-        "focus_keyphrase": "lokale Deals App"
+        "title": "U-like-it - Angebote entdecken. Vor Ort sparen.",
+        "meta_description": "U-like-it - Entdecke exklusive Angebote von lokalen L\u00e4den, Caf\u00e9s und Restaurants in deiner N\u00e4he. App \u00f6ffnen, vorbeigehen und vor Ort sparen.",
+        "focus_keyphrase": "lokale Angebote App"
       }
     }
   ]

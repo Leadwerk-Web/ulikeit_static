@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="U-like-it – Mode entdecken. Stadt beleben. Lokale Fashion-Deals von Läden in deiner Nähe. Reservier direkt, spar vor Ort.">
-  <title>U-like-it – Mode entdecken. Stadt beleben.</title>
+  <meta name="description" content="U-like-it bringt lokale Angebote von L&auml;den, Caf&eacute;s und Restaurants direkt in deine N&auml;he. App herunterladen, Schn&auml;ppchen sichern und vor Ort einl&ouml;sen.">
+  <title>U-like-it – App herunterladen. Schn&auml;ppchen sichern.</title>
   <link rel="icon" type="image/x-icon" href="images/favicon.ico">
   <link rel="icon" type="image/png" href="images/favicon.png" sizes="32x32">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -27,7 +27,7 @@
       </a>
       <nav class="nav" id="main-nav" aria-label="Hauptnavigation">
         <ul class="nav-list">
-          <li><a href="index.html#app-steps">So funktioniert's</a></li>
+          <li class="nav-item nav-item-featured"><a class="nav-link-featured" href="index.html#app-steps"><span class="nav-link-featured-label">So funktioniert's</span></a></li>
           <li class="nav-item nav-item-has-submenu">
             <div class="nav-link-row">
               <a href="haendler.html">F&uuml;r H&auml;ndler</a>
@@ -41,7 +41,7 @@
               <li><a href="haendler.html#so-gehts">So geht's</a></li>
               <li><a href="haendler.html#dashboard">Dashboard</a></li>
               <li><a href="haendler.html#faq">FAQ</a></li>
-              <li><a href="haendler.html#onboarding">Onboarding</a></li>
+              <li><a href="haendler.html#onboarding">Loslegen</a></li>
             </ul>
           </li>
           <li class="nav-item nav-item-has-submenu">
@@ -57,19 +57,19 @@
               <li><a href="user.html#app-preview">Die App</a></li>
               <li><a href="user.html#location">In deiner N&auml;he</a></li>
               <li><a href="user.html#exclusive">Vorteile</a></li>
-              <li><a href="user.html#download">Download</a></li>
+              <li><a href="user.html#download">App herunterladen</a></li>
             </ul>
           </li>
           <li><a href="index.html#solution-faq">FAQ</a></li>
         </ul>
         <div class="mobile-nav-cta">
           <a href="haendler.html#onboarding" class="btn btn-ghost">Unternehmen registrieren</a>
-          <a href="#download" class="btn btn-primary btn-accent">App herunterladen</a>
+          <a href="#" class="btn btn-primary btn-accent" data-home-download-swap-trigger="true" data-app-hero-nav-trigger="true">App herunterladen</a>
         </div>
       </nav>
       <div class="header-cta">
         <a href="haendler.html#onboarding" class="btn btn-ghost btn-header">Unternehmen registrieren</a>
-        <a href="#download" class="btn btn-primary btn-accent btn-header">App herunterladen</a>
+        <a href="#" class="btn btn-primary btn-accent btn-header" data-home-download-swap-trigger="true">App herunterladen</a>
       </div>
       <button class="nav-toggle" id="nav-toggle" aria-label="Men&uuml; &ouml;ffnen" aria-expanded="false">
         <span class="nav-toggle-bar"></span>
@@ -93,10 +93,10 @@
       <div class="container hero-inner" id="hero-inner">
         <div class="hero-content reveal reveal-up">
           <h1 class="hero-title">
-            <span class="text-gradient">Rette&nbsp;deine Innenstadt.</span> <span class="hero-title-solid hero-typewriter-wrap" aria-live="polite"><span id="hero-typewriter-text"></span><span class="hero-typewriter-cursor" id="hero-typewriter-cursor" aria-hidden="true">|</span></span>
+            <span class="text-gradient">Rette&nbsp;deine Innenstadt.</span> <span class="hero-title-solid hero-typewriter-wrap hero-outline-text" aria-live="polite" data-words="App herunterladen. Schn&auml;ppchen sichern.|Lokale Angebote in deiner N&auml;he.|Vor Ort einl&ouml;sen. Direkt sparen."><span id="hero-typewriter-text"></span><span class="hero-typewriter-cursor" id="hero-typewriter-cursor" aria-hidden="true">|</span></span>
           </h1>
-          <div class="hero-cta">
-            <a href="#download" class="btn btn-primary btn-accent btn-lg">App herunterladen</a>
+          <div class="hero-cta" data-home-download-swap-root="true" data-home-store-apple-url="https://apps.apple.com/de/app/u-like-it/id1593884667" data-home-store-apple-badge="images/apple_app_store_badge.png" data-home-store-google-url="https://play.google.com/store/apps/details?id=de.u_like_it" data-home-store-google-badge="images/google-play-badge.png">
+            <a href="#" class="btn btn-primary btn-accent btn-lg" data-home-download-swap-trigger="true">App herunterladen</a>
           </div>
         </div>
       </div>
@@ -122,10 +122,10 @@
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
               </span>
               <div class="why-item-body">
-                <p class="why-item-text">Deals in deiner Nähe.</p>
+                <p class="why-item-text">Angebote in deiner Nähe.</p>
                 <details class="why-item-details">
                   <summary class="why-item-more">Mehr erfahren</summary>
-                  <p class="why-item-detail">Echte Rabatte von lokalen Modeläden. Täglich neu, immer in Reichweite.</p>
+                  <p class="why-item-detail">Echte Rabatte von lokalen L&auml;den, Caf&eacute;s und Restaurants. T&auml;glich neu, immer in Reichweite.</p>
                 </details>
               </div>
             </div>
@@ -137,7 +137,7 @@
                 <p class="why-item-text">Innenstadt beleben.</p>
                 <details class="why-item-details">
                   <summary class="why-item-more">Mehr erfahren</summary>
-                  <p class="why-item-detail">Jeder Deal stärkt lokale Händler und bringt Leben zurück in deine Nachbarschaft.</p>
+                  <p class="why-item-detail">Jedes Angebot stärkt lokale Händler und bringt Leben zurück in deine Nachbarschaft.</p>
                 </details>
               </div>
             </div>
@@ -149,7 +149,7 @@
                 <p class="why-item-text">Reservieren &amp; sparen.</p>
                 <details class="why-item-details">
                   <summary class="why-item-more">Mehr erfahren</summary>
-                  <p class="why-item-detail">Deal in der App sichern, vorbeikommen und direkt im Laden einlösen. Stressfrei.</p>
+                  <p class="why-item-detail">Angebot in der App sichern, vorbeikommen und direkt im Laden einlösen. Stressfrei.</p>
                 </details>
               </div>
             </div>
@@ -161,7 +161,7 @@
                 <p class="why-item-text">Neue Läden entdecken.</p>
                 <details class="why-item-details">
                   <summary class="why-item-more">Mehr erfahren</summary>
-                  <p class="why-item-detail">Boutiquen, Cafés, Concept Stores. Finde Orte, die du noch nicht kanntest.</p>
+                  <p class="why-item-detail">Boutiquen, Cafés und Konzeptläden. Finde Orte, die du noch nicht kanntest.</p>
                 </details>
               </div>
             </div>
@@ -173,7 +173,7 @@
                 <p class="why-item-text">Restaurants & Gastro.</p>
                 <details class="why-item-details">
                   <summary class="why-item-more">Mehr erfahren</summary>
-                  <p class="why-item-detail">Auch Restaurants, Cafés und Bars bieten Deals an. Entdecke kulinarische Angebote direkt um die Ecke.</p>
+                  <p class="why-item-detail">Auch Restaurants, Cafés und Bars bieten Angebote an. Entdecke kulinarische Angebote direkt um die Ecke.</p>
                 </details>
               </div>
             </div>
@@ -190,34 +190,34 @@
     <!-- ========== Ticker-Banner (Warum → Problem) ========== -->
     <div class="ticker-banner" aria-hidden="true">
       <div class="ticker-track">
-        <span class="ticker-item">HOSEN</span>
-        <span class="ticker-item">PULLOVER</span>
-        <span class="ticker-item">JACKEN</span>
-        <span class="ticker-item">HÜTE</span>
-        <span class="ticker-item">ACCESSOIRES</span>
-        <span class="ticker-item">KLEIDER</span>
-        <span class="ticker-item">SCHUHE</span>
-        <span class="ticker-item">TASCHEN</span>
-        <span class="ticker-item">JEANS</span>
-        <span class="ticker-item">MÄNTEL</span>
-        <span class="ticker-item">SHIRTS</span>
-        <span class="ticker-item">STOFFE</span>
-        <span class="ticker-item">HOSEN</span>
-        <span class="ticker-item">PULLOVER</span>
-        <span class="ticker-item">JACKEN</span>
-        <span class="ticker-item">HÜTE</span>
-        <span class="ticker-item">ACCESSOIRES</span>
-        <span class="ticker-item">KLEIDER</span>
-        <span class="ticker-item">SCHUHE</span>
-        <span class="ticker-item">TASCHEN</span>
-        <span class="ticker-item">JEANS</span>
-        <span class="ticker-item">MÄNTEL</span>
-        <span class="ticker-item">SHIRTS</span>
-        <span class="ticker-item">STOFFE</span>
+        <span class="ticker-item">MODE</span>
+        <span class="ticker-item">GASTRO</span>
+        <span class="ticker-item">CAFÉS</span>
+        <span class="ticker-item">BOUTIQUEN</span>
+        <span class="ticker-item">RESTAURANTS</span>
+        <span class="ticker-item">BARS</span>
+        <span class="ticker-item">KONZEPTLÄDEN</span>
+        <span class="ticker-item">LOKALE ANGEBOTE</span>
+        <span class="ticker-item">MITTAGSANGEBOTE</span>
+        <span class="ticker-item">FEIERABEND</span>
+        <span class="ticker-item">EINKAUFEN</span>
+        <span class="ticker-item">STADTLEBEN</span>
+        <span class="ticker-item">MODE</span>
+        <span class="ticker-item">GASTRO</span>
+        <span class="ticker-item">CAFÉS</span>
+        <span class="ticker-item">BOUTIQUEN</span>
+        <span class="ticker-item">RESTAURANTS</span>
+        <span class="ticker-item">BARS</span>
+        <span class="ticker-item">KONZEPTLÄDEN</span>
+        <span class="ticker-item">LOKALE ANGEBOTE</span>
+        <span class="ticker-item">MITTAGSANGEBOTE</span>
+        <span class="ticker-item">FEIERABEND</span>
+        <span class="ticker-item">EINKAUFEN</span>
+        <span class="ticker-item">STADTLEBEN</span>
       </div>
     </div>
 
-    <!-- ========== SO FUNKTIONIERT DIE APP + U like it Pakete (gemeinsamer Hintergrund) ========== -->
+    <!-- ========== SO FUNKTIONIERT DIE APP + U-like-it Pakete (gemeinsamer Hintergrund) ========== -->
     <div class="app-pakete-wrap">
       <div class="app-pakete-blob-bg" aria-hidden="true">
         <div class="light-blob-parallax" data-parallax="0.12"><div class="light-blob light-blob-blue"></div></div>
@@ -237,7 +237,7 @@
               <div class="app-steps-slides">
                 <div class="app-step-slide active" data-step="0" data-img-top="images/schritt-1.png" data-img-bottom="images/hand.png">
                   <span class="app-step-number">Schritt 1</span>
-                  <p class="app-step-text">Entdecke lokale Deals in deiner Nähe und sieh auf einen Blick, welche Angebote heute verfügbar sind.</p>
+                  <p class="app-step-text">Entdecke lokale Angebote in deiner Nähe und sieh auf einen Blick, welche Angebote heute verfügbar sind.</p>
                 </div>
                 <div class="app-step-slide" data-step="1" data-img-top="images/frau-freigestellt.png" data-img-bottom="images/background.png">
                   <span class="app-step-number">Schritt 2</span>
@@ -245,7 +245,7 @@
                 </div>
                 <div class="app-step-slide" data-step="2" data-img-top="images/hand.png" data-img-bottom="images/frau-freigestellt.png">
                   <span class="app-step-number">Schritt 3</span>
-                  <p class="app-step-text">Placeholder Text Schritt 3: Geh zum Laden und lass dir den Deal vor Ort bestätigen. Einfach QR-Code zeigen.</p>
+                  <p class="app-step-text">Placeholder Text Schritt 3: Geh zum Laden und lass dir das Angebot vor Ort bestätigen. Einfach QR-Code zeigen.</p>
                 </div>
                 <div class="app-step-slide" data-step="3" data-img-top="images/logo.png" data-img-bottom="images/hand.png">
                   <span class="app-step-number">Schritt 4</span>
@@ -290,14 +290,14 @@
       <div class="container pakete-container">
         <div class="pakete-layout">
           <div class="pakete-image reveal">
-            <img src="images/bag.png" alt="U like it Tasche" class="pakete-img">
+            <img src="images/bag.png" alt="U-like-it Tasche" class="pakete-img">
           </div>
           <div class="pakete-content reveal reveal-scale">
             <span class="pakete-label">Das sind</span>
-            <h2 class="pakete-title">U like it Pakete</h2>
+            <h2 class="pakete-title">U-like-it Pakete</h2>
             <div class="pakete-text">
-              <p>Mit der U-Like-It App entdeckst du jetzt auch exklusive Deal-Pakete aus deiner Stadt – zusammengestellt von lokalen Boutiquen, Stores und Gastronomiebetrieben.</p>
-              <p>Ob Fashion-Bundle, Saison-Special oder After-Work-Paket:<br>Reserviere dein Paket in der App, zeige den QR-Code im Laden und sichere dir deinen Vorteil – sofort und direkt vor Ort.</p>
+              <p>Mit der U-like-it-App entdeckst du jetzt auch exklusive Angebotspakete aus deiner Stadt – zusammengestellt von lokalen Boutiquen, Läden und Gastronomiebetrieben.</p>
+              <p>Ob Einkaufsaktion, Mittagsangebot oder Feierabendpaket:<br>Reserviere dein Paket in der App, zeige den QR-Code vor Ort und sichere dir deinen Vorteil – sofort und direkt in deiner Stadt.</p>
               <p><strong>Lokal. Einfach. Fair.</strong></p>
             </div>
             <a href="#download" class="solution-card-link pakete-cta">Mehr erfahren</a>
@@ -316,30 +316,30 @@
     <!-- ========== Ticker-Banner (Bild → Unsere Lösungen) ========== -->
     <div class="ticker-banner" aria-hidden="true">
       <div class="ticker-track">
-        <span class="ticker-item">HOSEN</span>
-        <span class="ticker-item">PULLOVER</span>
-        <span class="ticker-item">JACKEN</span>
-        <span class="ticker-item">HÜTE</span>
-        <span class="ticker-item">ACCESSOIRES</span>
-        <span class="ticker-item">KLEIDER</span>
-        <span class="ticker-item">SCHUHE</span>
-        <span class="ticker-item">TASCHEN</span>
-        <span class="ticker-item">JEANS</span>
-        <span class="ticker-item">MÄNTEL</span>
-        <span class="ticker-item">SHIRTS</span>
-        <span class="ticker-item">STOFFE</span>
-        <span class="ticker-item">HOSEN</span>
-        <span class="ticker-item">PULLOVER</span>
-        <span class="ticker-item">JACKEN</span>
-        <span class="ticker-item">HÜTE</span>
-        <span class="ticker-item">ACCESSOIRES</span>
-        <span class="ticker-item">KLEIDER</span>
-        <span class="ticker-item">SCHUHE</span>
-        <span class="ticker-item">TASCHEN</span>
-        <span class="ticker-item">JEANS</span>
-        <span class="ticker-item">MÄNTEL</span>
-        <span class="ticker-item">SHIRTS</span>
-        <span class="ticker-item">STOFFE</span>
+        <span class="ticker-item">MODE</span>
+        <span class="ticker-item">GASTRO</span>
+        <span class="ticker-item">CAFÉS</span>
+        <span class="ticker-item">BOUTIQUEN</span>
+        <span class="ticker-item">RESTAURANTS</span>
+        <span class="ticker-item">BARS</span>
+        <span class="ticker-item">KONZEPTLÄDEN</span>
+        <span class="ticker-item">LOKALE ANGEBOTE</span>
+        <span class="ticker-item">MITTAGSANGEBOTE</span>
+        <span class="ticker-item">FEIERABEND</span>
+        <span class="ticker-item">EINKAUFEN</span>
+        <span class="ticker-item">STADTLEBEN</span>
+        <span class="ticker-item">MODE</span>
+        <span class="ticker-item">GASTRO</span>
+        <span class="ticker-item">CAFÉS</span>
+        <span class="ticker-item">BOUTIQUEN</span>
+        <span class="ticker-item">RESTAURANTS</span>
+        <span class="ticker-item">BARS</span>
+        <span class="ticker-item">KONZEPTLÄDEN</span>
+        <span class="ticker-item">LOKALE ANGEBOTE</span>
+        <span class="ticker-item">MITTAGSANGEBOTE</span>
+        <span class="ticker-item">FEIERABEND</span>
+        <span class="ticker-item">EINKAUFEN</span>
+        <span class="ticker-item">STADTLEBEN</span>
       </div>
     </div>
 
@@ -378,7 +378,7 @@
                 </div>
                 <h3>Überraschungspakete</h3>
               </div>
-              <p class="solution-card-desc">Aus Restposten werden Frequenzimpulse: Einzelhändler und Gastronomiebetriebe bieten ihre Aktionen und Bundles über die U-Like-It App an. Nutzer:innen reservieren den Deal und lösen ihn zur angegebenen Zeit direkt im Geschäft per QR ein.</p>
+              <p class="solution-card-desc">Aus Restposten werden Frequenzimpulse: Einzelhändler und Gastronomiebetriebe bieten ihre Aktionen und Überraschungspakete über die U-like-it-App an. Nutzer:innen reservieren das Angebot und lösen es zur angegebenen Zeit direkt im Geschäft per QR-Code ein.</p>
               <a href="#app-steps" class="solution-card-link">Mehr erfahren</a>
             </article>
             <article class="solution-card solution-card-buyer reveal reveal-delay-1">
@@ -386,9 +386,9 @@
                 <div class="solution-card-icon solution-icon-blue">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
                 </div>
-                <h3>U-Like-It Plattform</h3>
+                <h3>U-like-it Plattform</h3>
               </div>
-              <p class="solution-card-desc">Eine modulare Plattform, die das Management lokaler Angebote vereinfacht und automatisiert: Einzelhändler und Gastronomiebetriebe profitieren von mehr Sichtbarkeit, planbarer Frequenz und messbaren Einlösungen direkt am Point of Sale.</p>
+              <p class="solution-card-desc">Eine modulare Plattform, die das Management lokaler Angebote vereinfacht und automatisiert: Einzelhändler und Gastronomiebetriebe profitieren von mehr Sichtbarkeit, planbarer Frequenz und messbaren Einlösungen direkt vor Ort.</p>
               <a href="#app-steps" class="solution-card-link">Mehr erfahren</a>
             </article>
             <article class="solution-card solution-card-merchant reveal reveal-delay-2">
@@ -396,9 +396,9 @@
                 <div class="solution-card-icon solution-icon-blue">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
                 </div>
-                <h3>Deal Pakete</h3>
+                <h3>Angebotspakete</h3>
               </div>
-              <p class="solution-card-desc">Händler und Gastronomiebetriebe erstellen attraktive Angebots- und Bundle-Deals direkt in der App. Nutzer:innen reservieren diese über U-Like-It und lösen sie zur angegebenen Zeit bequem im Geschäft per QR-Code ein.</p>
+              <p class="solution-card-desc">Händler und Gastronomiebetriebe erstellen attraktive Angebotspakete direkt in der App. Nutzer:innen reservieren diese über U-like-it und lösen sie zur angegebenen Zeit bequem im Geschäft per QR-Code ein.</p>
               <a href="#app-steps" class="solution-card-link">Mehr erfahren</a>
             </article>
             <article class="solution-card solution-card-buyer reveal reveal-delay-3">
@@ -408,7 +408,7 @@
                 </div>
                 <h3>Initiative für starke Innenstädte</h3>
               </div>
-              <p class="solution-card-desc">Werde Teil eines lokalen Händlernetzwerks und mache deine Angebote sichtbar. Mit U-Like-It bringst du Aktionen gezielt in die App, und Kund:innen direkt in dein Geschäft.</p>
+              <p class="solution-card-desc">Werde Teil eines lokalen Händlernetzwerks und mache deine Angebote sichtbar. Mit U-like-it bringst du Aktionen gezielt in die App und Kund:innen direkt in dein Geschäft.</p>
               <a href="#app-steps" class="solution-card-link">Mehr erfahren</a>
             </article>
           </div>
@@ -421,7 +421,7 @@
       <div class="container">
         <header class="section-header solution-faq-header reveal">
           <span class="solution-2-label">FAQ</span>
-          <h2 class="section-title solution-title-black">Alles was du wissen musst</h2>
+          <h2 class="section-title solution-title-black">Alles, was du wissen musst</h2>
         </header>
         <div class="solution-faq-layout">
           <div class="solution-faq-list-wrap">
@@ -432,7 +432,7 @@
                   <svg class="faq-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
                 </summary>
                 <div class="faq-answer">
-                  <p>U-like-it ist eine App, die lokale Modeläden mit Käufer:innen in der Nähe verbindet. Händler veröffentlichen zeitlich begrenzte Deals, Käufer:innen entdecken und lösen sie vor Ort ein.</p>
+                  <p>U-like-it bringt lokale Läden, Cafés und Restaurants mit Menschen in ihrer Nähe zusammen. Händler veröffentlichen zeitlich begrenzte Angebote, Nutzer:innen entdecken sie direkt in der App und lösen sie vor Ort ein. Das kann auch nachhaltiger sein: Im deutschen Onlinehandel geht etwa jedes vierte Paket zurück.</p>
                 </div>
               </details>
               <details class="faq-item glass-card reveal">
@@ -450,16 +450,16 @@
                   <svg class="faq-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
                 </summary>
                 <div class="faq-answer">
-                  <p>Du erstellst ein Angebot in der App, legst Zeitfenster und Rabatt fest. Käufer:innen in der Nähe sehen den Deal und können ihn direkt reservieren.</p>
+                  <p>Du erstellst ein Angebot in der App, legst Zeitfenster und Rabatt fest. Käufer:innen in der Nähe sehen das Angebot und können es direkt reservieren.</p>
                 </div>
               </details>
               <details class="faq-item glass-card reveal">
                 <summary class="faq-question">
-                  <span>Wie löse ich einen Deal ein?</span>
+                  <span>Wie löse ich ein Angebot ein?</span>
                   <svg class="faq-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
                 </summary>
                 <div class="faq-answer">
-                  <p>Geh in den Store, entdecke deinen Deal und zeige deinen QR Code. Reservieren ist möglich, aber kein Muss.</p>
+                  <p>Geh in den Laden, entdecke dein Angebot und zeige deinen QR-Code. Reservieren ist möglich, aber kein Muss.</p>
                 </div>
               </details>
               <details class="faq-item glass-card reveal">
@@ -494,7 +494,7 @@
         <div class="cta-floating cta-floating-2"></div>
       </div>
       <div class="container cta-inner">
-        <h2 class="cta-title reveal">Jetzt mitmachen<br>und lokale Deals erleben.</h2>
+        <h2 class="cta-title reveal">App herunterladen<br>und Schn&auml;ppchen sichern.</h2>
         <div class="cta-buttons-row reveal">
           <a href="haendler.html#onboarding" class="btn btn-white btn-lg">Unternehmen registrieren</a>
           <a href="#download" class="btn btn-accent-solid btn-lg">App herunterladen</a>
@@ -514,7 +514,7 @@
           </a>
           <p class="footer-seo-text">
             U-like-it verbindet lokale H&auml;ndler und Gastronomie mit Kund:innen in der N&auml;he.
-            Zeitgesteuerte Deals reservieren, vor Ort per QR-Code einl&ouml;sen - so belebt die App deine Innenstadt.
+            Zeitlich begrenzte Angebote lassen sich in der App entdecken und vor Ort per QR-Code einl&ouml;sen &ndash; so belebt U-like-it deine Innenstadt.
           </p>
         </div>
         <nav class="footer-nav" aria-label="Footer-Navigation">
@@ -528,10 +528,10 @@
           </ul>
         </nav>
         <div class="footer-download">
-          <span class="footer-download-label">App laden</span>
+          <span class="footer-download-label">App herunterladen</span>
           <div class="footer-badges">
             <a href="https://apps.apple.com/de/app/u-like-it/id1593884667" class="footer-badge footer-badge-apple" target="_blank" rel="noopener noreferrer" aria-label="Im App Store herunterladen">
-              <img src="images/apple_app_store_badge.png" alt="Download on the App Store" width="135" height="40">
+              <img src="images/apple_app_store_badge.png" alt="Im App Store herunterladen" width="135" height="40">
             </a>
             <a href="https://play.google.com/store/apps/details?id=de.u_like_it" class="footer-badge footer-badge-google" target="_blank" rel="noopener noreferrer" aria-label="Bei Google Play herunterladen">
               <img src="images/google-play-badge.png" alt="Bei Google Play herunterladen" width="135" height="40">

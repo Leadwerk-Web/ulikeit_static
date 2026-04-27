@@ -108,7 +108,8 @@
     document.documentElement.classList.add('nav-open');
   }
 
-  function unlockBodyScroll() {
+  function unlockBodyScroll(restoreScrollPosition) {
+    var shouldRestoreScroll = restoreScrollPosition !== false;
     var restoreScroll = function () {
       window.scrollTo(0, navScrollPosition);
     };
@@ -117,6 +118,7 @@
     }
     document.body.classList.remove('nav-open');
     document.documentElement.classList.remove('nav-open');
+    if (!shouldRestoreScroll) return;
     restoreScroll();
     window.requestAnimationFrame(restoreScroll);
   }
@@ -126,20 +128,20 @@
     mainNav.classList.add('is-open');
     navToggle.classList.add('is-open');
     navToggle.setAttribute('aria-expanded', 'true');
-    navToggle.setAttribute('aria-label', 'Menue schliessen');
+    navToggle.setAttribute('aria-label', 'Menü schließen');
     closeSubmenus();
     lockBodyScroll();
     mainNav.scrollTop = 0;
   }
 
-  function closeMainNav() {
+  function closeMainNav(restoreScrollPosition) {
     if (!navToggle || !mainNav) return;
     mainNav.classList.remove('is-open');
     navToggle.classList.remove('is-open');
     navToggle.setAttribute('aria-expanded', 'false');
-    navToggle.setAttribute('aria-label', 'Menue oeffnen');
+    navToggle.setAttribute('aria-label', 'Menü öffnen');
     closeSubmenus();
-    unlockBodyScroll();
+    unlockBodyScroll(restoreScrollPosition);
   }
 
   if (navToggle && mainNav) {
@@ -152,7 +154,15 @@
     });
 
     mainNav.querySelectorAll('a').forEach(function (link) {
-      link.addEventListener('click', closeMainNav);
+      link.addEventListener('click', function () {
+        if (
+          link.hasAttribute('data-app-hero-nav-trigger') ||
+          (link.getAttribute('href') || '').indexOf('#') !== -1
+        ) {
+          return;
+        }
+        closeMainNav();
+      });
     });
 
     submenuItems.forEach(function (item) {
@@ -548,8 +558,100 @@
 
 
   /* ---------- Smooth Scroll ---------- */
+  function getHaendlerHeroStoreSwapRoot() {
+    return document.querySelector('.hero .haendler-hero-cta[data-haendler-hero-store-root]');
+  }
+
+  function createStoreBadgeLink(href, imageSrc, label, width, height) {
+    var link = document.createElement('a');
+    var image = document.createElement('img');
+
+    link.href = href;
+    link.className = 'store-badge';
+    link.setAttribute('aria-label', label);
+
+    image.src = imageSrc;
+    image.alt = label;
+    image.width = width;
+    image.height = height;
+
+    link.appendChild(image);
+    return link;
+  }
+
+  function swapHaendlerHeroToStoreBadges(options) {
+    var settings = options || {};
+    var heroCta = getHaendlerHeroStoreSwapRoot();
+    if (!heroCta) return null;
+
+    var existingBadge = heroCta.querySelector('.store-badge');
+    if (existingBadge) {
+      if (settings.focusFirstBadge) {
+        existingBadge.focus();
+      }
+      return existingBadge;
+    }
+
+    var appleUrl = heroCta.getAttribute('data-haendler-store-apple-url');
+    var appleBadge = heroCta.getAttribute('data-haendler-store-apple-badge');
+    var googleUrl = heroCta.getAttribute('data-haendler-store-google-url');
+    var googleBadge = heroCta.getAttribute('data-haendler-store-google-badge');
+
+    if (!appleUrl || !appleBadge || !googleUrl || !googleBadge) {
+      return null;
+    }
+
+    var appleLink = createStoreBadgeLink(
+      appleUrl,
+      appleBadge,
+      'Im App Store herunterladen',
+      155,
+      46
+    );
+    var googleLink = createStoreBadgeLink(
+      googleUrl,
+      googleBadge,
+      'Bei Google Play herunterladen',
+      155,
+      46
+    );
+
+    heroCta.classList.add('user-hero-cta');
+    heroCta.setAttribute('data-haendler-hero-store-state', 'swapped');
+    heroCta.textContent = '';
+    heroCta.appendChild(appleLink);
+    heroCta.appendChild(googleLink);
+
+    if (settings.focusFirstBadge) {
+      appleLink.focus();
+    }
+
+    return appleLink;
+  }
+
   /* ---------- Smooth Scroll for Same-Page Anchor Links ---------- */
-  function getSamePageAnchorTarget(anchor) {
+  function getHashTarget(hash) {
+    if (!hash || hash === '#') return null;
+
+    var targetId = hash.charAt(0) === '#' ? hash.slice(1) : hash;
+    try {
+      targetId = decodeURIComponent(targetId);
+    } catch (error) {
+      return null;
+    }
+
+    if (!targetId) return null;
+
+    return document.getElementById(targetId);
+  }
+
+  function normalizeAnchorPath(pathname) {
+    var normalizedPath = pathname.replace(/\/+$/, '') || '/';
+    normalizedPath = normalizedPath.replace(/\/index\.html$/i, '') || '/';
+    return normalizedPath;
+  }
+
+  function getSamePageAnchorData(anchor) {
     var href = anchor.getAttribute('href');
     if (!href || href === '#') return null;
 
@@ -564,13 +666,19 @@
       return null;
     }
 
-    var currentPath = window.location.pathname.replace(/\/+$/, '') || '/';
-    var targetPath = url.pathname.replace(/\/+$/, '') || '/';
+    var currentPath = normalizeAnchorPath(window.location.pathname);
+    var targetPath = normalizeAnchorPath(url.pathname);
     if (currentPath != targetPath) {
       return null;
     }
 
-    return document.querySelector(url.hash);
+    var target = getHashTarget(url.hash);
+    if (!target) return null;
+
+    return {
+      target: target,
+      href: href
+    };
   }
 
   function getAnchorDocumentTop(target) {
@@ -585,24 +693,156 @@
     return top;
   }
 
+  function scrollToAnchorTarget(target, behavior) {
+    if (!target) return;
+
+    var headerHeight = header ? header.offsetHeight : 0;
+    var targetPosition = Math.max(0, getAnchorDocumentTop(target) - headerHeight - 20);
+
+    if (behavior === 'instant') {
+      var htmlScrollBehavior = document.documentElement.style.scrollBehavior;
+      var bodyScrollBehavior = document.body.style.scrollBehavior;
+      var applyInstantScroll = function () {
+        window.scrollTo(0, targetPosition);
+        document.documentElement.scrollTop = targetPosition;
+        document.body.scrollTop = targetPosition;
+      };
+
+      document.documentElement.style.scrollBehavior = 'auto';
+      document.body.style.scrollBehavior = 'auto';
+      applyInstantScroll();
+      window.setTimeout(applyInstantScroll, 0);
+      window.setTimeout(applyInstantScroll, 90);
+      window.setTimeout(applyInstantScroll, 220);
+
+      window.setTimeout(function () {
+        document.documentElement.style.scrollBehavior = htmlScrollBehavior;
+        document.body.style.scrollBehavior = bodyScrollBehavior;
+      }, 260);
+      return;
+    }
+
+    window.scrollTo({
+      top: targetPosition,
+      behavior: behavior || 'smooth'
+    });
+  }
+
+  function scrollToCurrentHashIfPresent() {
+    var initialHash = window.location.hash;
+    var target = getHashTarget(window.location.hash);
+    if (!target) return;
+
+    var applyHashScroll = function () {
+      if (window.location.hash !== initialHash) return;
+      scrollToAnchorTarget(target, 'instant');
+    };
+
+    window.setTimeout(applyHashScroll, 0);
+    window.setTimeout(applyHashScroll, 120);
+    window.setTimeout(applyHashScroll, 360);
+    window.addEventListener('load', function () {
+      window.setTimeout(applyHashScroll, 0);
+      window.setTimeout(applyHashScroll, 160);
+      window.setTimeout(applyHashScroll, 420);
+      window.setTimeout(applyHashScroll, 900);
+    }, { once: true });
+  }
+
+  function isElementInViewport(target, topOffset) {
+    if (!target) return false;
+
+    var rect = target.getBoundingClientRect();
+    var offset = topOffset || 0;
+
+    return rect.bottom > offset && rect.top < window.innerHeight;
+  }
+
+  function scrollHeroIntoViewIfNeeded(behavior) {
+    var heroSection = document.getElementById('hero');
+    if (!heroSection) return;
+
+    var headerHeight = header ? header.offsetHeight : 0;
+    if (isElementInViewport(heroSection, headerHeight + 20)) {
+      return;
+    }
+
+    var targetPosition = Math.max(0, getAnchorDocumentTop(heroSection) - headerHeight - 20);
+    if (behavior === 'instant') {
+      var htmlScrollBehavior = document.documentElement.style.scrollBehavior;
+      var bodyScrollBehavior = document.body.style.scrollBehavior;
+      var applyInstantScroll = function () {
+        window.scrollTo(0, targetPosition);
+        document.documentElement.scrollTop = targetPosition;
+        document.body.scrollTop = targetPosition;
+      };
+
+      document.documentElement.style.scrollBehavior = 'auto';
+      document.body.style.scrollBehavior = 'auto';
+      applyInstantScroll();
+      window.setTimeout(applyInstantScroll, 0);
+      window.setTimeout(applyInstantScroll, 80);
+      window.setTimeout(applyInstantScroll, 180);
+
+      window.setTimeout(function () {
+        document.documentElement.style.scrollBehavior = htmlScrollBehavior;
+        document.body.style.scrollBehavior = bodyScrollBehavior;
+      }, 220);
+      return;
+    }
+
+    window.scrollTo({
+      top: targetPosition,
+      behavior: behavior || 'smooth'
+    });
+  }
+
+  function scheduleHeroScrollAfterNavClose() {
+    window.setTimeout(function () {
+      scrollHeroIntoViewIfNeeded('instant');
+    }, 20);
+  }
+
+  scrollToCurrentHashIfPresent();
+
   document.querySelectorAll('a[href*="#"]').forEach(function (anchor) {
     anchor.addEventListener('click', function (e) {
-      var target = getSamePageAnchorTarget(this);
-      if (!target) return;
+      if (this.hasAttribute('data-app-hero-nav-trigger')) {
+        var appHeroAnchorData = getSamePageAnchorData(this);
+        if (!appHeroAnchorData) return;
+        var shouldWaitForNavClose = !!(mainNav && mainNav.classList.contains('is-open'));
+        e.preventDefault();
+        closeMainNav(false);
+        swapHaendlerHeroToStoreBadges();
+        scrollToAnchorTarget(appHeroAnchorData.target);
+        if (window.history && typeof window.history.replaceState === 'function') {
+          window.history.replaceState(null, '', appHeroAnchorData.href);
+        }
+        return;
+      }
+
+      if (this.hasAttribute('data-haendler-hero-store-trigger')) {
+        var haendlerStoreAnchorData = getSamePageAnchorData(this);
+        if (!haendlerStoreAnchorData) return;
+        e.preventDefault();
+        closeMainNav(false);
+        swapHaendlerHeroToStoreBadges();
+        scrollToAnchorTarget(haendlerStoreAnchorData.target);
+        if (window.history && typeof window.history.replaceState === 'function') {
+          window.history.replaceState(null, '', haendlerStoreAnchorData.href);
+        }
+        return;
+      }
+
+      var anchorData = getSamePageAnchorData(this);
+      if (!anchorData) return;
 
       e.preventDefault();
-      closeMainNav();
-
-      var headerHeight = header ? header.offsetHeight : 0;
-      var targetPosition = Math.max(0, getAnchorDocumentTop(target) - headerHeight - 20);
-
-      window.scrollTo({
-        top: targetPosition,
-        behavior: 'smooth'
-      });
+      closeMainNav(false);
+      scrollToAnchorTarget(anchorData.target);
 
       if (window.history && typeof window.history.replaceState === 'function') {
-        window.history.replaceState(null, '', this.getAttribute('href'));
+        window.history.replaceState(null, '', anchorData.href);
       }
     });
   });

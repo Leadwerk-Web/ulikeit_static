@@ -1,6 +1,6 @@
 /* ============================================================
    U-like-it Version 3 — Script
-   Mode entdecken. Stadt beleben.
+   App herunterladen. Schnäppchen sichern.
    ============================================================ */
 
 (function () {
@@ -38,13 +38,28 @@
   (function () {
     var textEl = document.getElementById('hero-typewriter-text');
     var cursorEl = document.getElementById('hero-typewriter-cursor');
+    var wrapEl = document.querySelector('.hero-typewriter-wrap');
     if (!textEl) return;
 
     var phrases = [
-      'Deal für Deal.',
-      'Dein Deal um die Ecke.',
-      'Schnapp\'s dir.'
+      'App herunterladen. Schnäppchen sichern.',
+      'Lokale Angebote in deiner Nähe.',
+      'Vor Ort einlösen. Direkt sparen.'
     ];
+    var fallbackPhrases = [
+      'App herunterladen. Schnäppchen sichern.',
+      'Lokale Angebote in deiner Nähe.',
+      'Vor Ort einlösen. Direkt sparen.'
+    ];
+    phrases = fallbackPhrases.slice();
+    if (wrapEl && wrapEl.getAttribute('data-words')) {
+      phrases = wrapEl.getAttribute('data-words').split('|').map(function (phrase) {
+        return phrase.trim();
+      }).filter(Boolean);
+    }
+    if (!phrases.length) {
+      phrases = fallbackPhrases;
+    }
     var typeDelay = 90;
     var pauseAfterType = 2200;
     var pauseBeforeNext = 800;
@@ -166,7 +181,8 @@
     document.documentElement.classList.add('nav-open');
   }
 
-  function unlockBodyScroll() {
+  function unlockBodyScroll(restoreScrollPosition) {
+    var shouldRestoreScroll = restoreScrollPosition !== false;
     var restoreScroll = function () {
       window.scrollTo(0, navScrollPosition);
     };
@@ -175,6 +191,7 @@
     }
     document.body.classList.remove('nav-open');
     document.documentElement.classList.remove('nav-open');
+    if (!shouldRestoreScroll) return;
     restoreScroll();
     window.requestAnimationFrame(restoreScroll);
   }
@@ -184,20 +201,20 @@
     mainNav.classList.add('is-open');
     navToggle.classList.add('is-open');
     navToggle.setAttribute('aria-expanded', 'true');
-    navToggle.setAttribute('aria-label', 'Menue schliessen');
+    navToggle.setAttribute('aria-label', 'Menü schließen');
     closeSubmenus();
     lockBodyScroll();
     mainNav.scrollTop = 0;
   }
 
-  function closeMainNav() {
+  function closeMainNav(restoreScrollPosition) {
     if (!navToggle || !mainNav) return;
     mainNav.classList.remove('is-open');
     navToggle.classList.remove('is-open');
     navToggle.setAttribute('aria-expanded', 'false');
-    navToggle.setAttribute('aria-label', 'Menue oeffnen');
+    navToggle.setAttribute('aria-label', 'Menü öffnen');
     closeSubmenus();
-    unlockBodyScroll();
+    unlockBodyScroll(restoreScrollPosition);
   }
 
   if (navToggle && mainNav) {
@@ -210,7 +227,16 @@
     });
 
     mainNav.querySelectorAll('a').forEach(function (link) {
-      link.addEventListener('click', closeMainNav);
+      link.addEventListener('click', function () {
+        if (
+          link.hasAttribute('data-home-download-swap-trigger') ||
+          link.hasAttribute('data-app-hero-nav-trigger') ||
+          (link.getAttribute('href') || '').indexOf('#') !== -1
+        ) {
+          return;
+        }
+        closeMainNav();
+      });
     });
 
     submenuItems.forEach(function (item) {
@@ -407,7 +433,99 @@
   }
 
   /* ---------- Smooth Scroll for Same-Page Anchor Links ---------- */
-  function getSamePageAnchorTarget(anchor) {
+  function getHomeHeroSwapRoot() {
+    return document.querySelector('.hero .hero-cta[data-home-download-swap-root]');
+  }
+
+  function createStoreBadgeLink(href, imageSrc, label, width, height) {
+    var link = document.createElement('a');
+    var image = document.createElement('img');
+
+    link.href = href;
+    link.className = 'store-badge';
+    link.setAttribute('aria-label', label);
+
+    image.src = imageSrc;
+    image.alt = label;
+    image.width = width;
+    image.height = height;
+
+    link.appendChild(image);
+    return link;
+  }
+
+  function swapHomeHeroToStoreBadges(options) {
+    var settings = options || {};
+    var heroCta = getHomeHeroSwapRoot();
+    if (!heroCta) return null;
+
+    var existingBadge = heroCta.querySelector('.store-badge');
+    if (existingBadge) {
+      if (settings.focusFirstBadge) {
+        existingBadge.focus();
+      }
+      return existingBadge;
+    }
+
+    var appleUrl = heroCta.getAttribute('data-home-store-apple-url');
+    var appleBadge = heroCta.getAttribute('data-home-store-apple-badge');
+    var googleUrl = heroCta.getAttribute('data-home-store-google-url');
+    var googleBadge = heroCta.getAttribute('data-home-store-google-badge');
+
+    if (!appleUrl || !appleBadge || !googleUrl || !googleBadge) {
+      return null;
+    }
+
+    var appleLink = createStoreBadgeLink(
+      appleUrl,
+      appleBadge,
+      'Im App Store herunterladen',
+      155,
+      46
+    );
+    var googleLink = createStoreBadgeLink(
+      googleUrl,
+      googleBadge,
+      'Bei Google Play herunterladen',
+      155,
+      46
+    );
+
+    heroCta.classList.add('user-hero-cta');
+    heroCta.setAttribute('data-home-download-swap-state', 'swapped');
+    heroCta.textContent = '';
+    heroCta.appendChild(appleLink);
+    heroCta.appendChild(googleLink);
+
+    if (settings.focusFirstBadge) {
+      appleLink.focus();
+    }
+
+    return appleLink;
+  }
+
+  function getHashTarget(hash) {
+    if (!hash || hash === '#') return null;
+
+    var targetId = hash.charAt(0) === '#' ? hash.slice(1) : hash;
+    try {
+      targetId = decodeURIComponent(targetId);
+    } catch (error) {
+      return null;
+    }
+
+    if (!targetId) return null;
+
+    return document.getElementById(targetId);
+  }
+
+  function normalizeAnchorPath(pathname) {
+    var normalizedPath = pathname.replace(/\/+$/, '') || '/';
+    normalizedPath = normalizedPath.replace(/\/index\.html$/i, '') || '/';
+    return normalizedPath;
+  }
+
+  function getSamePageAnchorData(anchor) {
     var href = anchor.getAttribute('href');
     if (!href || href === '#') return null;
 
@@ -422,13 +540,19 @@
       return null;
     }
 
-    var currentPath = window.location.pathname.replace(/\/+$/, '') || '/';
-    var targetPath = url.pathname.replace(/\/+$/, '') || '/';
+    var currentPath = normalizeAnchorPath(window.location.pathname);
+    var targetPath = normalizeAnchorPath(url.pathname);
     if (currentPath != targetPath) {
       return null;
     }
 
-    return document.querySelector(url.hash);
+    var target = getHashTarget(url.hash);
+    if (!target) return null;
+
+    return {
+      target: target,
+      href: href
+    };
   }
 
   function getAnchorDocumentTop(target) {
@@ -443,24 +567,212 @@
     return top;
   }
 
-  document.querySelectorAll('a[href*="#"]').forEach(function (anchor) {
+  function scrollToAnchorTarget(target, behavior) {
+    if (!target) return;
+
+    var headerHeight = header ? header.offsetHeight : 0;
+    var targetPosition = Math.max(0, getAnchorDocumentTop(target) - headerHeight - 20);
+
+    if (behavior === 'instant') {
+      var htmlScrollBehavior = document.documentElement.style.scrollBehavior;
+      var bodyScrollBehavior = document.body.style.scrollBehavior;
+      var applyInstantScroll = function () {
+        window.scrollTo(0, targetPosition);
+        document.documentElement.scrollTop = targetPosition;
+        document.body.scrollTop = targetPosition;
+      };
+
+      document.documentElement.style.scrollBehavior = 'auto';
+      document.body.style.scrollBehavior = 'auto';
+      applyInstantScroll();
+      window.setTimeout(applyInstantScroll, 0);
+      window.setTimeout(applyInstantScroll, 90);
+      window.setTimeout(applyInstantScroll, 220);
+
+      window.setTimeout(function () {
+        document.documentElement.style.scrollBehavior = htmlScrollBehavior;
+        document.body.style.scrollBehavior = bodyScrollBehavior;
+      }, 260);
+      return;
+    }
+
+    window.scrollTo({
+      top: targetPosition,
+      behavior: behavior || 'smooth'
+    });
+  }
+
+  function scrollToCurrentHashIfPresent() {
+    var initialHash = window.location.hash;
+    var target = getHashTarget(window.location.hash);
+    if (!target) return;
+
+    var applyHashScroll = function () {
+      if (window.location.hash !== initialHash) return;
+      scrollToAnchorTarget(target, 'instant');
+    };
+
+    window.setTimeout(applyHashScroll, 0);
+    window.setTimeout(applyHashScroll, 120);
+    window.setTimeout(applyHashScroll, 360);
+    window.addEventListener('load', function () {
+      window.setTimeout(applyHashScroll, 0);
+      window.setTimeout(applyHashScroll, 160);
+      window.setTimeout(applyHashScroll, 420);
+      window.setTimeout(applyHashScroll, 900);
+    }, { once: true });
+  }
+
+  function isElementInViewport(target, topOffset) {
+    if (!target) return false;
+
+    var rect = target.getBoundingClientRect();
+    var offset = topOffset || 0;
+
+    return rect.bottom > offset && rect.top < window.innerHeight;
+  }
+
+  function scrollHomeHeroIntoViewIfNeeded(behavior) {
+    var heroSection = document.getElementById('hero');
+    if (!heroSection) return;
+
+    var headerHeight = header ? header.offsetHeight : 0;
+    if (isElementInViewport(heroSection, headerHeight + 20)) {
+      return;
+    }
+
+    var targetPosition = Math.max(0, getAnchorDocumentTop(heroSection) - headerHeight - 20);
+    if (behavior === 'instant') {
+      var htmlScrollBehavior = document.documentElement.style.scrollBehavior;
+      var bodyScrollBehavior = document.body.style.scrollBehavior;
+      var applyInstantScroll = function () {
+        window.scrollTo(0, targetPosition);
+        document.documentElement.scrollTop = targetPosition;
+        document.body.scrollTop = targetPosition;
+      };
+
+      document.documentElement.style.scrollBehavior = 'auto';
+      document.body.style.scrollBehavior = 'auto';
+      applyInstantScroll();
+      window.setTimeout(applyInstantScroll, 0);
+      window.setTimeout(applyInstantScroll, 80);
+      window.setTimeout(applyInstantScroll, 180);
+
+      window.setTimeout(function () {
+        document.documentElement.style.scrollBehavior = htmlScrollBehavior;
+        document.body.style.scrollBehavior = bodyScrollBehavior;
+      }, 220);
+      return;
+    }
+
+    window.scrollTo({
+      top: targetPosition,
+      behavior: behavior || 'smooth'
+    });
+  }
+
+  function scheduleHomeHeroScrollAfterNavClose() {
+    window.setTimeout(function () {
+      scrollHomeHeroIntoViewIfNeeded('instant');
+    }, 20);
+  }
+
+  function buildHomeHeroSwapRequestUrl(anchor) {
+    var targetUrl;
+    try {
+      targetUrl = new URL(anchor.href, window.location.href);
+    } catch (error) {
+      return anchor.href;
+    }
+
+    targetUrl.hash = '';
+    targetUrl.searchParams.set('show-app-stores', '1');
+    return targetUrl.toString();
+  }
+
+  function applyHomeHeroSwapRequestFromUrl() {
+    var currentUrl;
+    try {
+      currentUrl = new URL(window.location.href);
+    } catch (error) {
+      return;
+    }
+
+    if (currentUrl.searchParams.get('show-app-stores') !== '1') {
+      return;
+    }
+
+    window.requestAnimationFrame(function () {
+      swapHomeHeroToStoreBadges();
+      scrollHomeHeroIntoViewIfNeeded('instant');
+
+      currentUrl.searchParams.delete('show-app-stores');
+      if (window.history && typeof window.history.replaceState === 'function') {
+        window.history.replaceState(
+          null,
+          '',
+          currentUrl.pathname + currentUrl.search + currentUrl.hash
+        );
+      }
+    });
+  }
+
+  applyHomeHeroSwapRequestFromUrl();
+  scrollToCurrentHashIfPresent();
+
+  document.querySelectorAll('a[href*="#"], a[data-home-download-swap-trigger], a[data-app-hero-nav-trigger]').forEach(function (anchor) {
     anchor.addEventListener('click', function (e) {
-      var target = getSamePageAnchorTarget(this);
-      if (!target) return;
+      if (this.hasAttribute('data-home-download-swap-trigger')) {
+        var homeDownloadAnchorData = getSamePageAnchorData(this);
+        var heroSwapRoot = getHomeHeroSwapRoot();
+        if (!homeDownloadAnchorData && !heroSwapRoot) {
+          return;
+        }
+        var focusFirstBadge = !!(heroSwapRoot && heroSwapRoot.contains(this));
+        var shouldReturnToHero = !!(!focusFirstBadge && this.closest('.site-header'));
+        var shouldWaitForNavClose = !!(shouldReturnToHero && mainNav && mainNav.classList.contains('is-open'));
+        e.preventDefault();
+        closeMainNav(false);
+        swapHomeHeroToStoreBadges({ focusFirstBadge: focusFirstBadge });
+        if (homeDownloadAnchorData) {
+          scrollToAnchorTarget(homeDownloadAnchorData.target);
+          if (window.history && typeof window.history.replaceState === 'function') {
+            window.history.replaceState(null, '', homeDownloadAnchorData.href);
+          }
+          return;
+        }
+        if (shouldReturnToHero) {
+          if (shouldWaitForNavClose) {
+            scheduleHomeHeroScrollAfterNavClose();
+          } else {
+            scrollHomeHeroIntoViewIfNeeded();
+          }
+        }
+        return;
+      }
+
+      if (this.hasAttribute('data-app-hero-nav-trigger')) {
+        var appHeroAnchorData = getSamePageAnchorData(this);
+        if (!appHeroAnchorData) return;
+        e.preventDefault();
+        closeMainNav(false);
+        swapHomeHeroToStoreBadges();
+        scrollToAnchorTarget(appHeroAnchorData.target);
+        if (window.history && typeof window.history.replaceState === 'function') {
+          window.history.replaceState(null, '', appHeroAnchorData.href);
+        }
+        return;
+      }
+
+      var anchorData = getSamePageAnchorData(this);
+      if (!anchorData) return;
 
       e.preventDefault();
-      closeMainNav();
-
-      var headerHeight = header ? header.offsetHeight : 0;
-      var targetPosition = Math.max(0, getAnchorDocumentTop(target) - headerHeight - 20);
-
-      window.scrollTo({
-        top: targetPosition,
-        behavior: 'smooth'
-      });
+      closeMainNav(false);
+      scrollToAnchorTarget(anchorData.target);
 
       if (window.history && typeof window.history.replaceState === 'function') {
-        window.history.replaceState(null, '', this.getAttribute('href'));
+        window.history.replaceState(null, '', anchorData.href);
       }
     });
   });

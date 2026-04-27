@@ -49,10 +49,16 @@ foreach ( $sections as $section ) {
  * ══════════════════════════════════════════════════════════════════════ */
 function leadwerk_render_hero( $f ) {
 	$title_grad  = isset( $f['title_gradient'] ) ? $f['title_gradient'] : 'Rette&nbsp;deine Innenstadt.';
-	$typewriter  = isset( $f['typewriter_words'] ) ? $f['typewriter_words'] : 'Shoppe lokal.|Finde Deals.|Entdecke Mode.|Stärke deine Stadt.';
+	$typewriter  = isset( $f['typewriter_words'] ) ? $f['typewriter_words'] : 'App herunterladen. Schnäppchen sichern.|Lokale Angebote in deiner Nähe.|Vor Ort einlösen. Direkt sparen.';
 	$cta_text    = isset( $f['cta_text'] ) ? $f['cta_text'] : 'App herunterladen';
+	if ( empty( $f['typewriter_words'] ) ) {
+		$typewriter = 'App herunterladen. Schnäppchen sichern.|Lokale Angebote in deiner Nähe.|Vor Ort einlösen. Direkt sparen.';
+	}
 	$cta_url     = isset( $f['cta_url'] ) ? $f['cta_url'] : '/#download';
 	$cta_url     = function_exists( 'leadwerk_theme_normalize_home_download_url' ) ? leadwerk_theme_normalize_home_download_url( $cta_url ) : $cta_url;
+	$store_badges = function_exists( 'leadwerk_theme_get_store_badge_data' ) ? leadwerk_theme_get_store_badge_data() : array();
+	$is_home_download_swap = '/#download' === $cta_url;
+	$hero_cta_href = $is_home_download_swap ? '#' : $cta_url;
 	$hero_img_id = isset( $f['hero_image'] ) ? (int) $f['hero_image'] : 0;
 	$hero_img_url = $hero_img_id ? wp_get_attachment_image_url( $hero_img_id, 'full' ) : '';
 	// Fallback: use theme asset if no attachment
@@ -71,13 +77,13 @@ function leadwerk_render_hero( $f ) {
 			<div class="hero-content reveal reveal-up">
 				<h1 class="hero-title">
 					<span class="text-gradient"><?php echo wp_kses_post( $title_grad ); ?></span>
-					<span class="hero-title-solid hero-typewriter-wrap" aria-live="polite" data-words="<?php echo esc_attr( $typewriter ); ?>">
+					<span class="hero-title-solid hero-typewriter-wrap hero-outline-text" aria-live="polite" data-words="<?php echo esc_attr( $typewriter ); ?>">
 						<span id="hero-typewriter-text"></span>
 						<span class="hero-typewriter-cursor" id="hero-typewriter-cursor" aria-hidden="true">|</span>
 					</span>
 				</h1>
-				<div class="hero-cta">
-					<a href="<?php echo esc_url( $cta_url ); ?>" class="btn btn-primary btn-accent btn-lg"><?php echo esc_html( $cta_text ); ?></a>
+				<div class="hero-cta"<?php if ( ! empty( $store_badges ) ) : ?> data-home-download-swap-root="true" data-home-store-apple-url="<?php echo esc_url( $store_badges['apple_url'] ?? '' ); ?>" data-home-store-apple-badge="<?php echo esc_url( $store_badges['apple_badge'] ?? '' ); ?>" data-home-store-google-url="<?php echo esc_url( $store_badges['google_url'] ?? '' ); ?>" data-home-store-google-badge="<?php echo esc_url( $store_badges['google_badge'] ?? '' ); ?>"<?php endif; ?>>
+					<a href="<?php echo esc_url( $hero_cta_href ); ?>" class="btn btn-primary btn-accent btn-lg"<?php if ( $is_home_download_swap ) : ?> data-home-download-swap-trigger="true"<?php endif; ?>><?php echo esc_html( $cta_text ); ?></a>
 				</div>
 			</div>
 		</div>
@@ -147,7 +153,7 @@ function leadwerk_render_why( $f ) {
  * TICKER
  * ══════════════════════════════════════════════════════════════════════ */
 function leadwerk_render_ticker() {
-	$items = array( 'HOSEN', 'PULLOVER', 'JACKEN', 'HÜTE', 'ACCESSOIRES', 'KLEIDER', 'SCHUHE', 'TASCHEN', 'JEANS', 'MÄNTEL', 'SHIRTS', 'STOFFE' );
+	$items = array( 'MODE', 'GASTRO', 'CAFÉS', 'BOUTIQUEN', 'RESTAURANTS', 'BARS', 'KONZEPTLÄDEN', 'LOKALE ANGEBOTE', 'MITTAGSANGEBOTE', 'FEIERABEND', 'EINKAUFEN', 'STADTLEBEN' );
 	?>
 	<div class="ticker-banner" aria-hidden="true">
 		<div class="ticker-track">
@@ -240,7 +246,7 @@ function leadwerk_render_app_steps( $f ) {
  * ══════════════════════════════════════════════════════════════════════ */
 function leadwerk_render_pakete( $f ) {
 	$label    = isset( $f['label'] ) ? $f['label'] : 'Das sind';
-	$title    = isset( $f['title'] ) ? $f['title'] : 'U like it Pakete';
+	$title    = isset( $f['title'] ) ? $f['title'] : 'U-like-it Pakete';
 	$content  = isset( $f['content'] ) ? $f['content'] : '';
 	$cta_text = isset( $f['cta_text'] ) ? $f['cta_text'] : 'Mehr erfahren';
 	$cta_url  = isset( $f['cta_url'] ) ? $f['cta_url'] : '/#download';
@@ -260,7 +266,7 @@ function leadwerk_render_pakete( $f ) {
 		<div class="container pakete-container">
 			<div class="pakete-layout">
 				<div class="pakete-image reveal">
-					<img src="<?php echo esc_url( $img_url ); ?>" alt="U like it Tasche" class="pakete-img">
+					<img src="<?php echo esc_url( $img_url ); ?>" alt="U-like-it Tasche" class="pakete-img">
 				</div>
 				<div class="pakete-content reveal reveal-scale">
 					<span class="pakete-label"><?php echo esc_html( $label ); ?></span>
@@ -349,7 +355,7 @@ function leadwerk_render_solutions( $f ) {
  * ══════════════════════════════════════════════════════════════════════ */
 function leadwerk_render_faq( $f ) {
 	$label   = isset( $f['label'] ) ? $f['label'] : 'FAQ';
-	$title   = isset( $f['title'] ) ? $f['title'] : 'Alles was du wissen musst';
+	$title   = isset( $f['title'] ) ? $f['title'] : 'Alles, was du wissen musst';
 	$items   = isset( $f['items'] ) && is_array( $f['items'] ) ? $f['items'] : array();
 	$img_id  = isset( $f['image'] ) ? (int) $f['image'] : 0;
 	$img_url = $img_id ? wp_get_attachment_image_url( $img_id, 'full' ) : '';
@@ -401,7 +407,7 @@ function leadwerk_render_faq( $f ) {
  * CTA
  * ══════════════════════════════════════════════════════════════════════ */
 function leadwerk_render_cta( $f ) {
-	$title   = isset( $f['title'] ) ? $f['title'] : "Jetzt mitmachen\nund lokale Deals erleben.";
+	$title   = isset( $f['title'] ) ? $f['title'] : "App herunterladen\nund Schnäppchen sichern.";
 	$btn1_t  = isset( $f['button_1_text'] ) ? $f['button_1_text'] : 'Unternehmen registrieren';
 	$btn1_u  = isset( $f['button_1_url'] ) ? $f['button_1_url'] : '/fuer-haendler/#onboarding';
 	$btn2_t  = isset( $f['button_2_text'] ) ? $f['button_2_text'] : 'App herunterladen';

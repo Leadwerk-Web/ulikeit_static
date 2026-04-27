@@ -225,10 +225,9 @@ function leadwerk_importer_ajax_start() {
 	leadwerk_importer_verify_ajax_request();
 
 	$dry_run = ! empty( $_POST['dry_run'] );
-	$state   = Leadwerk_Logger::get_state();
 
 	if ( Leadwerk_Logger::has_active_job() ) {
-		wp_send_json_success( array( 'state' => $state ) );
+		wp_send_json_success( array( 'state' => Leadwerk_Logger::get_state() ) );
 	}
 
 	$importer = new Leadwerk_Importer( ! $dry_run );
@@ -245,6 +244,7 @@ add_action( 'wp_ajax_leadwerk_import_start', 'leadwerk_importer_ajax_start' );
 function leadwerk_importer_ajax_step() {
 	leadwerk_importer_verify_ajax_request();
 
+	Leadwerk_Logger::force_reset_stale_job();
 	$state = Leadwerk_Logger::get_state();
 	if ( empty( $state['job_id'] ) ) {
 		wp_send_json_error( array( 'message' => 'No import job found.' ), 404 );
@@ -275,6 +275,7 @@ add_action( 'wp_ajax_leadwerk_import_state', 'leadwerk_importer_ajax_state' );
 function leadwerk_importer_ajax_reset() {
 	leadwerk_importer_verify_ajax_request();
 
+	Leadwerk_Logger::force_reset_stale_job();
 	$state = Leadwerk_Logger::get_state();
 	if ( ! empty( $state['job_id'] ) && in_array( (string) ( $state['status'] ?? '' ), array( 'running', 'booting' ), true ) ) {
 		wp_send_json_error( array( 'message' => 'The import is still running.' ), 409 );

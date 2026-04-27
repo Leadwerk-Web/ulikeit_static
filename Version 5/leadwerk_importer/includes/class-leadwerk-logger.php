@@ -14,6 +14,7 @@ class Leadwerk_Logger {
 	const OPTION_LOG = 'leadwerk_import_log';
 	const OPTION_JOB = 'leadwerk_import_job_state';
 	const LOG_TAIL_LIMIT = 80;
+	const STALE_JOB_TIMEOUT = 600;
 
 	/**
 	 * Plaintext log buffer.
@@ -73,6 +74,8 @@ class Leadwerk_Logger {
 	 * @return array<string,mixed>
 	 */
 	public static function start_job( $args = array() ) {
+		self::force_reset_stale_job();
+
 		$existing = self::load_state();
 		if ( ! empty( $existing['job_id'] ) && in_array( $existing['status'] ?? '', array( 'running', 'booting' ), true ) ) {
 			return $existing;
@@ -287,8 +290,42 @@ class Leadwerk_Logger {
 	 * @return bool
 	 */
 	public static function has_active_job() {
+		self::force_reset_stale_job();
 		$state = self::load_state();
 		return ! empty( $state['job_id'] ) && in_array( $state['status'] ?? '', array( 'running', 'booting' ), true );
+	}
+
+	/**
+	 * Auto-clear a stale running job that exceeded the timeout.
+	 *
+	 * @return bool Whether a stale job was cleared.
+	 */
+	public static function force_reset_stale_job() {
+		$state = self::load_state();
+		if ( empty( $state['job_id'] ) ) {
+			return false;
+		}
+
+		$status = (string) ( $state['status'] ?? '' );
+		if ( ! in_array( $status, array( 'running', 'booting' ), true ) ) {
+			return false;
+		}
+
+		$started_at = (string) ( $state['started_at'] ?? '' );
+		if ( '' === $started_at ) {
+			self::reset_job();
+			return true;
+		}
+
+		$started_ts = strtotime( $started_at );
+		$now_ts     = time();
+		if ( false === $started_ts || ( $now_ts - $started_ts ) > self::STALE_JOB_TIMEOUT ) {
+			self::reset_job();
+			self::log( 'Stale import job auto-cleared (started at ' . $started_at . ', exceeded ' . self::STALE_JOB_TIMEOUT . 's timeout).', 'warning' );
+			return true;
+		}
+
+		return false;
 	}
 
 	/**

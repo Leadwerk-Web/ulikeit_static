@@ -233,9 +233,20 @@
       .then(function (result) {
         if (result && result.success) {
           render(result.data.state || {});
+        } else {
+          // Server returned an error (e.g. 404 no job found, 409 conflict).
+          // Force a state refresh to get the actual current state.
+          currentState.status = "failed";
+          render(currentState);
+          refreshState();
         }
       })
-      .catch(function () {})
+      .catch(function () {
+        // Network error or timeout — retry after a longer delay.
+        currentState.status = "failed";
+        render(currentState);
+        refreshState();
+      })
       .finally(function () {
         isStepping = false;
         if (stateIsRunning(currentState)) {

@@ -154,6 +154,8 @@ class Leadwerk_Importer {
 	 * @return array<string,mixed>
 	 */
 	public function build_initial_job_state() {
+		Leadwerk_Logger::force_reset_stale_job();
+
 		$steps = $this->get_step_definitions();
 		$job   = Leadwerk_Logger::start_job(
 			array(
@@ -816,6 +818,13 @@ class Leadwerk_Importer {
 				continue;
 			}
 
+			// Auto-promote a running step whose items are all processed.
+			if ( 'running' === $status && $processed >= $total ) {
+				$job_state['steps'][ $step_key ]['status'] = 'completed';
+				Leadwerk_Logger::set_state( $job_state );
+				continue;
+			}
+
 			if ( $processed < $total ) {
 				return (string) $step_key;
 			}
@@ -1120,6 +1129,88 @@ class Leadwerk_Importer {
 	}
 
 	/**
+	 * Truncate SEO title for Yoast width hints (uses theme helper when active).
+	 *
+	 * @param string $title      Title.
+	 * @param int    $max_chars  Max length.
+	 * @return string
+	 */
+	protected function truncate_seo_title_for_yoast( $title, $max_chars = 58 ) {
+		if ( function_exists( 'leadwerk_theme_truncate_seo_title_for_yoast' ) ) {
+			return leadwerk_theme_truncate_seo_title_for_yoast( $title, $max_chars );
+		}
+
+		$title = trim( (string) $title );
+		if ( '' === $title ) {
+			return '';
+		}
+		if ( $max_chars < 8 ) {
+			$max_chars = 8;
+		}
+		if ( function_exists( 'mb_strlen' ) && function_exists( 'mb_substr' ) && mb_strlen( $title ) > $max_chars ) {
+			return rtrim( mb_substr( $title, 0, $max_chars - 1 ) ) . '…';
+		}
+		if ( strlen( $title ) > $max_chars ) {
+			return rtrim( substr( $title, 0, $max_chars - 1 ) ) . '…';
+		}
+
+		return $title;
+	}
+
+	/**
+	 * Refresh Yoast indexables after SEO meta import.
+	 *
+	 * @param int $post_id Post ID.
+	 * @return void
+	 */
+	protected function maybe_rebuild_yoast_indexable( $post_id ) {
+		$post_id = (int) $post_id;
+		if ( $post_id <= 0 || $this->dry_run ) {
+			return;
+		}
+
+		if ( function_exists( 'leadwerk_theme_rebuild_yoast_post_indexable' ) ) {
+			leadwerk_theme_rebuild_yoast_post_indexable( $post_id );
+			return;
+		}
+
+		if ( ! function_exists( 'YoastSEO' ) || ! class_exists( '\Yoast\WP\SEO\Integrations\Watchers\Indexable_Post_Watcher', false ) ) {
+			return;
+		}
+
+		try {
+			$yoast = YoastSEO();
+			if ( ! is_object( $yoast ) || ! isset( $yoast->classes ) || ! is_object( $yoast->classes ) || ! method_exists( $yoast->classes, 'get' ) ) {
+				return;
+			}
+			$watcher = $yoast->classes->get( \Yoast\WP\SEO\Integrations\Watchers\Indexable_Post_Watcher::class );
+			if ( is_object( $watcher ) && method_exists( $watcher, 'build_indexable' ) ) {
+				$watcher->build_indexable( $post_id );
+			}
+		} catch ( \Throwable $e ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
+			return;
+		}
+	}
+
+	/**
+	 * Resolve focus keyphrase from manifest-style keys (primary + English fallback).
+	 *
+	 * @param array<string,mixed> $seo SEO config.
+	 * @return string
+	 */
+	protected function resolve_seo_focus_keyphrase( array $seo ) {
+		$kw = isset( $seo['focus_keyphrase'] ) ? trim( (string) $seo['focus_keyphrase'] ) : '';
+		if ( '' !== $kw ) {
+			return $kw;
+		}
+		if ( ! empty( $seo['focus_keyphrase_en'] ) ) {
+			return trim( (string) $seo['focus_keyphrase_en'] );
+		}
+
+		return '';
+	}
+
+	/**
 	 * Apply SEO meta values.
 	 *
 	 * @param int                 $post_id Post ID.
@@ -1131,7 +1222,8 @@ class Leadwerk_Importer {
 
 		if ( ! empty( $seo['title'] ) ) {
 			if ( ! $this->dry_run ) {
-				update_post_meta( $post_id, '_yoast_wpseo_title', sanitize_text_field( $seo['title'] ) );
+				$seo_title = $this->truncate_seo_title_for_yoast( (string) $seo['title'] );
+				update_post_meta( $post_id, '_yoast_wpseo_title', sanitize_text_field( $seo_title ) );
 			}
 			$fields_written[] = 'title';
 		}
@@ -1143,9 +1235,10 @@ class Leadwerk_Importer {
 			$fields_written[] = 'metadesc';
 		}
 
-		if ( ! empty( $seo['focus_keyphrase'] ) ) {
+		$focus_kw = $this->resolve_seo_focus_keyphrase( $seo );
+		if ( '' !== $focus_kw ) {
 			if ( ! $this->dry_run ) {
-				update_post_meta( $post_id, '_yoast_wpseo_focuskw', sanitize_text_field( $seo['focus_keyphrase'] ) );
+				update_post_meta( $post_id, '_yoast_wpseo_focuskw', sanitize_text_field( $focus_kw ) );
 			}
 			$fields_written[] = 'focuskw';
 		}
@@ -1183,6 +1276,8 @@ class Leadwerk_Importer {
 		if ( ! empty( $fields_written ) ) {
 			Leadwerk_Logger::log( 'SEO-Meta ' . ( $this->dry_run ? 'wuerde gesetzt' : 'gesetzt' ) . ' fuer ID ' . $post_id . ': ' . implode( ', ', $fields_written ) );
 		}
+
+		$this->maybe_rebuild_yoast_indexable( (int) $post_id );
 	}
 
 	/**
@@ -1238,7 +1333,7 @@ class Leadwerk_Importer {
 		}
 
 		if ( ! $this->dry_run ) {
-			update_field( 'footer_text', 'U-like-it verbindet lokale Haendler und Gastronomie mit Kund:innen in der Naehe. Zeitgesteuerte Deals reservieren, vor Ort per QR-Code einloesen - so belebt die App deine Innenstadt.', 'option' );
+			update_field( 'footer_text', 'U-like-it verbindet lokale Haendler und Gastronomie mit Kund:innen in der Naehe. Zeitlich begrenzte Angebote lassen sich in der App entdecken und vor Ort per QR-Code einloesen - so belebt U-like-it deine Innenstadt.', 'option' );
 			update_field( 'copyright_text', '&copy; ' . gmdate( 'Y' ) . ' U-like-it. Alle Rechte vorbehalten.', 'option' );
 			update_field( 'app_store_url', 'https://apps.apple.com/de/app/u-like-it/id1593884667', 'option' );
 			update_field( 'google_play_url', 'https://play.google.com/store/apps/details?id=de.u_like_it', 'option' );

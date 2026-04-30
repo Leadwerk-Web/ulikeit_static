@@ -3,25 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Impressum und rechtliche Angaben zu U-like-it.">
-  <meta name="robots" content="noindex, follow">
-  <title>Impressum – U-like-it</title>
+  <meta name="description" content="U-like-it App herunterladen: Lade U-like-it im Apple App Store oder bei Google Play und entdecke lokale Angebote in deiner N&auml;he.">
+  <title>U-like-it &ndash; App herunterladen</title>
   <link rel="icon" type="image/x-icon" href="images/favicon.ico">
   <link rel="icon" type="image/png" href="images/favicon.png" sizes="32x32">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Geologica:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Geologica:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
-<body>
-  <!-- Scroll Progress -->
+<body class="download-page-template">
   <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
-  <!-- Custom Cursor -->
   <div class="custom-cursor" id="custom-cursor" aria-hidden="true"></div>
   <div class="custom-cursor-shadow" id="custom-cursor-shadow" aria-hidden="true"></div>
 
-  <!-- ========== HEADER / NAV ========== -->
-  <header class="site-header" id="site-header">
+  <header class="site-header scrolled" id="site-header" data-force-scrolled-header="true">
     <div class="container header-inner">
       <a href="index.html" class="logo" aria-label="U-like-it Startseite">
         <img src="images/logo.png" alt="U-like-it" class="logo-img">
@@ -58,19 +54,19 @@
               <li><a href="user.html#app-preview">Die App</a></li>
               <li><a href="user.html#location">In deiner N&auml;he</a></li>
               <li><a href="user.html#exclusive">Vorteile</a></li>
-              <li><a href="download.html">App herunterladen</a></li>
+              <li><a href="download.html" aria-current="page">App herunterladen</a></li>
             </ul>
           </li>
           <li><a href="index.html#solution-faq">FAQ</a></li>
         </ul>
         <div class="mobile-nav-cta">
           <a href="haendler.html#onboarding" class="btn btn-ghost">Unternehmen registrieren</a>
-          <a href="download.html" class="btn btn-primary btn-accent">App herunterladen</a>
+          <a href="download.html" class="btn btn-primary btn-accent" aria-current="page">App herunterladen</a>
         </div>
       </nav>
       <div class="header-cta">
         <a href="haendler.html#onboarding" class="btn btn-ghost btn-header">Unternehmen registrieren</a>
-        <a href="download.html" class="btn btn-primary btn-accent btn-header">App herunterladen</a>
+        <a href="download.html" class="btn btn-primary btn-accent btn-header" aria-current="page">App herunterladen</a>
       </div>
       <button class="nav-toggle" id="nav-toggle" aria-label="Men&uuml; &ouml;ffnen" aria-expanded="false">
         <span class="nav-toggle-bar"></span>
@@ -81,44 +77,58 @@
   </header>
 
   <main>
-    <section class="section legal-section" style="padding-top: 160px; padding-bottom: 80px;">
-      <div class="container" style="max-width: 800px;">
-        <h1 class="section-title" style="text-align: left; margin-bottom: 2rem;">Impressum</h1>
+    <section class="section download-page-section" id="download-page">
+      <div class="download-page-bg" aria-hidden="true"></div>
+      <div class="container download-page-inner">
+        <div class="download-page-copy reveal reveal-up">
+          <span class="download-eyebrow">U-like-it App</span>
+          <h1 class="download-title">Herunterladen</h1>
+          <p class="download-subtitle">Wo bekomme ich U-like-it f&uuml;r mein Smartphone?</p>
+          <div class="download-copy-text">
+            <p>U-like-it gibt es f&uuml;r Android und iOS. Einfach den passenden Store ausw&auml;hlen und los geht's. Bei der ersten Registrierung entscheidest du, ob du als Ladenbesitzer:in oder K&auml;ufer:in die App verwenden willst.</p>
+          </div>
+          <div class="download-store-row" aria-label="U-like-it App Stores">
+            <a href="https://apps.apple.com/de/app/u-like-it/id1593884667" class="download-store-badge" target="_blank" rel="noopener noreferrer" aria-label="Im App Store herunterladen">
+              <img src="images/apple_app_store_badge.png" alt="Im App Store herunterladen" width="155" height="46">
+            </a>
+            <a href="https://play.google.com/store/apps/details?id=de.u_like_it" class="download-store-badge" target="_blank" rel="noopener noreferrer" aria-label="Bei Google Play herunterladen">
+              <img src="images/google-play-badge.png" alt="Bei Google Play herunterladen" width="155" height="46">
+            </a>
+          </div>
+          <ul class="download-platform-list">
+            <li>iPhone und Android werden unterst&uuml;tzt.</li>
+            <li>Die App ist kostenlos f&uuml;r Nutzer:innen.</li>
+            <li>Ein Konto reicht f&uuml;r K&auml;ufer:innen und Ladenbesitzer:innen.</li>
+          </ul>
+        </div>
 
-        <div class="legal-content" style="line-height: 1.8; color: #444;">
-
-          <h2 style="margin-top: 2rem;">Angaben gemäß § 5 TMG</h2>
-
-          <p><strong>Seitenbetreiber:</strong></p>
-          <p>Ingenieurbüro <span class="legal-no-copy">Dietmar Schröder</span><br>
-          Am Liepoldsacker 35<br>
-          76228 Karlsruhe<br>
-          Deutschland</p>
-
-          <h3>Verantwortlicher</h3>
-          <p><span class="legal-no-copy">Dietmar Schröder</span></p>
-
-          <h3>Kontakt</h3>
-          <p>E-Mail: <a href="mailto:dietmar.schroeder@u-like-it.de">dietmar.schroeder@u-like-it.de</a><br>
-          E-Mail: <a href="mailto:support@u-like-it.de">support@u-like-it.de</a></p>
-
-          <hr style="margin: 3rem 0;">
-
-          <h2>EU-Streitschlichtung</h2>
-          <p>Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit: <a href="https://ec.europa.eu/consumers/odr/" target="_blank" rel="noopener noreferrer">https://ec.europa.eu/consumers/odr/</a>.</p>
-          <p>Unsere E-Mail-Adresse finden Sie oben im Impressum.</p>
-
-          <hr style="margin: 3rem 0;">
-
-          <h2>Verbraucherstreitbeilegung / Universalschlichtungsstelle</h2>
-          <p>Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p>
-
+        <div class="download-slider-shell reveal reveal-scale">
+          <div class="download-phone-frame" data-download-slider aria-label="U-like-it App Screenshots">
+            <div class="download-slider-viewport">
+              <div class="download-slider-track">
+                <div class="download-slider-slide"><img src="images/gallery/iPhone 11 Pro Max-00BuyerLogin_framed.png" alt="U-like-it Login Screen" class="download-slider-img" width="300" height="600"></div>
+                <div class="download-slider-slide"><img src="images/gallery/iPhone 11 Pro Max-01BuyerDashboard_framed.png" alt="U-like-it Dashboard" class="download-slider-img" width="300" height="600" loading="lazy"></div>
+                <div class="download-slider-slide"><img src="images/gallery/iPhone 11 Pro Max-02BuyerShopList_framed.png" alt="U-like-it Shopliste" class="download-slider-img" width="300" height="600" loading="lazy"></div>
+                <div class="download-slider-slide"><img src="images/gallery/iPhone 11 Pro Max-03BuyerFirstShop_framed.png" alt="U-like-it Shop Detail" class="download-slider-img" width="300" height="600" loading="lazy"></div>
+                <div class="download-slider-slide"><img src="images/gallery/iPhone 11 Pro Max-04BuyerOfferList_framed.png" alt="U-like-it Angebote" class="download-slider-img" width="300" height="600" loading="lazy"></div>
+                <div class="download-slider-slide"><img src="images/gallery/iPhone 11 Pro Max-05BuyerFirstOffer_framed.png" alt="U-like-it Angebotsdetail" class="download-slider-img" width="300" height="600" loading="lazy"></div>
+                <div class="download-slider-slide"><img src="images/gallery/iPhone 11 Pro Max-06BuyerSettings_framed.png" alt="U-like-it Einstellungen" class="download-slider-img" width="300" height="600" loading="lazy"></div>
+                <div class="download-slider-slide"><img src="images/gallery/iPhone 11 Pro Max-07BuyerCategories_framed.png" alt="U-like-it Kategorien" class="download-slider-img" width="300" height="600" loading="lazy"></div>
+                <div class="download-slider-slide"><img src="images/gallery/iPhone 11 Pro Max-10OwnerOfferList_framed.png" alt="U-like-it Anbieter Angebote" class="download-slider-img" width="300" height="600" loading="lazy"></div>
+                <div class="download-slider-slide"><img src="images/gallery/iPhone 11 Pro Max-11OwnerEditOffer_framed.png" alt="U-like-it Angebot bearbeiten" class="download-slider-img" width="300" height="600" loading="lazy"></div>
+                <div class="download-slider-slide"><img src="images/gallery/iPhone 11 Pro Max-12OwnerEditDescription_framed.png" alt="U-like-it Beschreibung bearbeiten" class="download-slider-img" width="300" height="600" loading="lazy"></div>
+                <div class="download-slider-slide"><img src="images/gallery/iPhone 11 Pro Max-13OwnerPublish_framed.png" alt="U-like-it Angebot ver&ouml;ffentlichen" class="download-slider-img" width="300" height="600" loading="lazy"></div>
+                <div class="download-slider-slide"><img src="images/gallery/iPhone 11 Pro Max-14OwnerStatYear_framed.png" alt="U-like-it Statistik" class="download-slider-img" width="300" height="600" loading="lazy"></div>
+              </div>
+            </div>
+            <button type="button" class="download-slider-btn download-slider-prev" data-download-slider-prev aria-label="Vorheriger Screenshot">&lsaquo;</button>
+            <button type="button" class="download-slider-btn download-slider-next" data-download-slider-next aria-label="N&auml;chster Screenshot">&rsaquo;</button>
+          </div>
         </div>
       </div>
     </section>
   </main>
 
-  <!-- ========== FOOTER ========== -->
   <footer class="site-footer">
     <div class="container footer-inner">
       <div class="footer-top">
@@ -138,7 +148,7 @@
             <li><a href="haendler.html">F&uuml;r H&auml;ndler</a></li>
             <li><a href="user.html">F&uuml;r Nutzer:innen</a></li>
             <li><a href="index.html#solution-faq">FAQ</a></li>
-            <li><a href="download.html">App herunterladen</a></li>
+            <li><a href="download.html" aria-current="page">App herunterladen</a></li>
           </ul>
         </nav>
         <div class="footer-download">
@@ -160,7 +170,8 @@
               <img src="images/qr-google-play.svg" alt="QR-Code f&uuml;r Google Play" width="96" height="96">
               <span>Google Play</span>
             </a>
-          </div>        </div>
+          </div>
+        </div>
       </div>
       <div class="footer-bottom">
         <div class="footer-legal">
@@ -175,6 +186,3 @@
   <script src="script.js"></script>
 </body>
 </html>
-
-
-

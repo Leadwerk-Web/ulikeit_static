@@ -1,0 +1,286 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e3]:
+    - generic [ref=e4]:
+      - link "U-like-it Startseite" [ref=e5] [cursor=pointer]:
+        - /url: index.html
+        - img "U-like-it" [ref=e6]
+      - navigation "Hauptnavigation":
+        - list:
+          - listitem:
+            - link "So funktioniert's":
+              - /url: index.html#app-steps
+          - listitem:
+            - generic:
+              - link "Für Händler":
+                - /url: haendler.html
+              - button "Untermenü für Händler öffnen"
+          - listitem:
+            - generic:
+              - link "Für Nutzer:innen":
+                - /url: user.html
+              - button "Untermenü für Nutzer:innen öffnen"
+          - listitem:
+            - link "FAQ":
+              - /url: index.html#solution-faq
+        - generic:
+          - link "Unternehmen registrieren":
+            - /url: haendler.html#onboarding
+          - link "App herunterladen":
+            - /url: download.html
+      - button "Menü öffnen" [ref=e329] [cursor=pointer]
+  - main [ref=e27]:
+    - generic [ref=e32]:
+      - heading "Rette deine Innenstadt. App herunterladen." [level=1] [ref=e336]:
+        - generic [ref=e34]: Rette deine Innenstadt.
+        - generic [ref=e35]:
+          - text: App herunterladen.
+          - generic [ref=e36]: "|"
+      - link "App herunterladen" [ref=e38] [cursor=pointer]:
+        - /url: download.html
+    - generic [ref=e40]:
+      - generic [ref=e41]:
+        - generic [ref=e42]: Warum U-like-it?
+        - heading "Weil lokal einfach besser ist." [level=2] [ref=e43]
+      - generic [ref=e45]:
+        - generic [ref=e46]:
+          - img [ref=e48]
+          - generic [ref=e51]:
+            - paragraph [ref=e52]: Angebote in deiner Nähe.
+            - group [ref=e53]:
+              - generic "Mehr erfahren" [ref=e54] [cursor=pointer]
+              - paragraph [ref=e322]: Echte Rabatte von lokalen Läden, Cafés und Restaurants. Täglich neu, immer in Reichweite.
+        - generic [ref=e55]:
+          - img [ref=e57]
+          - generic [ref=e60]:
+            - paragraph [ref=e61]: Innenstadt beleben.
+            - group [ref=e62]:
+              - generic "Mehr erfahren" [ref=e63] [cursor=pointer]
+              - paragraph [ref=e323]: Jedes Angebot stärkt lokale Händler und bringt Leben zurück in deine Nachbarschaft.
+        - generic [ref=e64]:
+          - img [ref=e66]
+          - generic [ref=e68]:
+            - paragraph [ref=e69]: Reservieren & sparen.
+            - group [ref=e70]:
+              - generic "Mehr erfahren" [ref=e71] [cursor=pointer]
+              - paragraph [ref=e324]: Angebot in der App sichern, vorbeikommen und direkt im Laden einlösen. Stressfrei.
+        - generic [ref=e72]:
+          - img [ref=e74]
+          - generic [ref=e77]:
+            - paragraph [ref=e78]: Neue Läden entdecken.
+            - group [ref=e79]:
+              - generic "Mehr erfahren" [ref=e80] [cursor=pointer]
+              - paragraph [ref=e325]: Boutiquen, Cafés und Konzeptläden. Finde Orte, die du noch nicht kanntest.
+        - generic [ref=e81]:
+          - img [ref=e83]
+          - generic [ref=e86]:
+            - paragraph [ref=e87]: Restaurants & Gastro.
+            - group [ref=e88]:
+              - generic "Mehr erfahren" [ref=e89] [cursor=pointer]
+              - paragraph [ref=e326]: Auch Restaurants, Cafés und Bars bieten Angebote an. Entdecke kulinarische Angebote direkt um die Ecke.
+    - generic [ref=e91]:
+      - generic [ref=e92]: MODE•
+      - generic [ref=e93]: GASTRO•
+      - generic [ref=e94]: CAFÉS•
+      - generic [ref=e95]: BOUTIQUEN•
+      - generic [ref=e96]: RESTAURANTS•
+      - generic [ref=e97]: BARS•
+      - generic [ref=e98]: KONZEPTLÄDEN•
+      - generic [ref=e99]: LOKALE ANGEBOTE•
+      - generic [ref=e100]: MITTAGSANGEBOTE•
+      - generic [ref=e101]: FEIERABEND•
+      - generic [ref=e102]: EINKAUFEN•
+      - generic [ref=e103]: STADTLEBEN•
+      - generic [ref=e104]: MODE•
+      - generic [ref=e105]: GASTRO•
+      - generic [ref=e106]: CAFÉS•
+      - generic [ref=e107]: BOUTIQUEN•
+      - generic [ref=e108]: RESTAURANTS•
+      - generic [ref=e109]: BARS•
+      - generic [ref=e110]: KONZEPTLÄDEN•
+      - generic [ref=e111]: LOKALE ANGEBOTE•
+      - generic [ref=e112]: MITTAGSANGEBOTE•
+      - generic [ref=e113]: FEIERABEND•
+      - generic [ref=e114]: EINKAUFEN•
+      - generic [ref=e115]: STADTLEBEN
+    - generic [ref=e116]:
+      - generic [ref=e119]:
+        - generic [ref=e120]:
+          - heading "So funktioniert die App" [level=2] [ref=e121]
+          - generic [ref=e122]:
+            - generic [ref=e124]:
+              - generic [ref=e125]: Schritt 1
+              - paragraph [ref=e126]: Entdecke lokale Angebote in deiner Nähe und sieh auf einen Blick, welche Angebote heute verfügbar sind.
+            - tablist "Schritte" [ref=e127]:
+              - button "Vorheriger Schritt" [ref=e128] [cursor=pointer]:
+                - img [ref=e129]
+              - generic [ref=e131]:
+                - tab "Schritt 1" [selected] [ref=e132] [cursor=pointer]
+                - tab "Schritt 2" [ref=e133] [cursor=pointer]
+                - tab "Schritt 3" [ref=e134] [cursor=pointer]
+                - tab "Schritt 4" [ref=e135] [cursor=pointer]
+              - button "Nächster Schritt" [ref=e136] [cursor=pointer]:
+                - img [ref=e137]
+        - img [ref=e142]
+      - generic [ref=e147]:
+        - img "U-like-it Tasche" [ref=e149]
+        - generic [ref=e150]:
+          - generic [ref=e151]: Das sind
+          - heading "U-like-it Pakete" [level=2] [ref=e152]
+          - generic [ref=e153]:
+            - paragraph [ref=e154]: Mit der U-like-it-App entdeckst du jetzt auch exklusive Angebotspakete aus deiner Stadt – zusammengestellt von lokalen Boutiquen, Läden und Gastronomiebetrieben.
+            - paragraph [ref=e155]:
+              - text: "Ob Einkaufsaktion, Mittagsangebot oder Feierabendpaket:"
+              - text: Reserviere dein Paket in der App, zeige den QR-Code vor Ort und sichere dir deinen Vorteil – sofort und direkt in deiner Stadt.
+            - paragraph [ref=e156]:
+              - strong [ref=e157]: Lokal. Einfach. Fair.
+          - link "Mehr erfahren" [ref=e158] [cursor=pointer]:
+            - /url: download.html
+    - generic [ref=e162]:
+      - generic [ref=e163]: MODE•
+      - generic [ref=e164]: GASTRO•
+      - generic [ref=e165]: CAFÉS•
+      - generic [ref=e166]: BOUTIQUEN•
+      - generic [ref=e167]: RESTAURANTS•
+      - generic [ref=e168]: BARS•
+      - generic [ref=e169]: KONZEPTLÄDEN•
+      - generic [ref=e170]: LOKALE ANGEBOTE•
+      - generic [ref=e171]: MITTAGSANGEBOTE•
+      - generic [ref=e172]: FEIERABEND•
+      - generic [ref=e173]: EINKAUFEN•
+      - generic [ref=e174]: STADTLEBEN•
+      - generic [ref=e175]: MODE•
+      - generic [ref=e176]: GASTRO•
+      - generic [ref=e177]: CAFÉS•
+      - generic [ref=e178]: BOUTIQUEN•
+      - generic [ref=e179]: RESTAURANTS•
+      - generic [ref=e180]: BARS•
+      - generic [ref=e181]: KONZEPTLÄDEN•
+      - generic [ref=e182]: LOKALE ANGEBOTE•
+      - generic [ref=e183]: MITTAGSANGEBOTE•
+      - generic [ref=e184]: FEIERABEND•
+      - generic [ref=e185]: EINKAUFEN•
+      - generic [ref=e186]: STADTLEBEN
+    - generic [ref=e187]:
+      - generic [ref=e190]:
+        - generic [ref=e191]:
+          - generic [ref=e192]: Für Händler & Gastronomie
+          - heading "Unsere Lösungen für Unternehmen" [level=2] [ref=e193]
+          - paragraph [ref=e195]: Wir bieten maßgeschneiderte Lösungen für Händler und Gastronomiebetriebe, die ihre Angebote lokal sichtbar machen und gezielt mehr Kundschaft in ihr Geschäft bringen möchten.
+          - link "Unternehmen registrieren" [ref=e196] [cursor=pointer]:
+            - /url: haendler.html#onboarding
+        - generic [ref=e197]:
+          - article [ref=e198]:
+            - generic [ref=e199]:
+              - img [ref=e201]
+              - heading "Überraschungspakete" [level=3] [ref=e204]
+            - paragraph [ref=e205]: "Aus Restposten werden Frequenzimpulse: Einzelhändler und Gastronomiebetriebe bieten ihre Aktionen und Überraschungspakete über die U-like-it-App an. Nutzer:innen reservieren das Angebot und lösen es zur angegebenen Zeit direkt im Geschäft per QR-Code ein."
+            - link "Mehr erfahren" [ref=e206] [cursor=pointer]:
+              - /url: haendler.html
+          - article [ref=e207]:
+            - generic [ref=e208]:
+              - img [ref=e210]
+              - heading "U-like-it Plattform" [level=3] [ref=e212]
+            - paragraph [ref=e213]: "Eine modulare Plattform, die das Management lokaler Angebote vereinfacht und automatisiert: Einzelhändler und Gastronomiebetriebe profitieren von mehr Sichtbarkeit, planbarer Frequenz und messbaren Einlösungen direkt vor Ort."
+            - link "Mehr erfahren" [ref=e214] [cursor=pointer]:
+              - /url: "#app-steps"
+          - article [ref=e215]:
+            - generic [ref=e216]:
+              - img [ref=e218]
+              - heading "Angebotspakete" [level=3] [ref=e220]
+            - paragraph [ref=e221]: Händler und Gastronomiebetriebe erstellen attraktive Angebotspakete direkt in der App. Nutzer:innen reservieren diese über U-like-it und lösen sie zur angegebenen Zeit bequem im Geschäft per QR-Code ein.
+            - link "Mehr erfahren" [ref=e222] [cursor=pointer]:
+              - /url: "#app-steps"
+          - article [ref=e223]:
+            - generic [ref=e224]:
+              - img [ref=e226]
+              - heading "Initiative für starke Innenstädte" [level=3] [ref=e230]
+            - paragraph [ref=e231]: Werde Teil eines lokalen Händlernetzwerks und mache deine Angebote sichtbar. Mit U-like-it bringst du Aktionen gezielt in die App und Kund:innen direkt in dein Geschäft.
+            - link "Mehr erfahren" [ref=e232] [cursor=pointer]:
+              - /url: "#app-steps"
+      - generic [ref=e234]:
+        - generic [ref=e235]:
+          - generic [ref=e236]: FAQ
+          - heading "Alles, was du wissen musst" [level=2] [ref=e237]
+        - generic [ref=e238]:
+          - generic [ref=e240]:
+            - group [ref=e241]:
+              - generic "Was ist U-like-it?" [ref=e242] [cursor=pointer]:
+                - generic [ref=e243]: Was ist U-like-it?
+                - img [ref=e244]
+            - group [ref=e246]:
+              - generic "Ist die App kostenlos?" [ref=e247] [cursor=pointer]:
+                - generic [ref=e248]: Ist die App kostenlos?
+                - img [ref=e249]
+            - group [ref=e251]:
+              - generic "Wie funktioniert es für Händler?" [ref=e252] [cursor=pointer]:
+                - generic [ref=e253]: Wie funktioniert es für Händler?
+                - img [ref=e254]
+            - group [ref=e256]:
+              - generic "Wie löse ich ein Angebot ein?" [ref=e257] [cursor=pointer]:
+                - generic [ref=e258]: Wie löse ich ein Angebot ein?
+                - img [ref=e259]
+            - group [ref=e261]:
+              - generic "Wo ist U-like-it verfügbar?" [ref=e262] [cursor=pointer]:
+                - generic [ref=e263]: Wo ist U-like-it verfügbar?
+                - img [ref=e264]
+          - img [ref=e269]
+    - generic [ref=e277]:
+      - heading "App herunterladen und Schnäppchen sichern." [level=2] [ref=e278]:
+        - text: App herunterladen
+        - text: und Schnäppchen sichern.
+      - generic [ref=e279]:
+        - link "Unternehmen registrieren" [ref=e280] [cursor=pointer]:
+          - /url: haendler.html#onboarding
+        - link "App herunterladen" [ref=e281] [cursor=pointer]:
+          - /url: download.html
+  - contentinfo [ref=e282]:
+    - generic [ref=e283]:
+      - generic [ref=e284]:
+        - generic [ref=e285]:
+          - link "U-like-it Startseite" [ref=e286] [cursor=pointer]:
+            - /url: index.html
+            - img "U-like-it" [ref=e287]
+          - paragraph [ref=e288]: U-like-it verbindet lokale Händler und Gastronomie mit Kund:innen in der Nähe. Zeitlich begrenzte Angebote lassen sich in der App entdecken und vor Ort per QR-Code einlösen – so belebt U-like-it deine Innenstadt.
+        - navigation "Footer-Navigation" [ref=e289]:
+          - generic [ref=e290]: Navigation
+          - list [ref=e291]:
+            - listitem [ref=e292]:
+              - link "So funktioniert's" [ref=e293] [cursor=pointer]:
+                - /url: index.html#app-steps
+            - listitem [ref=e294]:
+              - link "Für Händler" [ref=e295] [cursor=pointer]:
+                - /url: haendler.html
+            - listitem [ref=e296]:
+              - link "Für Nutzer:innen" [ref=e297] [cursor=pointer]:
+                - /url: user.html
+            - listitem [ref=e298]:
+              - link "FAQ" [ref=e299] [cursor=pointer]:
+                - /url: index.html#solution-faq
+            - listitem [ref=e300]:
+              - link "App herunterladen" [ref=e301] [cursor=pointer]:
+                - /url: download.html
+        - generic [ref=e302]:
+          - generic [ref=e303]: App herunterladen
+          - generic [ref=e304]:
+            - link "Im App Store herunterladen" [ref=e305] [cursor=pointer]:
+              - /url: https://apps.apple.com/de/app/u-like-it/id1593884667
+              - img "Im App Store herunterladen" [ref=e306]
+            - link "Bei Google Play herunterladen" [ref=e307] [cursor=pointer]:
+              - /url: https://play.google.com/store/apps/details?id=de.u_like_it
+              - img "Bei Google Play herunterladen" [ref=e308]
+          - generic "Store QR-Codes" [ref=e309]:
+            - link "App Store QR-Code scannen" [ref=e310] [cursor=pointer]:
+              - /url: https://apps.apple.com/de/app/u-like-it/id1593884667
+              - img "QR-Code für App Store" [ref=e311]
+              - generic [ref=e312]: App Store
+            - link "Google Play QR-Code scannen" [ref=e313] [cursor=pointer]:
+              - /url: https://play.google.com/store/apps/details?id=de.u_like_it
+              - img "QR-Code für Google Play" [ref=e314]
+              - generic [ref=e315]: Google Play
+      - generic [ref=e316]:
+        - generic [ref=e317]:
+          - link "Impressum" [ref=e318] [cursor=pointer]:
+            - /url: impressum.html
+          - link "Datenschutz" [ref=e319] [cursor=pointer]:
+            - /url: datenschutz.html
+        - paragraph [ref=e320]: © 2026 U-like-it. Alle Rechte vorbehalten.

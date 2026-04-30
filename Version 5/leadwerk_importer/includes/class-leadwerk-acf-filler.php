@@ -80,16 +80,18 @@ class Leadwerk_ACF_Filler {
 		}
 
 		$map = array(
-			'#download'                 => '/#download',
-			'index.html#download'       => '/#download',
-			'/index.html#download'      => '/#download',
-			'http://index.html#download'=> '/#download',
-			'https://index.html#download'=> '/#download',
+			'#download'                 => '/download/',
+			'index.html#download'       => '/download/',
+			'/index.html#download'      => '/download/',
+			'http://index.html#download'=> '/download/',
+			'https://index.html#download'=> '/download/',
 			'#onboarding'               => '/fuer-haendler/#onboarding',
 			'haendler.html#onboarding'  => '/fuer-haendler/#onboarding',
 			'/haendler.html#onboarding' => '/fuer-haendler/#onboarding',
-			'user.html#download'        => '/fuer-nutzer/#download',
-			'/user.html#download'       => '/fuer-nutzer/#download',
+			'user.html#download'        => '/download/',
+			'/user.html#download'       => '/download/',
+			'download.html'             => '/download/',
+			'/download.html'            => '/download/',
 			'index.html'                => '/',
 			'/index.html'               => '/',
 			'haendler.html'             => '/fuer-haendler/',
@@ -400,7 +402,12 @@ class Leadwerk_ACF_Filler {
 
 		$html = (string) file_get_contents( $file_path );
 		if ( empty( $group['layouts'] ) ) {
-			$value = $this->normalize_scalar_group_for_field( $field_name, $this->build_legal_page_from_html( $html ) );
+			$builder_method = $this->get_builder_method_for_field( $field_name );
+			if ( '' !== $builder_method && method_exists( $this, $builder_method ) ) {
+				$value = $this->normalize_scalar_group_for_field( $field_name, call_user_func( array( $this, $builder_method ), $html ) );
+			} else {
+				$value = $this->normalize_scalar_group_for_field( $field_name, $this->build_legal_page_from_html( $html ) );
+			}
 			$payload['value']              = $value;
 			$payload['parser_diagnostics'] = $this->last_parser_diagnostics;
 			$payload['validation'] = $this->build_payload_validation( $field_name, $group, $value, $this->group_has_visible_content( $group, $value ) ? 1 : 0 );
@@ -645,6 +652,7 @@ class Leadwerk_ACF_Filler {
 			'haendler_sections' => 'build_haendler_sections_from_html',
 			'impressum_page'    => 'build_legal_page_from_html',
 			'datenschutz_page'  => 'build_legal_page_from_html',
+			'download_page'     => 'build_download_page_from_html',
 		);
 
 		return isset( $map[ $field_name ] ) ? $map[ $field_name ] : '';
@@ -747,7 +755,7 @@ class Leadwerk_ACF_Filler {
 					'title'       => $this->text( $xpath, './/h3', $card ),
 					'description' => $this->text( $xpath, './/p[contains(@class,"solution-card-desc")]', $card ),
 					'link_text'   => $this->text( $xpath, './/a[contains(@class,"solution-card-link")]', $card ),
-					'link_url'    => $this->attr( $xpath, './/a[contains(@class,"solution-card-link")]', 'href', $card ),
+					'link_url'    => $this->normalize_wp_internal_url( $this->attr( $xpath, './/a[contains(@class,"solution-card-link")]', 'href', $card ) ),
 				);
 			}
 
@@ -1128,6 +1136,62 @@ class Leadwerk_ACF_Filler {
 		return array(
 			'headline' => $this->text( $xpath, './/h1[contains(@class,"section-title")]', $section ),
 			'content'  => $content_node ? $this->inner_html( $dom, $content_node ) : '',
+		);
+	}
+
+	protected function build_download_page_from_html( $html ) {
+		list( $dom, $xpath ) = $this->create_dom_xpath( $html );
+
+		$section = $this->xpath_section( $xpath, 'download-page' );
+		if ( ! $section ) {
+			$section = $xpath->query( '//section[contains(@class,"download-page-section")]' )->item( 0 );
+		}
+
+		if ( ! $section ) {
+			return array();
+		}
+
+		$content_node = $xpath->query( './/div[contains(@class,"download-copy-text")]', $section )->item( 0 );
+		$store_links  = $xpath->query( './/a[contains(@class,"download-store-badge")]', $section );
+		$apple_link   = $store_links->item( 0 );
+		$google_link  = $store_links->item( 1 );
+		$apple_img    = $apple_link ? $xpath->query( './/img', $apple_link )->item( 0 ) : null;
+		$google_img   = $google_link ? $xpath->query( './/img', $google_link )->item( 0 ) : null;
+
+		$platforms = array();
+		foreach ( $xpath->query( './/ul[contains(@class,"download-platform-list")]//li', $section ) as $item ) {
+			$text = trim( preg_replace( '/\s+/', ' ', $item->textContent ) );
+			if ( '' !== $text ) {
+				$platforms[] = array( 'text' => $text );
+			}
+		}
+
+		$slides = array();
+		foreach ( $xpath->query( './/img[contains(@class,"download-slider-img")]', $section ) as $image ) {
+			if ( ! $image instanceof DOMElement ) {
+				continue;
+			}
+			$src = trim( $image->getAttribute( 'src' ) );
+			if ( '' === $src ) {
+				continue;
+			}
+			$slides[] = array(
+				'image' => $this->get_attachment_id_by_source( $src ),
+				'alt'   => trim( $image->getAttribute( 'alt' ) ),
+			);
+		}
+
+		return array(
+			'eyebrow'      => $this->text( $xpath, './/span[contains(@class,"download-eyebrow")]', $section ),
+			'headline'     => $this->text( $xpath, './/h1[contains(@class,"download-title")]', $section ),
+			'subtitle'     => $this->text( $xpath, './/p[contains(@class,"download-subtitle")]', $section ),
+			'content'      => $content_node ? $this->inner_html( $dom, $content_node ) : '',
+			'apple_url'    => $apple_link instanceof DOMElement ? trim( $apple_link->getAttribute( 'href' ) ) : '',
+			'apple_badge'  => $apple_img instanceof DOMElement ? $this->get_attachment_id_by_source( trim( $apple_img->getAttribute( 'src' ) ) ) : 0,
+			'google_url'   => $google_link instanceof DOMElement ? trim( $google_link->getAttribute( 'href' ) ) : '',
+			'google_badge' => $google_img instanceof DOMElement ? $this->get_attachment_id_by_source( trim( $google_img->getAttribute( 'src' ) ) ) : 0,
+			'platforms'    => $platforms,
+			'slides'       => $slides,
 		);
 	}
 

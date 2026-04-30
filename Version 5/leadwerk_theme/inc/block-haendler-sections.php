@@ -82,7 +82,15 @@ foreach ( $sections as $index => $section ) {
 								<a href="<?php echo esc_url( $primary_button_url ); ?>" class="btn btn-accent-solid btn-lg"<?php if ( $is_store_swap_trigger ) : ?> data-haendler-hero-store-trigger="true"<?php endif; ?>><?php echo esc_html( $section['primary_button_text'] ?? '' ); ?></a>
 								<a href="<?php echo esc_url( $secondary_button_url ); ?>" class="btn btn-white btn-lg"><?php echo esc_html( $section['secondary_button_text'] ?? '' ); ?></a>
 							</div>
-							<p class="user-hero-micro"><?php echo esc_html( $section['micro_text'] ?? '' ); ?></p>
+							<?php
+							$micro_text = trim( (string) ( $section['micro_text'] ?? '' ) );
+							if ( 0 === strpos( $micro_text, 'Keine Fixkosten.' ) ) :
+								$micro_rest = trim( substr( $micro_text, strlen( 'Keine Fixkosten.' ) ) );
+								?>
+								<p class="user-hero-micro"><span class="haendler-hero-micro-strong">Keine Fixkosten.</span><?php echo $micro_rest ? ' ' . esc_html( $micro_rest ) : ''; ?></p>
+							<?php else : ?>
+								<p class="user-hero-micro"><?php echo esc_html( $micro_text ); ?></p>
+							<?php endif; ?>
 						</div>
 					</div>
 				</section>
@@ -320,7 +328,7 @@ foreach ( $sections as $index => $section ) {
 									<?php if ( ! empty( $wpforms_embed['is_ready'] ) ) : ?>
 										<?php echo $wpforms_embed['html']; ?>
 									<?php elseif ( current_user_can( 'manage_options' ) ) : ?>
-										<?php echo function_exists( 'leadwerk_theme_get_wpforms_admin_note' ) ? leadwerk_theme_get_wpforms_admin_note( $wpforms_embed ) : '<p class="haendler-form-admin-note">Leadwerk Optionen unter <strong>Haendler WPForms ID</strong> pflegen und WPForms aktivieren, damit das Formular hier erscheint.</p>'; ?>
+										<?php echo function_exists( 'leadwerk_theme_get_wpforms_admin_note' ) ? leadwerk_theme_get_wpforms_admin_note( $wpforms_embed ) : '<p class="haendler-form-admin-note">Leadwerk Optionen unter <strong>Händler WPForms ID</strong> pflegen und WPForms aktivieren, damit das Formular hier erscheint.</p>'; ?>
 									<?php endif; ?>
 								</div>
 								<?php if ( ! empty( $section['micro_text'] ) ) : ?>

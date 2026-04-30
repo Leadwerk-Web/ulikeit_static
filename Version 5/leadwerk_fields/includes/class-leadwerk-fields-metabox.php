@@ -22,7 +22,7 @@ class Leadwerk_Fields_Metabox {
 		'app_store_badge'   => array( 'label' => 'App Store Badge', 'type' => 'image' ),
 		'google_play_badge' => array( 'label' => 'Google Play Badge', 'type' => 'image' ),
 		'haendler_wpforms_id' => array(
-			'label'       => 'Haendler WPForms ID',
+			'label'       => 'Händler WPForms ID',
 			'type'        => 'text',
 			'description' => 'ID oder Shortcode eingeben, z. B. 1420 oder [wpforms id="1420"].',
 		),

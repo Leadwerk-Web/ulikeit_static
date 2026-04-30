@@ -279,8 +279,8 @@ class Leadwerk_Content_Schema {
 				),
 			),
 			'haendler_sections' => array(
-				'label'       => 'U-like-it Haendler-Seite',
-				'description' => 'Sektionen der Haendler-Seite bearbeiten. Reihenfolge und Anzahl bleiben erhalten.',
+				'label'       => 'U-like-it Händler-Seite',
+				'description' => 'Sektionen der Händler-Seite bearbeiten. Reihenfolge und Anzahl bleiben erhalten.',
 				'source_keys' => array( 'ulikeit-haendler-v1' ),
 				'post_match'  => array(
 					'slugs' => array( 'fuer-haendler' ),
@@ -470,6 +470,42 @@ class Leadwerk_Content_Schema {
 				'fields'            => array(
 					'headline' => array( 'label' => 'Seitenueberschrift', 'type' => 'text' ),
 					'content'  => array( 'label' => 'Inhalt', 'type' => 'classic_editor' ),
+				),
+			),
+			'download_page'     => array(
+				'label'         => 'U-like-it Download-Seite',
+				'description'   => 'Download-Unterseite mit App Store, Google Play und App-Screenshots bearbeiten.',
+				'source_keys'   => array( 'ulikeit-download-v1' ),
+				'post_match'    => array(
+					'slugs' => array( 'download' ),
+				),
+				'block_content' => '<!-- wp:acf/ulikeit-download-page /-->',
+				'fields'        => array(
+					'eyebrow'      => array( 'label' => 'Eyebrow', 'type' => 'text' ),
+					'headline'     => array( 'label' => 'Seitenueberschrift', 'type' => 'text' ),
+					'subtitle'     => array( 'label' => 'Unterzeile', 'type' => 'textarea' ),
+					'content'      => array( 'label' => 'Inhalt', 'type' => 'wysiwyg' ),
+					'apple_url'    => array( 'label' => 'Apple App Store URL', 'type' => 'url' ),
+					'apple_badge'  => array( 'label' => 'Apple Badge', 'type' => 'image' ),
+					'google_url'   => array( 'label' => 'Google Play URL', 'type' => 'url' ),
+					'google_badge' => array( 'label' => 'Google Play Badge', 'type' => 'image' ),
+					'platforms'    => array(
+						'label'            => 'Hinweise',
+						'type'             => 'repeater',
+						'add_button_label' => 'Hinweis hinzufuegen',
+						'fields'           => array(
+							'text' => array( 'label' => 'Text', 'type' => 'text' ),
+						),
+					),
+					'slides'       => array(
+						'label'            => 'Screenshots',
+						'type'             => 'repeater',
+						'add_button_label' => 'Screenshot hinzufuegen',
+						'fields'           => array(
+							'image' => array( 'label' => 'Bild', 'type' => 'image' ),
+							'alt'   => array( 'label' => 'Alt Text', 'type' => 'text' ),
+						),
+					),
 				),
 			),
 		);

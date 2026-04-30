@@ -349,6 +349,10 @@ class Leadwerk_Importer {
 			$blocking[] = 'Leadwerk Fields API ist nicht aktiv.';
 		}
 
+		if ( function_exists( 'leadwerk_theme_register_blocks' ) ) {
+			leadwerk_theme_register_blocks();
+		}
+
 		$missing_blocks = $this->get_missing_dynamic_blocks();
 		if ( ! empty( $missing_blocks ) ) {
 			$blocking[] = 'Dynamische U-like-it Bloecke sind nicht registriert: ' . implode( ', ', $missing_blocks ) . '.';
@@ -720,6 +724,23 @@ class Leadwerk_Importer {
 			}
 
 			if ( '' !== $slug && $slug !== (string) get_post_field( 'post_name', $post_id ) ) {
+				$this->release_page_slug_from_attachments( $slug );
+				$repair_result = wp_update_post(
+					array(
+						'ID'        => $post_id,
+						'post_name' => $slug,
+					),
+					true
+				);
+
+				if ( is_wp_error( $repair_result ) ) {
+					Leadwerk_Logger::log( 'Slug-Reparatur fehlgeschlagen fuer ' . $source_key . ': ' . $repair_result->get_error_message(), 'warning' );
+				} else {
+					clean_post_cache( $post_id );
+				}
+			}
+
+			if ( '' !== $slug && $slug !== (string) get_post_field( 'post_name', $post_id ) ) {
 				$issues[] = 'Slug stimmt nicht fuer ' . $source_key . ': erwartet ' . $slug . ', gefunden ' . (string) get_post_field( 'post_name', $post_id ) . '.';
 			}
 
@@ -1046,6 +1067,10 @@ class Leadwerk_Importer {
 		$status   = (string) ( $config['post_status'] ?? 'publish' );
 		$content  = '';
 
+		if ( ! $this->dry_run && '' !== $slug ) {
+			$this->release_page_slug_from_attachments( $slug );
+		}
+
 		if ( ! empty( $config['content_file'] ) ) {
 			$content_path = $this->manifest_dir . $config['content_file'];
 			if ( is_file( $content_path ) ) {
@@ -1298,6 +1323,7 @@ class Leadwerk_Importer {
 			'ulikeit-home-v1'     => '<!-- wp:acf/ulikeit-home-sections /-->',
 			'ulikeit-user-v1'     => '<!-- wp:acf/ulikeit-user-sections /-->',
 			'ulikeit-haendler-v1' => '<!-- wp:acf/ulikeit-haendler-sections /-->',
+			'ulikeit-download-v1' => '<!-- wp:acf/ulikeit-download-page /-->',
 		);
 
 		return isset( $map[ $source_key ] ) ? $map[ $source_key ] : '';
@@ -1333,7 +1359,7 @@ class Leadwerk_Importer {
 		}
 
 		if ( ! $this->dry_run ) {
-			update_field( 'footer_text', 'U-like-it verbindet lokale Haendler und Gastronomie mit Kund:innen in der Naehe. Zeitlich begrenzte Angebote lassen sich in der App entdecken und vor Ort per QR-Code einloesen - so belebt U-like-it deine Innenstadt.', 'option' );
+			update_field( 'footer_text', 'U-like-it verbindet lokale Händler und Gastronomie mit Kund:innen in der Nähe. Zeitlich begrenzte Angebote lassen sich in der App entdecken und vor Ort per QR-Code einlösen - so belebt U-like-it deine Innenstadt.', 'option' );
 			update_field( 'copyright_text', '&copy; ' . gmdate( 'Y' ) . ' U-like-it. Alle Rechte vorbehalten.', 'option' );
 			update_field( 'app_store_url', 'https://apps.apple.com/de/app/u-like-it/id1593884667', 'option' );
 			update_field( 'google_play_url', 'https://play.google.com/store/apps/details?id=de.u_like_it', 'option' );
@@ -1549,6 +1575,61 @@ class Leadwerk_Importer {
 	}
 
 	/**
+	 * Attachments share the public URL namespace with pages. If an imported file like
+	 * download.jpg owns the "download" slug, WordPress creates the page as download-2
+	 * and /download/ resolves to the media file. Move those attachment slugs aside
+	 * before creating or updating canonical pages.
+	 *
+	 * @param string $slug Page slug that must remain available.
+	 * @return void
+	 */
+	protected function release_page_slug_from_attachments( $slug ) {
+		$slug = sanitize_title( $slug );
+		if ( '' === $slug ) {
+			return;
+		}
+
+		$q = new WP_Query(
+			array(
+				'post_type'      => 'attachment',
+				'post_status'    => 'any',
+				'post_name__in'  => array( $slug ),
+				'fields'         => 'ids',
+				'posts_per_page' => -1,
+			)
+		);
+
+		foreach ( array_map( 'intval', (array) $q->get_posts() ) as $attachment_id ) {
+			if ( $attachment_id <= 0 ) {
+				continue;
+			}
+
+			$new_slug = wp_unique_post_slug(
+				'leadwerk-asset-' . $slug,
+				$attachment_id,
+				(string) ( get_post_status( $attachment_id ) ?: 'inherit' ),
+				'attachment',
+				0
+			);
+
+			$result = wp_update_post(
+				array(
+					'ID'        => $attachment_id,
+					'post_name' => $new_slug,
+				),
+				true
+			);
+
+			if ( is_wp_error( $result ) ) {
+				Leadwerk_Logger::log( 'Attachment-Slug konnte nicht freigegeben werden (' . $slug . ', ID ' . $attachment_id . '): ' . $result->get_error_message(), 'warning' );
+				continue;
+			}
+
+			Leadwerk_Logger::log( 'Attachment-Slug fuer Page freigegeben: ' . $slug . ' -> ' . $new_slug . ' (Attachment-ID ' . $attachment_id . ')' );
+		}
+	}
+
+	/**
 	 * Keep leadwerk_source_key bound to one canonical page only.
 	 *
 	 * @param string $source_key Source key.
@@ -1578,7 +1659,7 @@ class Leadwerk_Importer {
 	 */
 	protected function get_missing_dynamic_blocks() {
 		if ( ! class_exists( 'WP_Block_Type_Registry' ) ) {
-			return array( 'acf/ulikeit-home-sections', 'acf/ulikeit-user-sections', 'acf/ulikeit-haendler-sections' );
+			return array( 'acf/ulikeit-home-sections', 'acf/ulikeit-user-sections', 'acf/ulikeit-haendler-sections', 'acf/ulikeit-download-page' );
 		}
 
 		$registry = WP_Block_Type_Registry::get_instance();
@@ -1586,6 +1667,7 @@ class Leadwerk_Importer {
 			'acf/ulikeit-home-sections',
 			'acf/ulikeit-user-sections',
 			'acf/ulikeit-haendler-sections',
+			'acf/ulikeit-download-page',
 		);
 		$missing  = array();
 

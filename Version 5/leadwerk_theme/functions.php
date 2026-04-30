@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'LEADWERK_THEME_VERSION', '1.0.2' );
+define( 'LEADWERK_THEME_VERSION', '1.0.4' );
 define( 'LEADWERK_THEME_DIR', get_template_directory() );
 define( 'LEADWERK_THEME_URI', get_template_directory_uri() );
 
@@ -133,7 +133,7 @@ function leadwerk_theme_get_yoast_analysis_content( $post_id ) {
 		'ulikeit-haendler-v1' => array(
 			'field'    => 'haendler_sections',
 			'template' => LEADWERK_THEME_DIR . '/inc/block-haendler-sections.php',
-			'label'    => 'Haendler',
+			'label'    => 'Händler',
 		),
 		'ulikeit-user-v1'     => array(
 			'field'    => 'user_sections',
@@ -151,7 +151,7 @@ function leadwerk_theme_get_yoast_analysis_content( $post_id ) {
 			null
 		);
 	} else {
-		foreach ( array( 'impressum_page', 'datenschutz_page' ) as $legal_field ) {
+		foreach ( array( 'impressum_page', 'datenschutz_page', 'download_page' ) as $legal_field ) {
 			$data = get_field( $legal_field, $post_id );
 			if ( ! is_array( $data ) ) {
 				continue;
@@ -333,6 +333,9 @@ function leadwerk_theme_body_class_subpages( $classes ) {
 	if ( ! is_front_page() ) {
 		$classes[] = 'is-subpage';
 	}
+	if ( is_page( 'download' ) ) {
+		$classes[] = 'download-page-template';
+	}
 	return $classes;
 }
 add_filter( 'body_class', 'leadwerk_theme_body_class_subpages' );
@@ -354,8 +357,8 @@ add_action( 'wp_head', 'leadwerk_theme_favicon', 1 );
  * 5. ACF-Block „Home-Sektionen" registrieren
  * ────────────────────────────────────────────────────────────────────── */
 
-function leadwerk_theme_register_blocks() {
-	$blocks = array(
+function leadwerk_theme_get_dynamic_blocks() {
+	return array(
 		array(
 			'name'            => 'ulikeit-home-sections',
 			'title'           => __( 'U-like-it Startseiten-Sektionen', 'leadwerk-theme' ),
@@ -370,13 +373,35 @@ function leadwerk_theme_register_blocks() {
 		),
 		array(
 			'name'            => 'ulikeit-haendler-sections',
-			'title'           => __( 'U-like-it Haendler-Seite', 'leadwerk-theme' ),
+			'title'           => __( 'U-like-it Händler-Seite', 'leadwerk-theme' ),
 			'description'     => __( 'Hero, Vorteile, So geht’s, Dashboard, Praxisbeispiele, Konditionen, Loslegen, FAQ, CTA', 'leadwerk-theme' ),
 			'render_callback' => 'leadwerk_theme_render_haendler_sections',
 		),
+		array(
+			'name'            => 'ulikeit-download-page',
+			'title'           => __( 'U-like-it Download-Seite', 'leadwerk-theme' ),
+			'description'     => __( 'Download-Unterseite mit Store-Badges und App-Screenshots', 'leadwerk-theme' ),
+			'render_callback' => 'leadwerk_theme_render_download_page',
+		),
 	);
+}
 
-	foreach ( $blocks as $block ) {
+function leadwerk_theme_is_block_registered( $block_name ) {
+	if ( ! class_exists( 'WP_Block_Type_Registry' ) ) {
+		return false;
+	}
+
+	return WP_Block_Type_Registry::get_instance()->is_registered( $block_name );
+}
+
+function leadwerk_theme_register_blocks() {
+	foreach ( leadwerk_theme_get_dynamic_blocks() as $block ) {
+		$wp_block_name = 'acf/' . $block['name'];
+
+		if ( leadwerk_theme_is_block_registered( $wp_block_name ) ) {
+			continue;
+		}
+
 		if ( function_exists( 'acf_register_block_type' ) ) {
 			acf_register_block_type(
 				array(
@@ -389,16 +414,24 @@ function leadwerk_theme_register_blocks() {
 					'supports'        => array( 'align' => false ),
 				)
 			);
-		} else {
+		}
+
+		if ( ! leadwerk_theme_is_block_registered( $wp_block_name ) && function_exists( 'register_block_type' ) ) {
 			register_block_type(
-				'acf/' . $block['name'],
+				$wp_block_name,
 				array(
+					'title'           => $block['title'],
+					'description'     => $block['description'],
+					'category'        => 'theme',
+					'icon'            => 'store',
+					'supports'        => array( 'align' => false ),
 					'render_callback' => $block['render_callback'],
 				)
 			);
 		}
 	}
 }
+add_action( 'acf/init', 'leadwerk_theme_register_blocks' );
 add_action( 'init', 'leadwerk_theme_register_blocks' );
 
 /* ──────────────────────────────────────────────────────────────────────
@@ -524,10 +557,51 @@ function leadwerk_theme_render_user_sections( $attributes = array(), $content = 
 function leadwerk_theme_render_haendler_sections( $attributes = array(), $content = '', $block = null ) {
 	return leadwerk_theme_render_structured_sections_template(
 		'haendler_sections',
-		'U-like-it Haendler-Seite',
+		'U-like-it Händler-Seite',
 		LEADWERK_THEME_DIR . '/inc/block-haendler-sections.php',
 		$block
 	);
+}
+
+function leadwerk_theme_resolve_scalar_group( $field_name, $post_id ) {
+	$value = function_exists( 'get_field' ) ? get_field( $field_name, $post_id ) : null;
+	if ( is_array( $value ) && ! empty( $value ) ) {
+		return array(
+			'value'                   => $value,
+			'used_last_good_fallback' => false,
+		);
+	}
+
+	$snapshot = leadwerk_theme_get_last_good_field_value( $field_name, $post_id );
+	if ( is_array( $snapshot ) && ! empty( $snapshot ) ) {
+		return array(
+			'value'                   => $snapshot,
+			'used_last_good_fallback' => true,
+		);
+	}
+
+	return array(
+		'value'                   => array(),
+		'used_last_good_fallback' => false,
+	);
+}
+
+function leadwerk_theme_render_download_page( $attributes = array(), $content = '', $block = null ) {
+	$post_id = leadwerk_theme_resolve_render_post_id( $block );
+	if ( ! $post_id ) {
+		return '';
+	}
+
+	$resolved = leadwerk_theme_resolve_scalar_group( 'download_page', $post_id );
+	$download_page = leadwerk_theme_fix_mojibake_deep( $resolved['value'] );
+
+	if ( ! is_array( $download_page ) || empty( $download_page ) ) {
+		return leadwerk_theme_render_missing_content_notice( 'U-like-it Download-Seite', $post_id );
+	}
+
+	ob_start();
+	include LEADWERK_THEME_DIR . '/inc/block-download-page.php';
+	return (string) ob_get_clean();
 }
 
 function leadwerk_theme_get_option_url( $field_name, $default = '#' ) {
@@ -594,7 +668,11 @@ function leadwerk_theme_normalize_home_download_url( $url ) {
 	$url = trim( (string) $url );
 
 	if ( in_array( $url, array( '', '#', '#download', '/#download', 'index.html#download', '/index.html#download', 'http://index.html#download', 'https://index.html#download' ), true ) ) {
-		return '/#download';
+		return '/download/';
+	}
+
+	if ( in_array( $url, array( 'download.html', '/download.html', '/download' ), true ) ) {
+		return '/download/';
 	}
 
 	return $url;
@@ -614,7 +692,11 @@ function leadwerk_theme_normalize_user_download_url( $url ) {
 	$url = trim( (string) $url );
 
 	if ( in_array( $url, array( '', '#', '#download', '/#download', 'index.html#download', '/index.html#download', 'http://index.html#download', 'https://index.html#download', 'user.html', '/user.html', 'user.html#download', '/user.html#download', '/fuer-nutzer/', '/fuer-nutzer/#download', 'http://user.html#download' ), true ) ) {
-		return '/#download';
+		return '/download/';
+	}
+
+	if ( in_array( $url, array( 'download.html', '/download.html', '/download' ), true ) ) {
+		return '/download/';
 	}
 
 	return $url;
@@ -707,7 +789,7 @@ function leadwerk_theme_get_wpforms_admin_note( $embed_state ) {
 	);
 
 	$diagnostic = esc_html( $diagnostic_map[ $reason ] ?? $reason );
-	$message    = 'Leadwerk Optionen unter <strong>Haendler WPForms ID</strong> pflegen und WPForms aktivieren, damit das Formular hier erscheint.';
+	$message    = 'Leadwerk Optionen unter <strong>Händler WPForms ID</strong> pflegen und WPForms aktivieren, damit das Formular hier erscheint.';
 	$message   .= ' Aktuelle Diagnose: ' . $diagnostic;
 
 	if ( '' !== $id ) {
@@ -729,6 +811,8 @@ function leadwerk_theme_get_store_badge_data() {
 		'google_url'     => leadwerk_theme_get_option_url( 'google_play_url', $default_store_urls['google'] ),
 		'apple_badge'    => leadwerk_theme_resolve_acf_image_url( $apple_badge, 'full' ) ?: LEADWERK_THEME_URI . '/assets/images/apple_app_store_badge.png',
 		'google_badge'   => leadwerk_theme_resolve_acf_image_url( $google_badge, 'full' ) ?: LEADWERK_THEME_URI . '/assets/images/google-play-badge.png',
+		'apple_qr'       => LEADWERK_THEME_URI . '/assets/images/qr-app-store.svg',
+		'google_qr'      => LEADWERK_THEME_URI . '/assets/images/qr-google-play.svg',
 	);
 }
 
@@ -805,6 +889,16 @@ function leadwerk_theme_dynamic_footer( $content ) {
 	$content = preg_replace(
 		'/<img[^>]*data-badge="google"[^>]*>/s',
 		'<img src="' . esc_url( $store_badges['google_badge'] ) . '" alt="Bei Google Play herunterladen" width="135" height="40" data-badge="google">',
+		$content
+	);
+	$content = preg_replace(
+		'/<img[^>]*data-qr-badge="apple"[^>]*>/s',
+		'<img src="' . esc_url( $store_badges['apple_qr'] ) . '" alt="QR-Code f&uuml;r App Store" width="96" height="96" data-qr-badge="apple">',
+		$content
+	);
+	$content = preg_replace(
+		'/<img[^>]*data-qr-badge="google"[^>]*>/s',
+		'<img src="' . esc_url( $store_badges['google_qr'] ) . '" alt="QR-Code f&uuml;r Google Play" width="96" height="96" data-qr-badge="google">',
 		$content
 	);
 	$content = preg_replace(

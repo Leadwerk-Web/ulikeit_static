@@ -76,6 +76,20 @@
         "meta_description": "U-like-it - Entdecke exklusive Angebote von lokalen L\u00e4den, Caf\u00e9s und Restaurants in deiner N\u00e4he. App \u00f6ffnen, vorbeigehen und vor Ort sparen.",
         "focus_keyphrase": "lokale Angebote App"
       }
+    },
+    {
+      "source_key": "ulikeit-download-v1",
+      "field_name": "download_page",
+      "source_file": "download.html",
+      "target_type": "page",
+      "post_status": "publish",
+      "slug": "download",
+      "title": "App herunterladen",
+      "seo": {
+        "title": "U-like-it App herunterladen",
+        "meta_description": "U-like-it App f\u00fcr iOS und Android herunterladen. Direkt zum Apple App Store oder zu Google Play.",
+        "focus_keyphrase": "U-like-it App herunterladen"
+      }
     }
   ]
 }

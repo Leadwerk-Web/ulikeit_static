@@ -100,6 +100,11 @@
   var scrollThreshold = 60;
 
   function handleHeaderScroll() {
+    if (!header) return;
+    if (header.hasAttribute('data-force-scrolled-header') || document.getElementById('download-page')) {
+      header.classList.add('scrolled');
+      return;
+    }
     if (window.scrollY > scrollThreshold) {
       header.classList.add('scrolled');
     } else {
@@ -777,6 +782,60 @@
     });
   });
 
+  document.querySelectorAll('[data-download-slider]').forEach(function (slider) {
+    var track = slider.querySelector('.download-slider-track');
+    var slides = slider.querySelectorAll('.download-slider-slide');
+    var prev = slider.querySelector('[data-download-slider-prev]');
+    var next = slider.querySelector('[data-download-slider-next]');
+    var current = 0;
+    var timer = null;
+    var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (!track || slides.length < 2) return;
+
+    function setDownloadSlide(index) {
+      current = (index + slides.length) % slides.length;
+      track.style.transform = 'translate3d(-' + (current * 100) + '%, 0, 0)';
+    }
+
+    function stopDownloadAuto() {
+      if (timer) {
+        clearInterval(timer);
+        timer = null;
+      }
+    }
+
+    function startDownloadAuto() {
+      if (reduceMotion) return;
+      stopDownloadAuto();
+      timer = setInterval(function () {
+        setDownloadSlide(current + 1);
+      }, 3400);
+    }
+
+    if (prev) {
+      prev.addEventListener('click', function () {
+        setDownloadSlide(current - 1);
+        startDownloadAuto();
+      });
+    }
+
+    if (next) {
+      next.addEventListener('click', function () {
+        setDownloadSlide(current + 1);
+        startDownloadAuto();
+      });
+    }
+
+    slider.addEventListener('mouseenter', stopDownloadAuto);
+    slider.addEventListener('mouseleave', startDownloadAuto);
+    slider.addEventListener('focusin', stopDownloadAuto);
+    slider.addEventListener('focusout', startDownloadAuto);
+
+    setDownloadSlide(0);
+    startDownloadAuto();
+  });
+
   var appStepsSection = document.getElementById('app-steps');
   if (appStepsSection) {
     var appSlides = appStepsSection.querySelectorAll('.app-step-slide');
@@ -800,6 +859,7 @@
       if (activeSlide && appImg1) {
         var src = activeSlide.getAttribute('data-img-top');
         if (src) appImg1.src = src;
+        appImg1.setAttribute('data-active-step', String(appCurrentIndex));
       }
     }
 

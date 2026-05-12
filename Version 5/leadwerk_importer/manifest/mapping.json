@@ -90,6 +90,20 @@
         "meta_description": "U-like-it App f\u00fcr iOS und Android herunterladen. Direkt zum Apple App Store oder zu Google Play.",
         "focus_keyphrase": "U-like-it App herunterladen"
       }
+    },
+    {
+      "source_key": "ulikeit-404-v1",
+      "field_name": "impressum_page",
+      "source_file": "404.html",
+      "target_type": "page",
+      "post_status": "publish",
+      "slug": "404",
+      "title": "404",
+      "seo": {
+        "title": "404 - U-like-it",
+        "meta_description": "Die angeforderte U-like-it Seite wurde nicht gefunden.",
+        "meta_robots": "noindex, follow"
+      }
     }
   ]
 }

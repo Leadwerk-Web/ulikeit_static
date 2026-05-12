@@ -133,6 +133,8 @@ add_action( 'admin_enqueue_scripts', 'leadwerk_importer_admin_assets' );
 function leadwerk_importer_admin_page() {
 	$run     = isset( $_GET['run'] ) && '1' === $_GET['run'] && current_user_can( 'manage_options' );
 	$dry_run = isset( $_GET['dry_run'] ) && '1' === $_GET['dry_run'];
+	$import_404 = isset( $_GET['import_404'] ) && '1' === (string) $_GET['import_404'] && current_user_can( 'manage_options' );
+	$not_found_source_key = 'ulikeit-404-v1';
 	$state   = Leadwerk_Logger::get_state();
 
 	if ( $run && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'leadwerk_import_run' ) ) {
@@ -140,6 +142,20 @@ function leadwerk_importer_admin_page() {
 		$importer->run();
 		$state = Leadwerk_Logger::get_state();
 		echo '<div class="notice notice-success"><p>Synchroner Import ausgefuehrt. Fuer kuenftige Laeufe bitte die Live-Progress-Oberflaeche unten verwenden.</p></div>';
+	}
+
+	if ( $import_404 && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'leadwerk_import_404' ) ) {
+		$importer     = new Leadwerk_Importer( true );
+		$repair_state = $importer->repair_page_by_source_key( $not_found_source_key );
+		$state        = Leadwerk_Logger::get_state();
+
+		if ( is_wp_error( $repair_state ) ) {
+			echo '<div class="notice notice-error"><p>' . esc_html( $repair_state->get_error_message() ) . '</p></div>';
+		} elseif ( 'failed' === (string) ( $repair_state['status'] ?? '' ) ) {
+			echo '<div class="notice notice-error"><p>404 Import fehlgeschlagen. Bitte Live Log unten pruefen.</p></div>';
+		} else {
+			echo '<div class="notice notice-success"><p>404 Import abgeschlossen fuer <code>' . esc_html( $not_found_source_key ) . '</code>.</p></div>';
+		}
 	}
 	?>
 	<div class="wrap leadwerk-importer-admin">
@@ -149,6 +165,7 @@ function leadwerk_importer_admin_page() {
 		<div class="leadwerk-importer-toolbar">
 			<button type="button" class="button" data-leadwerk-start-import="dry-run">Dry-Run starten</button>
 			<button type="button" class="button button-primary" data-leadwerk-start-import="apply">Import mit Live-Progress starten</button>
+			<a href="<?php echo esc_url( wp_nonce_url( add_query_arg( array( 'import_404' => '1' ), admin_url( 'admin.php?page=leadwerk-import' ) ), 'leadwerk_import_404' ) ); ?>" class="button">Nur 404 importieren</a>
 			<button type="button" class="button" data-leadwerk-reset-progress>Ansicht zuruecksetzen</button>
 		</div>
 

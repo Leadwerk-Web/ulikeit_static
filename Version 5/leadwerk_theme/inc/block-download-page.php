@@ -38,8 +38,8 @@ $google_badge = ! empty( $download_page['google_badge'] ) && function_exists( 'l
 
 $apple_url    = trim( (string) ( $download_page['apple_url'] ?? '' ) ) ?: ( $store_badges['apple_url'] ?? 'https://apps.apple.com/de/app/u-like-it/id1593884667' );
 $google_url   = trim( (string) ( $download_page['google_url'] ?? '' ) ) ?: ( $store_badges['google_url'] ?? 'https://play.google.com/store/apps/details?id=de.u_like_it' );
-$apple_badge  = $apple_badge ?: ( $store_badges['apple_badge'] ?? LEADWERK_THEME_URI . '/assets/images/apple_app_store_badge.png' );
-$google_badge = $google_badge ?: ( $store_badges['google_badge'] ?? LEADWERK_THEME_URI . '/assets/images/google-play-badge.png' );
+$apple_badge  = $apple_badge ?: ( $store_badges['apple_badge'] ?? LEADWERK_THEME_URI . '/assets/images/apple_app_store_badge.webp' );
+$google_badge = $google_badge ?: ( $store_badges['google_badge'] ?? LEADWERK_THEME_URI . '/assets/images/google-play-badge.webp' );
 
 $platforms = isset( $download_page['platforms'] ) && is_array( $download_page['platforms'] ) ? $download_page['platforms'] : array();
 if ( empty( $platforms ) ) {
@@ -51,19 +51,19 @@ if ( empty( $platforms ) ) {
 }
 
 $fallback_slides = array(
-	array( 'src' => LEADWERK_THEME_URI . '/assets/images/gallery/iPhone 11 Pro Max-00BuyerLogin_framed.png', 'alt' => 'U-like-it Login Screen' ),
-	array( 'src' => LEADWERK_THEME_URI . '/assets/images/gallery/iPhone 11 Pro Max-01BuyerDashboard_framed.png', 'alt' => 'U-like-it Dashboard' ),
-	array( 'src' => LEADWERK_THEME_URI . '/assets/images/gallery/iPhone 11 Pro Max-02BuyerShopList_framed.png', 'alt' => 'U-like-it Shopliste' ),
-	array( 'src' => LEADWERK_THEME_URI . '/assets/images/gallery/iPhone 11 Pro Max-03BuyerFirstShop_framed.png', 'alt' => 'U-like-it Shop Detail' ),
-	array( 'src' => LEADWERK_THEME_URI . '/assets/images/gallery/iPhone 11 Pro Max-04BuyerOfferList_framed.png', 'alt' => 'U-like-it Angebote' ),
-	array( 'src' => LEADWERK_THEME_URI . '/assets/images/gallery/iPhone 11 Pro Max-05BuyerFirstOffer_framed.png', 'alt' => 'U-like-it Angebotsdetail' ),
-	array( 'src' => LEADWERK_THEME_URI . '/assets/images/gallery/iPhone 11 Pro Max-06BuyerSettings_framed.png', 'alt' => 'U-like-it Einstellungen' ),
-	array( 'src' => LEADWERK_THEME_URI . '/assets/images/gallery/iPhone 11 Pro Max-07BuyerCategories_framed.png', 'alt' => 'U-like-it Kategorien' ),
-	array( 'src' => LEADWERK_THEME_URI . '/assets/images/gallery/iPhone 11 Pro Max-10OwnerOfferList_framed.png', 'alt' => 'U-like-it Anbieter Angebote' ),
-	array( 'src' => LEADWERK_THEME_URI . '/assets/images/gallery/iPhone 11 Pro Max-11OwnerEditOffer_framed.png', 'alt' => 'U-like-it Angebot bearbeiten' ),
+	array( 'src' => LEADWERK_THEME_URI . '/assets/images/gallery/iPhone 11 Pro Max-00BuyerLogin_framed.webp', 'alt' => 'U-like-it Login Screen' ),
+	array( 'src' => LEADWERK_THEME_URI . '/assets/images/gallery/iPhone 11 Pro Max-01BuyerDashboard_framed.webp', 'alt' => 'U-like-it Dashboard' ),
+	array( 'src' => LEADWERK_THEME_URI . '/assets/images/gallery/iPhone 11 Pro Max-02BuyerShopList_framed.webp', 'alt' => 'U-like-it Shopliste' ),
+	array( 'src' => LEADWERK_THEME_URI . '/assets/images/gallery/iPhone 11 Pro Max-03BuyerFirstShop_framed.webp', 'alt' => 'U-like-it Shop Detail' ),
+	array( 'src' => LEADWERK_THEME_URI . '/assets/images/gallery/iPhone 11 Pro Max-04BuyerOfferList_framed.webp', 'alt' => 'U-like-it Angebote' ),
+	array( 'src' => LEADWERK_THEME_URI . '/assets/images/gallery/iPhone 11 Pro Max-05BuyerFirstOffer_framed.webp', 'alt' => 'U-like-it Angebotsdetail' ),
+	array( 'src' => LEADWERK_THEME_URI . '/assets/images/gallery/iPhone 11 Pro Max-06BuyerSettings_framed.webp', 'alt' => 'U-like-it Einstellungen' ),
+	array( 'src' => LEADWERK_THEME_URI . '/assets/images/gallery/iPhone 11 Pro Max-07BuyerCategories_framed.webp', 'alt' => 'U-like-it Kategorien' ),
+	array( 'src' => LEADWERK_THEME_URI . '/assets/images/gallery/iPhone 11 Pro Max-10OwnerOfferList_framed.webp', 'alt' => 'U-like-it Anbieter Angebote' ),
+	array( 'src' => LEADWERK_THEME_URI . '/assets/images/gallery/iPhone 11 Pro Max-11OwnerEditOffer_framed.webp', 'alt' => 'U-like-it Angebot bearbeiten' ),
 	array( 'src' => LEADWERK_THEME_URI . '/assets/images/gallery/iPhone 11 Pro Max-12OwnerEditDescription_framed.png', 'alt' => 'U-like-it Beschreibung bearbeiten' ),
-	array( 'src' => LEADWERK_THEME_URI . '/assets/images/gallery/iPhone 11 Pro Max-13OwnerPublish_framed.png', 'alt' => 'U-like-it Angebot ver&ouml;ffentlichen' ),
-	array( 'src' => LEADWERK_THEME_URI . '/assets/images/gallery/iPhone 11 Pro Max-14OwnerStatYear_framed.png', 'alt' => 'U-like-it Statistik' ),
+	array( 'src' => LEADWERK_THEME_URI . '/assets/images/gallery/iPhone 11 Pro Max-13OwnerPublish_framed.webp', 'alt' => 'U-like-it Angebot ver&ouml;ffentlichen' ),
+	array( 'src' => LEADWERK_THEME_URI . '/assets/images/gallery/iPhone 11 Pro Max-14OwnerStatYear_framed.webp', 'alt' => 'U-like-it Statistik' ),
 );
 
 $slides = array();

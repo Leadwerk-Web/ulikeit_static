@@ -149,6 +149,69 @@ class Leadwerk_Importer {
 	}
 
 	/**
+	 * Re-import one manifest page by source key.
+	 *
+	 * @param string $source_key Manifest source key.
+	 * @return array<string,mixed>|WP_Error
+	 */
+	public function repair_page_by_source_key( $source_key ) {
+		if ( function_exists( 'set_time_limit' ) && ! ini_get( 'safe_mode' ) ) {
+			@set_time_limit( 300 );
+		}
+
+		$source_key  = sanitize_key( (string) $source_key );
+		$page_config = $this->get_page_config_by_source_key( $source_key );
+
+		if ( empty( $page_config ) ) {
+			return new WP_Error( 'leadwerk_page_not_found', 'Manifest enthaelt keine Seite fuer source_key ' . $source_key . '.' );
+		}
+
+		if ( Leadwerk_Logger::has_active_job() ) {
+			return new WP_Error( 'leadwerk_import_active', 'Ein Import laeuft bereits. Bitte zuerst abschliessen oder zuruecksetzen.' );
+		}
+
+		$original_pages = (array) ( $this->manifest['pages'] ?? array() );
+		$this->manifest['pages'] = array( $page_config );
+
+		try {
+			$job            = $this->build_initial_job_state();
+			$job            = $this->build_targeted_page_job_state( $job, $page_config );
+			$max_iterations = 50;
+			$iterations     = 0;
+
+			Leadwerk_Logger::set_state( $job );
+			Leadwerk_Logger::log( $this->dry_run ? '--- Targeted Dry-Run: ' . $source_key . ' ---' : '--- Targeted Import: ' . $source_key . ' ---' );
+
+			while ( $iterations < $max_iterations && ! in_array( (string) ( $job['status'] ?? '' ), array( 'completed', 'failed' ), true ) ) {
+				$job = $this->run_next_batch(
+					$job,
+					array(
+						'page_upsert' => 1,
+						'media_import'=> 1,
+						'page_fill'   => 1,
+					)
+				);
+				++$iterations;
+			}
+
+			if ( $iterations >= $max_iterations && ! in_array( (string) ( $job['status'] ?? '' ), array( 'completed', 'failed' ), true ) ) {
+				Leadwerk_Logger::record_result( 'error', 'Targeted import abgebrochen: zu viele Verarbeitungsschritte ohne Abschluss.', $source_key );
+				Leadwerk_Logger::finish_job(
+					'failed',
+					array(
+						'current_item' => 'Targeted import aborted after reaching the safety iteration limit.',
+					)
+				);
+			}
+
+			Leadwerk_Logger::save();
+			return Leadwerk_Logger::get_state();
+		} finally {
+			$this->manifest['pages'] = $original_pages;
+		}
+	}
+
+	/**
 	 * Create or resume one import job state.
 	 *
 	 * @return array<string,mixed>
@@ -206,6 +269,58 @@ class Leadwerk_Importer {
 
 		Leadwerk_Logger::log( $this->dry_run ? '--- Dry-Run ---' : '--- Import (Apply) ---' );
 		return $job;
+	}
+
+	/**
+	 * Limit one live job state to a single page and skip unrelated steps.
+	 *
+	 * @param array<string,mixed> $job_state   Job state.
+	 * @param array<string,mixed> $page_config Page config.
+	 * @return array<string,mixed>
+	 */
+	protected function build_targeted_page_job_state( $job_state, $page_config ) {
+		$steps = isset( $job_state['steps'] ) && is_array( $job_state['steps'] ) ? $job_state['steps'] : $this->get_step_definitions();
+		foreach ( array( 'preflight', 'page_upsert', 'page_fill', 'finalize' ) as $step_key ) {
+			$steps[ $step_key ]['total']     = 1;
+			$steps[ $step_key ]['processed'] = 0;
+			$steps[ $step_key ]['status']    = 'pending';
+		}
+
+		foreach ( array( 'media_scan', 'media_import', 'options' ) as $step_key ) {
+			$steps[ $step_key ]['total']     = 0;
+			$steps[ $step_key ]['processed'] = 0;
+			$steps[ $step_key ]['status']    = 'skipped';
+		}
+
+		$source_key = sanitize_key( (string) ( $page_config['source_key'] ?? '' ) );
+
+		$job_state['current_step'] = 'preflight';
+		$job_state['current_item'] = (string) ( $page_config['source_file'] ?? $source_key );
+		$job_state['processed']    = 0;
+		$job_state['success_count'] = 0;
+		$job_state['warning_count'] = 0;
+		$job_state['error_count']   = 0;
+		$job_state['steps']         = $steps;
+		$job_state['queues']        = array(
+			'pages' => array( $page_config ),
+			'media' => array(),
+		);
+		$job_state['cursor']        = array(
+			'page_upsert' => 0,
+			'media_import'=> 0,
+			'page_fill'   => 0,
+		);
+		$job_state['page_lookup']   = array();
+		$job_state['results']       = array(
+			'pages'    => array(),
+			'media'    => array(),
+			'summary'  => array(),
+			'blocking' => array(),
+		);
+		$job_state['overall_percent'] = 0;
+		$job_state['step_percent']    = 0;
+
+		return $job_state;
 	}
 
 	/**
@@ -1342,7 +1457,7 @@ class Leadwerk_Importer {
 
 		$fields_set = array();
 
-		$logo_id = $this->resolve_attachment( 'images/logo.png' );
+		$logo_id = $this->resolve_attachment( 'images/logo.webp' );
 		if ( $logo_id ) {
 			if ( ! $this->dry_run ) {
 				update_field( 'logo', $logo_id, 'option' );
@@ -1350,7 +1465,7 @@ class Leadwerk_Importer {
 			$fields_set[] = 'logo=' . $logo_id;
 		}
 
-		$footer_logo_id = $this->resolve_attachment( 'images/logo-weiss.png' );
+		$footer_logo_id = $this->resolve_attachment( 'images/logo-weiss.webp' );
 		if ( $footer_logo_id ) {
 			if ( ! $this->dry_run ) {
 				update_field( 'footer_logo', $footer_logo_id, 'option' );
@@ -1369,7 +1484,7 @@ class Leadwerk_Importer {
 		$fields_set[] = 'copyright_text';
 		$fields_set[] = 'store_urls';
 
-		$apple_badge_id = $this->resolve_attachment( 'images/apple_app_store_badge.png' );
+		$apple_badge_id = $this->resolve_attachment( 'images/apple_app_store_badge.webp' );
 		if ( $apple_badge_id ) {
 			if ( ! $this->dry_run ) {
 				update_field( 'app_store_badge', $apple_badge_id, 'option' );
@@ -1377,7 +1492,7 @@ class Leadwerk_Importer {
 			$fields_set[] = 'app_store_badge=' . $apple_badge_id;
 		}
 
-		$google_badge_id = $this->resolve_attachment( 'images/google-play-badge.png' );
+		$google_badge_id = $this->resolve_attachment( 'images/google-play-badge.webp' );
 		if ( $google_badge_id ) {
 			if ( ! $this->dry_run ) {
 				update_field( 'google_play_badge', $google_badge_id, 'option' );

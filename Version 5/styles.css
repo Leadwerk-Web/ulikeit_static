@@ -855,7 +855,7 @@ body:has(#download-page) .site-header .nav-toggle-bar {
   right: 0;
   bottom: -60px;
   z-index: 0;
-  background-image: url("images/background.png");
+  background-image: url("images/background.webp");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -1984,7 +1984,7 @@ body:has(#download-page) .site-header .nav-toggle-bar {
   inset: 0;
   width: 100%;
   height: 100%;
-  background-image: url("images/Paar_Shoppen_handy.png");
+  background-image: url("images/Paar_Shoppen_handy.webp");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

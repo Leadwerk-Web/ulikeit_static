@@ -50,7 +50,7 @@ foreach ( $sections as $section ) {
 			$title_lines = is_array( $section['title_lines'] ?? null ) ? $section['title_lines'] : array();
 			$hero_image  = leadwerk_theme_resolve_acf_image_url( $section['hero_image'] ?? 0, 'full' );
 			if ( ! $hero_image ) {
-				$hero_image = LEADWERK_THEME_URI . '/assets/images/frau-freigestellt.png';
+				$hero_image = LEADWERK_THEME_URI . '/assets/images/frau-freigestellt.webp';
 			}
 			?>
 			<div class="hero-why-bg">
@@ -77,7 +77,7 @@ foreach ( $sections as $section ) {
 				</section>
 				<div class="hero-arrow-wrap" aria-hidden="true">
 					<div class="hero-arrow-parallax">
-						<img src="<?php echo esc_url( LEADWERK_THEME_URI . '/assets/images/pfeil-3.png' ); ?>" alt="" class="hero-arrow-img">
+						<img src="<?php echo esc_url( LEADWERK_THEME_URI . '/assets/images/pfeil-3.webp' ); ?>" alt="" class="hero-arrow-img">
 					</div>
 				</div>
 			</div>

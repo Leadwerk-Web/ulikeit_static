@@ -333,6 +333,10 @@ function leadwerk_theme_body_class_subpages( $classes ) {
 	if ( ! is_front_page() ) {
 		$classes[] = 'is-subpage';
 	}
+	if ( is_404() || is_page( '404' ) ) {
+		$classes[] = 'page-404';
+		$classes[] = 'header-scrolled';
+	}
 	if ( is_page( 'download' ) ) {
 		$classes[] = 'download-page-template';
 	}
@@ -809,8 +813,8 @@ function leadwerk_theme_get_store_badge_data() {
 	return array(
 		'apple_url'      => leadwerk_theme_get_option_url( 'app_store_url', $default_store_urls['apple'] ),
 		'google_url'     => leadwerk_theme_get_option_url( 'google_play_url', $default_store_urls['google'] ),
-		'apple_badge'    => leadwerk_theme_resolve_acf_image_url( $apple_badge, 'full' ) ?: LEADWERK_THEME_URI . '/assets/images/apple_app_store_badge.png',
-		'google_badge'   => leadwerk_theme_resolve_acf_image_url( $google_badge, 'full' ) ?: LEADWERK_THEME_URI . '/assets/images/google-play-badge.png',
+		'apple_badge'    => leadwerk_theme_resolve_acf_image_url( $apple_badge, 'full' ) ?: LEADWERK_THEME_URI . '/assets/images/apple_app_store_badge.webp',
+		'google_badge'   => leadwerk_theme_resolve_acf_image_url( $google_badge, 'full' ) ?: LEADWERK_THEME_URI . '/assets/images/google-play-badge.webp',
 		'apple_qr'       => LEADWERK_THEME_URI . '/assets/images/qr-app-store.svg',
 		'google_qr'      => LEADWERK_THEME_URI . '/assets/images/qr-google-play.svg',
 	);
@@ -827,7 +831,7 @@ function leadwerk_theme_dynamic_footer( $content ) {
 	$has_fields = function_exists( 'get_field' );
 
 	// Logo (header)
-	$logo_url = LEADWERK_THEME_URI . '/assets/images/logo.png';
+	$logo_url = LEADWERK_THEME_URI . '/assets/images/logo.webp';
 	if ( $has_fields ) {
 		$logo_id = get_field( 'logo', 'option' );
 		if ( $logo_id && is_numeric( $logo_id ) ) {
@@ -842,7 +846,7 @@ function leadwerk_theme_dynamic_footer( $content ) {
 	);
 
 	// Footer logo
-	$footer_logo_url = LEADWERK_THEME_URI . '/assets/images/logo-weiss.png';
+	$footer_logo_url = LEADWERK_THEME_URI . '/assets/images/logo-weiss.webp';
 	if ( $has_fields ) {
 		$fl_id = get_field( 'footer_logo', 'option' );
 		if ( ! $fl_id ) $fl_id = get_field( 'logo', 'option' );

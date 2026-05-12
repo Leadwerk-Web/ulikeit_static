@@ -61,7 +61,7 @@ function leadwerk_render_hero( $f ) {
 	$hero_img_url = $hero_img_id ? wp_get_attachment_image_url( $hero_img_id, 'full' ) : '';
 	// Fallback: use theme asset if no attachment
 	if ( ! $hero_img_url ) {
-		$hero_img_url = LEADWERK_THEME_URI . '/assets/images/frau-freigestellt.png';
+		$hero_img_url = LEADWERK_THEME_URI . '/assets/images/frau-freigestellt.webp';
 	}
 	?>
 	<div class="hero-why-bg">
@@ -88,7 +88,7 @@ function leadwerk_render_hero( $f ) {
 	</section>
 		<div class="hero-arrow-wrap" aria-hidden="true">
 			<div class="hero-arrow-parallax">
-				<img src="<?php echo esc_url( LEADWERK_THEME_URI . '/assets/images/pfeil-3.png' ); ?>" alt="" class="hero-arrow-img">
+				<img src="<?php echo esc_url( LEADWERK_THEME_URI . '/assets/images/pfeil-3.webp' ); ?>" alt="" class="hero-arrow-img">
 			</div>
 		</div>
 	</div><!-- /.hero-why-bg -->
@@ -105,7 +105,7 @@ function leadwerk_render_why( $f ) {
 	$bag_id  = isset( $f['bag_image'] ) ? (int) $f['bag_image'] : 0;
 	$bag_url = $bag_id ? wp_get_attachment_image_url( $bag_id, 'full' ) : '';
 	if ( ! $bag_url ) {
-		$bag_url = LEADWERK_THEME_URI . '/assets/images/hand.png';
+		$bag_url = LEADWERK_THEME_URI . '/assets/images/hand.webp';
 	}
 	?>
 	<section class="section why-section" id="why">
@@ -252,12 +252,12 @@ function leadwerk_render_pakete( $f ) {
 	$img_id   = isset( $f['image'] ) ? (int) $f['image'] : 0;
 	$img_url  = $img_id ? wp_get_attachment_image_url( $img_id, 'full' ) : '';
 	if ( ! $img_url ) {
-		$img_url = LEADWERK_THEME_URI . '/assets/images/bag.png';
+		$img_url = LEADWERK_THEME_URI . '/assets/images/bag.webp';
 	}
 	?>
 	<div class="app-pakete-arrow-wrap" aria-hidden="true">
 		<div class="app-pakete-arrow-parallax">
-			<img src="<?php echo esc_url( LEADWERK_THEME_URI . '/assets/images/pfeil-1.png' ); ?>" alt="" class="app-pakete-arrow-img">
+			<img src="<?php echo esc_url( LEADWERK_THEME_URI . '/assets/images/pfeil-1.webp' ); ?>" alt="" class="app-pakete-arrow-img">
 		</div>
 	</div>
 	<section class="section pakete-section" id="pakete">
@@ -302,7 +302,7 @@ function leadwerk_render_solutions( $f ) {
 	<div class="light-sections-wrap">
 		<div class="solution-arrow-between-wrap" aria-hidden="true">
 			<div class="solution-arrow-between-parallax">
-				<img src="<?php echo esc_url( LEADWERK_THEME_URI . '/assets/images/pfeil-2.png' ); ?>" alt="" class="solution-arrow-between-img">
+				<img src="<?php echo esc_url( LEADWERK_THEME_URI . '/assets/images/pfeil-2.webp' ); ?>" alt="" class="solution-arrow-between-img">
 			</div>
 		</div>
 		<div class="light-sections-blob-bg" aria-hidden="true">
@@ -361,7 +361,7 @@ function leadwerk_render_faq( $f ) {
 	$img_id  = isset( $f['image'] ) ? (int) $f['image'] : 0;
 	$img_url = $img_id ? wp_get_attachment_image_url( $img_id, 'full' ) : '';
 	if ( ! $img_url ) {
-		$img_url = LEADWERK_THEME_URI . '/assets/images/shop.jpg';
+		$img_url = LEADWERK_THEME_URI . '/assets/images/shop.webp';
 	}
 	?>
 	<section class="section solution-faq-section" id="solution-faq">

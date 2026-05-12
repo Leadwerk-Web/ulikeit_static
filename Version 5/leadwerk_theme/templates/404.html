@@ -2,11 +2,27 @@
 
 <!-- wp:group {"tagName":"main","layout":{"type":"default"}} -->
 <main class="wp-block-group">
-<section class="section" style="min-height:60vh;display:flex;align-items:center;justify-content:center;">
-  <div class="container" style="text-align:center;">
-    <h1 style="font-size:clamp(3rem,8vw,6rem);font-weight:800;margin-bottom:1rem;">404</h1>
-    <p style="font-size:1.25rem;opacity:0.7;margin-bottom:2rem;">Seite nicht gefunden.</p>
-    <a href="/" class="btn btn-primary btn-accent btn-lg">Zur Startseite</a>
+<section class="section" style="padding:clamp(8rem,12vw,10rem) 0 clamp(4rem,8vw,7rem);background:linear-gradient(135deg,#fff7ed 0%,#ffffff 46%,#e8fff5 100%);overflow:hidden;">
+  <div class="container" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:clamp(2rem,6vw,4rem);align-items:center;max-width:1180px;">
+    <div>
+      <p style="font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#f97316;margin-bottom:1rem;">404 / Angebot nicht gefunden</p>
+      <h1 style="text-align:left;margin-bottom:1.25rem;font-size:clamp(3rem,8vw,6.5rem);line-height:.9;font-weight:800;">Dieser Deal ist abgelaufen.</h1>
+      <p style="line-height:1.8;color:#444;max-width:36rem;">Die angeforderte Seite gibt es hier nicht mehr. U-like-it zeigt Ihnen trotzdem schnell den naechsten Weg zu lokalen Angeboten, App-Download oder Infos fuer Unternehmen.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:.85rem;margin:2rem 0;">
+        <a class="btn btn-primary btn-accent" href="/download/">App herunterladen</a>
+        <a class="btn btn-ghost" href="/">Zur Startseite</a>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:.8rem;">
+        <a href="/fuer-nutzer/" style="padding:1rem;background:#fff;color:#111;text-decoration:none;box-shadow:0 14px 34px rgba(16,185,129,.12);"><strong>Fuer Nutzer:innen</strong><br><span style="opacity:.68;">Angebote entdecken</span></a>
+        <a href="/fuer-haendler/" style="padding:1rem;background:#fff;color:#111;text-decoration:none;box-shadow:0 14px 34px rgba(249,115,22,.12);"><strong>Fuer Haendler</strong><br><span style="opacity:.68;">Sichtbar werden</span></a>
+      </div>
+    </div>
+    <figure style="position:relative;margin:0;min-height:28rem;display:flex;align-items:center;justify-content:center;">
+      <div style="position:absolute;inset:8% 0 0 12%;background:#111;border-radius:2rem;transform:rotate(-5deg);box-shadow:0 30px 80px rgba(17,17,17,.22);"></div>
+      <img src="/wp-content/themes/leadwerk_theme/assets/images/gallery/iPhone%2011%20Pro%20Max-01BuyerDashboard_framed.webp" alt="U-like-it App Dashboard" style="position:relative;width:min(78%,320px);max-height:31rem;object-fit:contain;filter:drop-shadow(0 28px 50px rgba(0,0,0,.22));">
+      <div aria-hidden="true" style="position:absolute;right:0;top:0;background:#fff;padding:1rem 1.1rem;box-shadow:0 16px 42px rgba(0,0,0,.12);font-weight:800;color:#10b981;">404</div>
+      <div style="position:absolute;left:0;bottom:1rem;background:#fff;padding:.85rem 1rem;box-shadow:0 16px 42px rgba(0,0,0,.12);color:#111;">Naechster Treffer: lokale Angebote</div>
+    </figure>
   </div>
 </section>
 </main>

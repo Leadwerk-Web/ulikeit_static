@@ -61,6 +61,7 @@ class Leadwerk_Media_Importer {
 		$existing = $this->find_attachment_by_source_path( $norm );
 		if ( $existing ) {
 			$this->attachment_map[ $norm ] = $existing;
+			$this->ensure_attachment_file_exists( (int) $existing, $full_path );
 			Leadwerk_Logger::log( "Media bereits vorhanden: $relative_path => $existing" );
 			return (int) $existing;
 		}
@@ -86,6 +87,7 @@ class Leadwerk_Media_Importer {
 			return 0;
 		}
 		update_post_meta( $id, 'leadwerk_source_path', $norm );
+		$this->ensure_attachment_file_exists( (int) $id, $full_path );
 		$this->attachment_map[ $norm ] = $id;
 		Leadwerk_Logger::log( "Media imported: $relative_path => $id" );
 		return (int) $id;
@@ -120,5 +122,49 @@ class Leadwerk_Media_Importer {
 		) );
 		$ids = $q->get_posts();
 		return ! empty( $ids ) ? (int) $ids[0] : 0;
+	}
+
+	protected function ensure_attachment_file_exists( $attachment_id, $source_full_path ) {
+		if ( $this->dry_run || $attachment_id <= 0 || ! is_file( $source_full_path ) ) {
+			return;
+		}
+
+		$attached_file = (string) get_post_meta( $attachment_id, '_wp_attached_file', true );
+		if ( '' === $attached_file ) {
+			return;
+		}
+
+		$uploads = wp_upload_dir();
+		if ( ! empty( $uploads['error'] ) || empty( $uploads['basedir'] ) ) {
+			Leadwerk_Logger::log( 'Media repair skipped: uploads directory unavailable for attachment ' . $attachment_id, 'warning' );
+			return;
+		}
+
+		$relative_path = ltrim( str_replace( array( '\\', '/' ), DIRECTORY_SEPARATOR, $attached_file ), DIRECTORY_SEPARATOR );
+		$target_path   = trailingslashit( $uploads['basedir'] ) . $relative_path;
+
+		if ( is_file( $target_path ) ) {
+			return;
+		}
+
+		if ( ! wp_mkdir_p( dirname( $target_path ) ) ) {
+			Leadwerk_Logger::log( 'Media repair failed: target directory missing for attachment ' . $attachment_id . ' (' . dirname( $target_path ) . ')', 'warning' );
+			return;
+		}
+
+		if ( ! copy( $source_full_path, $target_path ) ) {
+			Leadwerk_Logger::log( 'Media repair failed: could not copy ' . $source_full_path . ' to ' . $target_path, 'warning' );
+			return;
+		}
+
+		if ( wp_attachment_is_image( $attachment_id ) ) {
+			require_once ABSPATH . 'wp-admin/includes/image.php';
+			$metadata = wp_generate_attachment_metadata( $attachment_id, $target_path );
+			if ( is_array( $metadata ) && ! is_wp_error( $metadata ) ) {
+				wp_update_attachment_metadata( $attachment_id, $metadata );
+			}
+		}
+
+		Leadwerk_Logger::log( 'Media file repaired: attachment ' . $attachment_id . ' => ' . $attached_file );
 	}
 }

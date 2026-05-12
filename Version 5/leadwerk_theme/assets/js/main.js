@@ -101,7 +101,7 @@
 
   function handleHeaderScroll() {
     if (!header) return;
-    if (header.hasAttribute('data-force-scrolled-header') || document.getElementById('download-page')) {
+    if (header.hasAttribute('data-force-scrolled-header') || document.getElementById('download-page') || document.body.classList.contains('page-404') || document.body.classList.contains('error404')) {
       header.classList.add('scrolled');
       return;
     }

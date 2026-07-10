@@ -290,8 +290,8 @@ class Leadwerk_Fields_Metabox {
 		switch ( $type ) {
 			case 'text':
 			case 'url':
-				$input_type = 'url' === $type ? 'url' : 'text';
-				echo '<input type="' . esc_attr( $input_type ) . '" id="' . esc_attr( $id ) . '" name="' . esc_attr( $name ) . '" value="' . esc_attr( (string) $value ) . '" class="regular-text">';
+				$input_attrs = 'url' === $type ? ' inputmode="url" placeholder="https://example.com oder /download/"' : '';
+				echo '<input type="text" id="' . esc_attr( $id ) . '" name="' . esc_attr( $name ) . '" value="' . esc_attr( (string) $value ) . '" class="regular-text"' . $input_attrs . '>';
 				break;
 
 			case 'textarea':

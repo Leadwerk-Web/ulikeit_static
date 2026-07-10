@@ -3775,8 +3775,48 @@ body:has(#download-page) .site-header .nav-toggle-bar {
   font-weight: 400;
 }
 
+.footer-social {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.footer-social-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.footer-social-link {
+  display: inline-flex;
+  width: 38px;
+  height: 38px;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  transition: background var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast);
+}
+
+.footer-social-link:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.34);
+  transform: translateY(-2px);
+}
+
+.footer-social-link svg {
+  width: 19px;
+  height: 19px;
+  display: block;
+  fill: currentColor;
+}
+
 .footer-nav-label,
-.footer-download-label {
+.footer-download-label,
+.footer-social-label {
   font-family: var(--font-heading);
   font-size: 11px;
   font-weight: 600;
@@ -3996,7 +4036,8 @@ body:has(#download-page) .site-header .nav-toggle-bar {
   }
 
   .footer-nav-label,
-  .footer-download-label {
+  .footer-download-label,
+  .footer-social-label {
     margin-bottom: 14px;
   }
 
@@ -4650,8 +4691,14 @@ body.nav-open {
   .footer-nav-list,
   .footer-badges,
   .footer-qr-row,
+  .footer-social,
+  .footer-social-links,
   .footer-legal {
     justify-content: center;
+  }
+
+  .footer-social {
+    align-items: center;
   }
 
   .footer-copy {
